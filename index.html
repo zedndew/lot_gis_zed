@@ -6,11 +6,10 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        
         <style>
-        html, body, #map { 
-            width: 100%; height: 100%; padding: 0; margin: 0; 
-            background: #0d1117; 
-        }
+        html, body, #map { width: 100%; height: 100%; padding: 0; margin: 0; background: #0d1117; }
 
         /* --- DASHBOARD DARK ELITE --- */
         .sidebar {
@@ -25,7 +24,6 @@
 
         .sidebar-content { padding: 40px 25px; min-width: 280px; position: relative; }
 
-        /* BUTANG PANGKAH (X) */
         .close-btn { 
             position: absolute; top: 20px; right: 20px;
             font-size: 28px; cursor: pointer; color: #d4a373; 
@@ -45,10 +43,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .section-title { 
-            font-size: 9px; font-weight: 700; color: #8b949e; 
-            margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px;
-        }
+        .section-title { font-size: 9px; font-weight: 700; color: #8b949e; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
 
         .search-box {
             width: 100%; padding: 12px; margin-bottom: 12px;
@@ -63,12 +58,17 @@
         }
         .btn-primary:hover { background: #faedcd; }
 
-        .btn-secondary { 
-            width: 100%; padding: 10px; background: transparent; color: #8b949e; 
-            border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 11px;
+        /* Butang PDF Special */
+        .btn-pdf {
+            width: 100%; padding: 12px; background: transparent; color: #ffb366;
+            border: 1px solid #ffb366; border-radius: 8px; cursor: pointer;
+            font-weight: 800; font-size: 11px; text-transform: uppercase;
+            margin-top: 15px; transition: 0.3s; display: none; /* Sembunyi sampai ada lot dipilih */
         }
+        .btn-pdf:hover { background: rgba(255, 179, 102, 0.1); color: #fff; }
 
-        /* Info Display Card */
+        .btn-secondary { width: 100%; padding: 10px; background: transparent; color: #8b949e; border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 11px; }
+
         .info-card {
             background: rgba(212, 163, 115, 0.03); padding: 14px; border-radius: 10px;
             margin-top: 10px; border-bottom: 1px solid rgba(212, 163, 115, 0.2);
@@ -85,7 +85,7 @@
 
         .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
         </style>
-        <title>Zedndrew | Dark GIS v4</title>
+        <title>Zedndrew | Dark GIS v5</title>
     </head>
     <body>
 
@@ -94,7 +94,6 @@
         <div id="mySidebar" class="sidebar">
             <div class="sidebar-content">
                 <button class="close-btn" onclick="closeNav()">&times;</button>
-                
                 <h2>DASHBOARD</h2>
 
                 <div class="menu-section">
@@ -107,10 +106,13 @@
                 <div class="menu-section">
                     <div class="section-title">Property Details</div>
                     <div class="info-card"><div class="info-label">TOTAL LOTS IN AREA</div><div class="info-value">67</div></div>
-                    
                     <div class="info-card"><div class="info-label">IDENTIFICATION</div><div id="disp-lot" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">LEGAL OWNER</div><div id="disp-owner" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">COMPUTED AREA</div><div id="disp-area" class="info-value">-</div></div>
+                    
+                    <button id="pdfBtn" class="btn-pdf" onclick="generatePDF()">
+                        <i class="fas fa-file-pdf"></i> Download Report
+                    </button>
                 </div>
                 
                 <div style="font-size: 9px; text-align: center; color: #484f58; margin-top: 40px; letter-spacing: 1px;">
@@ -126,6 +128,8 @@
         <script src="data/TANDASEMPADANLOTGABUNG_2.js"></script>
 
         <script>
+        var currentData = null; // Simpan data lot yang tengah aktif
+
         function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
@@ -136,9 +140,13 @@
         var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 }).addTo(map);
 
         function updateDashboard(props) {
+            currentData = props; // Simpan data untuk PDF
             document.getElementById('disp-lot').innerText = props.NO_LOT || '-';
             document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "N/A";
             document.getElementById('disp-area').innerHTML = (props.AREA || '-') + ' m<sup>2</sup>';
+            
+            // Tunjukkan butang PDF
+            document.getElementById('pdfBtn').style.display = 'block';
             openNav();
         }
 
@@ -162,6 +170,56 @@
             }
         }).addTo(map);
 
+        // --- FUNGSI GENERATE PDF AESTHETIC ---
+        function generatePDF() {
+            if (!currentData) return;
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const date = new Date().toLocaleString();
+
+            // Style PDF
+            doc.setFillColor(13, 17, 23); // Warna Dark BG
+            doc.rect(0, 0, 210, 40, 'F'); 
+
+            doc.setTextColor(212, 163, 115); // Warna Gold
+            doc.setFontSize(22);
+            doc.text("LOT PROPERTY REPORT", 20, 25);
+            
+            doc.setTextColor(100, 100, 100);
+            doc.setFontSize(10);
+            doc.text("Generated by Zedndrew GIS Explorer", 20, 32);
+
+            // Isi Kandungan
+            doc.setTextColor(40, 40, 40);
+            doc.setFontSize(12);
+            doc.setFont(undefined, 'bold');
+            doc.text("PROPERTY DETAILS", 20, 60);
+            doc.line(20, 62, 190, 62);
+
+            doc.setFont(undefined, 'normal');
+            doc.text("Lot Number:", 20, 75);
+            doc.text(String(currentData.NO_LOT), 70, 75);
+
+            doc.text("Owner Name:", 20, 85);
+            doc.text(String(currentData["tsp — pemilik_PEMILIK"] || "N/A"), 70, 85);
+
+            doc.text("Total Area:", 20, 95);
+            doc.text(String(currentData.AREA) + " m2", 70, 95);
+
+            doc.text("District:", 20, 105);
+            doc.text(String(currentData["tsp — hakmilik_DAERAH"] || "TANGKAK"), 70, 105);
+
+            // Footer
+            doc.setFontSize(9);
+            doc.setTextColor(150, 150, 150);
+            doc.text("Print Date: " + date, 20, 280);
+            doc.text("Official GIS Document - Non-Legal Binding", 130, 280);
+
+            // Simpan PDF
+            doc.save("Lot_" + currentData.NO_LOT + "_Report.pdf");
+        }
+
         function searchLot() {
             var value = document.getElementById('lotSearch').value.trim();
             var found = false;
@@ -179,14 +237,6 @@
         }
 
         function resetView() { location.reload(); }
-
-        if (typeof json_TANDASEMPADANLOTGABUNG_2 !== 'undefined') {
-            L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
-                pointToLayer: function (f, latlng) { 
-                    return L.circleMarker(latlng, {radius: 2, fillColor: '#d4a373', color: '#0d1117', weight: 1, fillOpacity: 1}); 
-                }
-            }).addTo(map);
-        }
         </script>
     </body>
 </html>
