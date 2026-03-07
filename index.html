@@ -125,6 +125,7 @@
         function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
+        // Set maxZoom tinggi (28) supaya boleh zoom rapat
         var map = L.map('map', {
             zoomControl:false, maxZoom:28, minZoom:1
         }).fitBounds([[2.1024896462129306,102.52064420999763],[2.104750631291431,102.52466260867483]]);
@@ -133,9 +134,19 @@
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
         
-        // Setup Layers
-        var layer_OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {opacity: 1.0});
-        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {opacity: 1.0});
+        // --- SETUP LAYERS DENGAN MAXNATIVEZOOM ---
+        // maxNativeZoom 19 bermaksud tile terakhir adalah zoom 19. Zoom 20-28 akan "stretch" gambar sedia ada.
+        var layer_OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            opacity: 1.0,
+            maxNativeZoom: 19,
+            maxZoom: 28
+        });
+
+        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+            opacity: 1.0,
+            maxNativeZoom: 20,
+            maxZoom: 28
+        });
         
         map.addLayer(layer_OSM); // Default
 
@@ -156,7 +167,7 @@
             var found = false;
             layer_LOTGABUNGREAL_0.eachLayer(function(layer) {
                 if (layer.feature.properties.NO_LOT == value) {
-                    map.fitBounds(layer.getBounds());
+                    map.fitBounds(layer.getBounds(), {padding: [50, 50]});
                     layer.openPopup();
                     found = true;
                 }
@@ -178,19 +189,6 @@
          return tempDiv.innerHTML;
         }
 
-		function addClassToPopupIfMedia(content, popup) {
-			var tempDiv = document.createElement('div');
-			tempDiv.innerHTML = content;
-			if (tempDiv.querySelector('td img')) {
-				popup._contentNode.classList.add('media');
-					setTimeout(function() {
-						popup.update();
-					}, 10);
-			} else {
-				popup._contentNode.classList.remove('media');
-			}
-		}
-
         var zoomControl = L.control.zoom({ position: 'topleft' }).addTo(map);
         var bounds_group = new L.featureGroup([]);
 
@@ -204,7 +202,7 @@
                     <tr><td colspan="2">AREA: ' + (feature.properties['AREA'] !== null ? feature.properties['AREA'] : '') + '</td></tr>\
                 </table>';
             var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-			layer.bindPopup(content, { maxHeight: 400 });
+            layer.bindPopup(content, { maxHeight: 400 });
         }
 
         function style_LOTGABUNGREAL_0_0() {
@@ -228,7 +226,7 @@
         bounds_group.addLayer(layer_LOTGABUNGREAL_0);
         map.addLayer(layer_LOTGABUNGREAL_0);
 
-        // --- LOT FINAL & SEMPADAN (Kekalkan kod asal) ---
+        // --- LOT FINAL & SEMPADAN ---
         map.createPane('pane_lotfinal_1');
         map.getPane('pane_lotfinal_1').style.zIndex = 401;
         var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
