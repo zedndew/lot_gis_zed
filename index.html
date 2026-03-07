@@ -12,7 +12,7 @@
             background: #0d1117; 
         }
 
-        /* --- DASHBOARD DARK ELITE (LEFT ALIGNED) --- */
+        /* --- DASHBOARD DARK ELITE (RAPAT KIRI) --- */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 2000;
             top: 0; left: 0; background: rgba(13, 17, 23, 0.98);
@@ -68,7 +68,7 @@
         .info-label { font-size: 9px; color: #8b949e; font-weight: 600; text-transform: uppercase; }
         .info-value { font-size: 15px; font-weight: 500; color: #f0f6fc; margin-top: 5px; }
 
-        /* Buttons */
+        /* Floating Menu Button */
         .menu-btn {
             position: fixed; top: 20px; left: 20px; z-index: 1001;
             background: #0d1117; color: #d4a373; padding: 15px 25px; 
@@ -80,7 +80,7 @@
 
         .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
         </style>
-        <title>Zedndrew | Interactive Dark GIS</title>
+        <title>Zedndrew | Interactive GIS v2</title>
     </head>
     <body>
 
@@ -127,15 +127,14 @@
 
         var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 }).addTo(map);
 
-        // --- FUNGSI UPDATE DASHBOARD ---
+        // Update maklumat ke dashboard
         function updateDashboard(props) {
             document.getElementById('disp-lot').innerText = props.NO_LOT || '-';
             document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "N/A";
             document.getElementById('disp-area').innerText = (props.AREA || '-') + ' SQM';
-            openNav(); // Automatik buka dashboard bila klik lot
+            openNav();
         }
 
-        // --- STYLE DEFAULT & HIGHLIGHT ---
         var defaultStyle = { opacity: 1, color: '#d4a373', weight: 1, fill: true, fillOpacity: 0.2, fillColor: '#d4a373' };
         var highlightStyle = { opacity: 1, color: '#fff', weight: 3, fill: true, fillOpacity: 0.7, fillColor: '#d4a373' };
 
@@ -146,26 +145,26 @@
             onEachFeature: function(feature, layer) {
                 layer.on({
                     click: function(e) {
-                        // Reset style lot sebelum ni
+                        // Hilangkan highlight lot lama
                         if (lastClickedLayer) {
                             layer_lotfinal_1.resetStyle(lastClickedLayer);
                         }
-                        // Highlight lot baru yang diklik
+                        // Highlight lot baru
                         layer.setStyle(highlightStyle);
                         lastClickedLayer = layer;
                         
-                        // Update Data
+                        // Update Data tanpa auto-zoom peta
                         updateDashboard(feature.properties);
                         
-                        // Zoom ke lot
-                        map.fitBounds(e.target.getBounds(), {padding: [100, 100]});
+                        // Stop propagation supaya tak trigger map click
+                        L.DomEvent.stopPropagation(e);
                     }
                 });
-                layer.bindPopup('Lot: ' + feature.properties.NO_LOT);
+                // Popup DIBUANG sepenuhnya supaya tak "burok" atas peta
             }
         }).addTo(map);
 
-        // --- FUNGSI SEARCH ---
+        // Search tetap guna Zoom supaya senang user nak cari lot spesifik
         function searchLot() {
             var value = document.getElementById('lotSearch').value.trim();
             var found = false;
@@ -175,8 +174,7 @@
                     layer.setStyle(highlightStyle);
                     lastClickedLayer = layer;
                     updateDashboard(layer.feature.properties);
-                    map.fitBounds(layer.getBounds(), {padding: [100, 100]});
-                    layer.openPopup();
+                    map.fitBounds(layer.getBounds(), {padding: [100, 100]}); 
                     found = true;
                 }
             });
