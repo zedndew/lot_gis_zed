@@ -7,62 +7,22 @@
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <style>
-        html, body, #map {
-            width: 100%; height: 100%; padding: 0; margin: 0; background: #1a1a1a;
-        }
-
-        /* --- DASHBOARD STYLE (IKUT GAMBAR 4 & 7) --- */
-        .sidebar {
-            height: 100%; width: 0; position: fixed; z-index: 2000;
-            top: 0; left: 0; background-color: #22272e; 
-            overflow-x: hidden; transition: 0.4s;
-            box-shadow: 4px 0 15px rgba(0,0,0,0.5);
-            font-family: 'Segoe UI', sans-serif; color: white;
-        }
-
+        html, body, #map { width: 100%; height: 100%; padding: 0; margin: 0; background: #1a1a1a; }
+        .sidebar { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0; background-color: #22272e; overflow-x: hidden; transition: 0.4s; box-shadow: 4px 0 15px rgba(0,0,0,0.5); font-family: 'Segoe UI', sans-serif; color: white; }
         .sidebar-content { padding: 20px; min-width: 260px; }
         .sidebar h2 { color: #72bd6c; font-size: 18px; border-bottom: 1px solid #3e444d; padding-bottom: 10px; margin-top: 0; }
-
-        .menu-section {
-            background: #2d333b; padding: 15px; border-radius: 8px;
-            margin-bottom: 20px; border: 1px solid #444c56;
-        }
-
+        .menu-section { background: #2d333b; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #444c56; }
         .section-title { font-size: 11px; font-weight: bold; color: #adbac7; margin-bottom: 10px; text-transform: uppercase; }
-
-        .search-box {
-            width: 100%; padding: 10px; margin-bottom: 10px;
-            border: 1px solid #444c56; border-radius: 5px;
-            background: #1c2128; color: white; box-sizing: border-box;
-        }
-
+        .search-box { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #444c56; border-radius: 5px; background: #1c2128; color: white; box-sizing: border-box; }
         .btn-green { width: 100%; padding: 10px; background: #347d39; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 5px; }
         .btn-red { width: 100%; padding: 10px; background: #ae2c2c; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-
-        /* INFO CARDS */
-        .info-card {
-            background: #1c2128; padding: 12px; border-radius: 8px;
-            margin-top: 10px; border-left: 5px solid #347d39;
-        }
+        .info-card { background: #1c2128; padding: 12px; border-radius: 8px; margin-top: 10px; border-left: 5px solid #347d39; }
         .info-label { font-size: 10px; color: #768390; text-transform: uppercase; }
         .info-value { font-size: 16px; font-weight: bold; color: #539bf5; margin-top: 4px; }
-
-        /* BUTTON POSITIONING (GAMBAR 3) */
-        .menu-btn {
-            position: fixed; top: 15px; left: 15px; z-index: 1001;
-            background: #347d39; color: white; padding: 12px 15px; border: none;
-            cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-        }
-
+        .menu-btn { position: fixed; top: 15px; left: 15px; z-index: 1001; background: #347d39; color: white; padding: 12px 15px; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: bold; }
         .close-btn { float: right; font-size: 24px; cursor: pointer; color: #ae2c2c; border: none; background: none; }
-
-        /* ZOOM AT BOTTOM RIGHT (GAMBAR 3) */
         .leaflet-bottom.leaflet-right { margin-bottom: 20px; margin-right: 15px; }
-        .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-            background-color: #347d39 !important; color: white !important; border: 1px solid #2d333b !important;
-            font-size: 20px !important; font-weight: bold !important;
-        }
+        .leaflet-control-zoom-in, .leaflet-control-zoom-out { background-color: #347d39 !important; color: white !important; border: 1px solid #2d333b !important; }
         </style>
         <title>Interactive Land Map - Zedndrew</title>
     </head>
@@ -78,8 +38,8 @@
                 <div class="menu-section">
                     <div class="section-title">🗺️ Interface Layer</div>
                     <div style="display:flex; gap:10px;">
-                        <button style="flex:1; padding:8px; background:#347d39; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;" onclick="switchMap('satelit')">Satellite</button>
-                        <button style="flex:1; padding:8px; background:#444c56; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;" onclick="switchMap('osm')">Street</button>
+                        <button style="flex:1; padding:8px; background:#347d39; color:white; border:none; border-radius:5px; cursor:pointer;" onclick="switchMap('satelit')">Satellite</button>
+                        <button style="flex:1; padding:8px; background:#444c56; color:white; border:none; border-radius:5px; cursor:pointer;" onclick="switchMap('osm')">Street</button>
                     </div>
                 </div>
 
@@ -91,22 +51,10 @@
                 </div>
 
                 <div class="menu-section">
-                    <div class="info-card">
-                        <div class="info-label">TOTAL LOT</div>
-                        <div class="info-value">67</div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-label">NO LOT</div>
-                        <div id="disp-lot" class="info-value">-</div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-label">OWNER</div>
-                        <div id="disp-owner" class="info-value">-</div>
-                    </div>
-                    <div class="info-card">
-                        <div class="info-label">AREA</div>
-                        <div id="disp-area" class="info-value">-</div>
-                    </div>
+                    <div class="info-card"><div class="info-label">TOTAL LOT</div><div class="info-value">67</div></div>
+                    <div class="info-card"><div class="info-label">NO LOT</div><div id="disp-lot" class="info-value">-</div></div>
+                    <div class="info-card"><div class="info-label">OWNER</div><div id="disp-owner" class="info-value">-</div></div>
+                    <div class="info-card"><div class="info-label">AREA</div><div id="disp-area" class="info-value">-</div></div>
                 </div>
                 
                 <div style="font-size: 10px; text-align: center; color: #768390; margin-top: 20px;">
@@ -128,12 +76,10 @@
 
         var map = L.map('map', { zoomControl: true, maxZoom: 28, minZoom: 1 })
             .fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
-
         map.zoomControl.setPosition('bottomright');
 
         var layer_OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxNativeZoom: 19, maxZoom: 28 });
         var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 });
-        
         map.addLayer(layer_GoogleSatellite);
 
         function switchMap(type) {
@@ -141,27 +87,34 @@
             else { map.addLayer(layer_OSM); map.removeLayer(layer_GoogleSatellite); }
         }
 
-        // --- FIX CARI OWNER ---
         function searchLot() {
             var value = document.getElementById('lotSearch').value;
             var found = false;
             
             layer_LOTGABUNGREAL_0.eachLayer(function(layer) {
                 var props = layer.feature.properties;
-                // Check NO_LOT
-                if (props.NO_LOT == value || props.no_lot == value) {
+                // Pastikan perbandingan string dilakukan dengan teliti
+                if (String(props.NO_LOT).trim() === String(value).trim()) {
                     map.fitBounds(layer.getBounds(), {padding: [50, 50]});
                     
-                    document.getElementById('disp-lot').innerText = props.NO_LOT || props.no_lot || '-';
+                    document.getElementById('disp-lot').innerText = props.NO_LOT || '-';
                     
-                    // Logic cari key owner dalam data
-                    var ownerKey = Object.keys(props).find(key => 
-                        key.toLowerCase() === 'owner' || key.toLowerCase() === 'pemilik' || key.toLowerCase() === 'nama'
+                    // --- SISTEM CARI OWNER SECARA AGGRESIF ---
+                    // Ia akan mencari sebarang key yang ada perkataan 'owner', 'nama', 'pemilik', atau 'nama_pemilik'
+                    var allKeys = Object.keys(props);
+                    var ownerKey = allKeys.find(key => 
+                        /owner|nama|pemilik|name|nama_pemi/i.test(key)
                     );
                     
-                    document.getElementById('disp-owner').innerText = ownerKey ? props[ownerKey] : 'N/A';
-                    document.getElementById('disp-area').innerText = (props.AREA || props.area || '-') + ' m²';
+                    var ownerResult = ownerKey ? props[ownerKey] : null;
+                    document.getElementById('disp-owner').innerText = ownerResult ? ownerResult : "Tiada Data";
                     
+                    // Jika masih N/A, cetak semua keys ke console untuk kita check
+                    if (!ownerResult) {
+                        console.log("Data dijumpai tetapi kunci Owner tidak dikesan. Kunci yang ada:", allKeys);
+                    }
+
+                    document.getElementById('disp-area').innerText = (props.AREA || props.area || '-') + ' m²';
                     layer.openPopup();
                     found = true;
                 }
@@ -171,7 +124,6 @@
 
         function resetView() { location.reload(); }
 
-        // --- WARNA HIJAU (IKUT GAMBAR 3) ---
         function style_Hijau(feature) {
             return { opacity: 1, color: 'black', weight: 1.2, fill: true, fillOpacity: 0.5, fillColor: '#72bd6c' };
         }
@@ -179,10 +131,8 @@
         var layer_LOTGABUNGREAL_0 = new L.geoJson(json_LOTGABUNGREAL_0, {
             style: style_Hijau,
             onEachFeature: function(feature, layer) {
-                var props = feature.properties;
-                var ownerKey = Object.keys(props).find(k => k.toLowerCase() === 'owner' || k.toLowerCase() === 'pemilik');
-                var ownerName = ownerKey ? props[ownerKey] : 'N/A';
-                layer.bindPopup('<strong>Lot: ' + (props.NO_LOT || props.no_lot) + '</strong><br>Owner: ' + ownerName);
+                var p = feature.properties;
+                layer.bindPopup('Lot: ' + (p.NO_LOT || p.no_lot));
             }
         }).addTo(map);
 
