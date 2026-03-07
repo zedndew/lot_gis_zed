@@ -9,10 +9,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         
         <style>
-        html, body, #map { 
-            width: 100%; height: 100%; padding: 0; margin: 0; 
-            background: #0d1117; 
-        }
+        html, body, #map { width: 100%; height: 100%; padding: 0; margin: 0; background: #0d1117; }
 
         /* --- DASHBOARD DARK ELITE --- */
         .sidebar {
@@ -24,92 +21,27 @@
             font-family: 'Inter', sans-serif;
             border-right: 1px solid rgba(212, 163, 115, 0.2);
         }
-
         .sidebar-content { padding: 40px 25px; min-width: 280px; position: relative; }
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 28px; cursor: pointer; color: #d4a373; border: none; background: none; }
+        .sidebar h2 { color: #d4a373; font-size: 18px; font-weight: 700; letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase; border-left: 4px solid #d4a373; padding-left: 15px; }
+        .menu-section { background: rgba(255, 255, 255, 0.02); padding: 18px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(255, 255, 255, 0.05); }
+        .section-title { font-size: 9px; font-weight: 700; color: #8b949e; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+        .search-box { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #30363d; border-radius: 8px; background: #0d1117; color: #c9d1d9; box-sizing: border-box; outline: none; }
+        .btn-primary { width: 100%; padding: 12px; background: #d4a373; color: #0d1117; border: none; border-radius: 8px; cursor: pointer; font-weight: 800; text-transform: uppercase; }
+        .btn-pdf { width: 100%; padding: 12px; background: transparent; color: #ffb366; border: 1px solid #ffb366; border-radius: 8px; cursor: pointer; font-weight: 800; margin-top: 15px; display: none; }
 
-        .close-btn { 
-            position: absolute; top: 20px; right: 20px;
-            font-size: 28px; cursor: pointer; color: #d4a373; 
-            border: none; background: none; transition: 0.3s;
-        }
-        .close-btn:hover { color: #fff; transform: rotate(90deg); }
-
-        .sidebar h2 { 
-            color: #d4a373; font-size: 18px; font-weight: 700;
-            letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase;
-            border-left: 4px solid #d4a373; padding-left: 15px;
-        }
-
-        .menu-section {
-            background: rgba(255, 255, 255, 0.02); padding: 18px;
-            border-radius: 12px; margin-bottom: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .section-title { 
-            font-size: 9px; font-weight: 700; color: #8b949e; 
-            margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px;
-        }
-
-        .search-box {
-            width: 100%; padding: 12px; margin-bottom: 12px;
-            border: 1px solid #30363d; border-radius: 8px;
-            background: #0d1117; color: #c9d1d9; box-sizing: border-box; outline: none;
-        }
-
-        .btn-primary { 
-            width: 100%; padding: 12px; background: #d4a373; color: #0d1117; 
-            border: none; border-radius: 8px; cursor: pointer; font-weight: 800; 
-            margin-bottom: 8px; text-transform: uppercase; transition: 0.3s;
-        }
-        .btn-primary:hover { background: #faedcd; }
-
-        .btn-secondary { 
-            width: 100%; padding: 10px; background: transparent; color: #8b949e; 
-            border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 11px;
-        }
-
-        .btn-pdf {
-            width: 100%; padding: 12px; background: transparent; color: #ffb366;
-            border: 1px solid #ffb366; border-radius: 8px; cursor: pointer;
-            font-weight: 800; font-size: 11px; text-transform: uppercase;
-            margin-top: 15px; transition: 0.3s; display: none;
-        }
-        .btn-pdf:hover { background: rgba(255, 179, 102, 0.1); }
-
-        .info-card {
-            background: rgba(212, 163, 115, 0.03); padding: 14px; border-radius: 10px;
-            margin-top: 10px; border-bottom: 1px solid rgba(212, 163, 115, 0.2);
-        }
+        /* --- INFO CARDS --- */
+        .info-card { background: rgba(212, 163, 115, 0.03); padding: 14px; border-radius: 10px; margin-top: 10px; border-bottom: 1px solid rgba(212, 163, 115, 0.2); }
         .info-label { font-size: 8px; color: #8b949e; font-weight: 600; text-transform: uppercase; }
         .info-value { font-size: 14px; font-weight: 500; color: #f0f6fc; margin-top: 4px; }
 
-        .menu-btn {
-            position: fixed; top: 20px; left: 20px; z-index: 1001;
-            background: #0d1117; color: #d4a373; padding: 12px 20px; 
-            border: 1px solid #d4a373; cursor: pointer; border-radius: 4px; 
-            font-size: 11px; font-weight: 900; letter-spacing: 2px;
-        }
-
-        /* --- MODAL PREVIEW --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
-            z-index: 3000; display: none; align-items: center; justify-content: center;
-        }
-        .modal-box {
-            background: #0d1117; width: 90%; max-width: 400px;
-            padding: 30px; border-radius: 20px; border: 1px solid #d4a373;
-            box-shadow: 0 20px 50px rgba(0,0,0,1); color: #fff;
-        }
-        .modal-box h3 { color: #d4a373; margin-top: 0; font-size: 16px; text-transform: uppercase; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
-        .modal-body { margin: 20px 0; font-size: 13px; }
-        .modal-body label { display: block; margin-bottom: 8px; color: #8b949e; font-size: 10px; font-weight: 700; }
-        .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
+        /* --- MODAL --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 3000; display: none; align-items: center; justify-content: center; }
+        .modal-box { background: #0d1117; width: 90%; max-width: 400px; padding: 30px; border-radius: 20px; border: 1px solid #d4a373; color: #fff; }
         .btn-confirm { flex: 1; padding: 12px; background: #d4a373; color: #0d1117; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
-        .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #ff4444; color: #ff4444; border-radius: 8px; font-weight: 800; cursor: pointer; }
+        .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #ff4444; color: #ff4444; border-radius: 8px; cursor: pointer; }
 
-        .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
+        .menu-btn { position: fixed; top: 20px; left: 20px; z-index: 1001; background: #0d1117; color: #d4a373; padding: 12px 20px; border: 1px solid #d4a373; cursor: pointer; border-radius: 4px; font-size: 11px; font-weight: 900; }
         </style>
         <title>Zedndrew | Dark GIS v4</title>
     </head>
@@ -121,43 +53,27 @@
             <div class="sidebar-content">
                 <button class="close-btn" onclick="closeNav()">&times;</button>
                 <h2>DASHBOARD</h2>
-
                 <div class="menu-section">
                     <div class="section-title">Property Navigator</div>
                     <input type="text" id="lotSearch" class="search-box" placeholder="Insert Lot Number...">
                     <button class="btn-primary" onclick="searchLot()">Search</button>
-                    <button class="btn-secondary" style="width:100%" onclick="resetView()">Reset View</button>
                 </div>
-
                 <div class="menu-section">
                     <div class="section-title">Property Details</div>
-                    <div class="info-card"><div class="info-label">TOTAL LOTS IN AREA</div><div class="info-value">67</div></div>
                     <div class="info-card"><div class="info-label">IDENTIFICATION</div><div id="disp-lot" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">LEGAL OWNER</div><div id="disp-owner" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">COMPUTED AREA</div><div id="disp-area" class="info-value">-</div></div>
-
                     <button id="pdfBtn" class="btn-pdf" onclick="openPreview()">Generate Report</button>
-                </div>
-                
-                <div style="font-size: 9px; text-align: center; color: #484f58; margin-top: 40px; letter-spacing: 1px;">
-                    ZEDNDREW EXPLORER &copy; 2026
                 </div>
             </div>
         </div>
 
         <div id="modalOverlay" class="modal-overlay">
             <div class="modal-box">
-                <h3>Report Preview</h3>
-                <div class="modal-body">
-                    <label>PENYEDIA LAPORAN (SILA ISI)</label>
-                    <input type="text" id="userName" class="search-box" placeholder="Masukkan nama anda..." style="margin-bottom: 20px;">
-                    <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px;">
-                        <div style="margin-bottom: 8px;"><b>LOT:</b> <span id="pre-lot"></span></div>
-                        <div style="margin-bottom: 8px;"><b>PEMILIK:</b> <span id="pre-owner"></span></div>
-                        <div><b>LUAS:</b> <span id="pre-area"></span></div>
-                    </div>
-                </div>
-                <div class="modal-footer">
+                <h3 style="color:#d4a373; margin:0 0 20px 0;">PENGESAHAN LAPORAN</h3>
+                <label style="font-size:10px; color:#8b949e;">NAMA PENYEDIA</label>
+                <input type="text" id="userName" class="search-box" placeholder="Contoh: Ahmid Explorer">
+                <div style="display:flex; gap:10px; margin-top:20px;">
                     <button class="btn-cancel" onclick="closePreview()">BATAL</button>
                     <button class="btn-confirm" onclick="confirmDownload()">MUAT TURUN PDF</button>
                 </div>
@@ -175,28 +91,16 @@
 
         function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-
-        function openPreview() {
-            if(!currentLotData) return;
-            document.getElementById('pre-lot').innerText = currentLotData.NO_LOT;
-            document.getElementById('pre-owner').innerText = currentLotData["tsp — pemilik_PEMILIK"] || "N/A";
-            document.getElementById('pre-area').innerText = currentLotData.AREA + " m2";
-            document.getElementById('modalOverlay').style.display = 'flex';
-        }
-
+        function openPreview() { document.getElementById('modalOverlay').style.display = 'flex'; }
         function closePreview() { document.getElementById('modalOverlay').style.display = 'none'; }
 
-        // Fungsi yang kau nak: Download + Tutup Modal
         function confirmDownload() {
             generatePDF();
             closePreview();
         }
 
-        var map = L.map('map', { zoomControl: true, maxZoom: 28, minZoom: 1 })
-            .fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
-        map.zoomControl.setPosition('bottomright');
-
-        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 }).addTo(map);
+        var map = L.map('map', { zoomControl: true }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
+        L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}').addTo(map);
 
         function updateDashboard(props) {
             currentLotData = props;
@@ -207,84 +111,99 @@
             openNav();
         }
 
-        var defaultStyle = { opacity: 1, color: '#d4a373', weight: 1, fill: true, fillOpacity: 0.2, fillColor: '#d4a373' };
-        var highlightStyle = { opacity: 1, color: '#fff', weight: 3, fill: true, fillOpacity: 0.6, fillColor: '#d4a373' };
-
-        var lastClickedLayer;
-
         var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
-            style: defaultStyle,
-            onEachFeature: function(feature, layer) {
-                layer.on({
-                    click: function(e) {
-                        if (lastClickedLayer) { layer_lotfinal_1.resetStyle(lastClickedLayer); }
-                        layer.setStyle(highlightStyle);
-                        lastClickedLayer = layer;
-                        updateDashboard(feature.properties);
-                        L.DomEvent.stopPropagation(e);
-                    }
-                });
-            }
+            style: { color: '#d4a373', weight: 1, fillOpacity: 0.2 },
+            onEachFeature: function(f, l) { l.on('click', function(e) { updateDashboard(f.properties); }); }
         }).addTo(map);
 
+        // --- FUNGSI GENERATE PDF MACAM GAMBAR KEDUA ---
         function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            const user = document.getElementById('userName').value || "Authorized User";
-
+            const penyedia = document.getElementById('userName').value.toUpperCase() || "ZEDNDREW USER";
+            
+            // 1. Header (Kotak Hitam Top)
             doc.setFillColor(13, 17, 23);
-            doc.rect(0, 0, 210, 45, 'F');
+            doc.rect(0, 0, 210, 50, 'F');
+            
+            // 2. Garisan Gold Bawah Header
+            doc.setDrawColor(212, 163, 115);
+            doc.setLineWidth(1.5);
+            doc.line(0, 50, 210, 50);
+
+            // 3. Teks Header
             doc.setTextColor(212, 163, 115);
-            doc.setFontSize(22);
-            doc.text("PROPERTY REPORT", 20, 25);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(24);
+            doc.text("LAPORAN MAKLUMAT LOT", 20, 30);
             
             doc.setFontSize(10);
             doc.setTextColor(150, 150, 150);
-            doc.text("Penyedia: " + user, 20, 35);
+            doc.setFont("helvetica", "normal");
+            doc.text("ZEDNDREW EXPLORER | SISTEM MAKLUMAT GEOGRAFI", 20, 40);
+
+            // 4. Kandungan (Maklumat Lot) - Kotak Kelabu Cerah
+            doc.setFillColor(245, 245, 245);
+            doc.rect(20, 70, 170, 100, 'F');
+            doc.setDrawColor(200, 200, 200);
+            doc.setLineWidth(0.5);
+            doc.rect(20, 70, 170, 100, 'S');
 
             doc.setTextColor(40, 40, 40);
-            doc.setFontSize(14);
-            doc.text("MAKLUMAT LOT", 20, 65);
-            doc.line(20, 67, 190, 67);
-
             doc.setFontSize(12);
-            doc.text("No. Lot: " + currentLotData.NO_LOT, 20, 80);
-            doc.text("Nama Pemilik: " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A"), 20, 95);
-            doc.text("Luas Kawasan: " + currentLotData.AREA + " m2", 20, 110);
-            doc.text("Daerah: " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK"), 20, 125);
+            doc.setFont("helvetica", "bold");
+            doc.text("MAKLUMAT HAKMILIK:", 30, 85);
+            
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(11);
+            let y = 100;
+            const details = [
+                ["NO. LOT", ": " + currentLotData.NO_LOT],
+                ["PEMILIK", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")],
+                ["LUAS (m2)", ": " + currentLotData.AREA],
+                ["DAERAH", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")],
+                ["NO. PA", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "-")]
+            ];
 
-            doc.setFontSize(9);
-            doc.setTextColor(180, 180, 180);
-            doc.text("Diterbitkan pada: " + new Date().toLocaleString(), 20, 285);
+            details.forEach(item => {
+                doc.setFont("helvetica", "bold");
+                doc.text(item[0], 30, y);
+                doc.setFont("helvetica", "normal");
+                doc.text(item[1], 70, y);
+                y += 12;
+            });
 
-            doc.save("Report_Lot_" + currentLotData.NO_LOT + ".pdf");
+            // 5. Tandatangan / Pengesahan
+            doc.setFontSize(10);
+            doc.text("Disediakan Oleh:", 30, 200);
+            doc.setFont("helvetica", "bold");
+            doc.text(penyedia, 30, 215);
+            doc.line(30, 217, 100, 217);
+            doc.setFont("helvetica", "italic");
+            doc.text("Penyedia Laporan", 30, 222);
+
+            // 6. Footer
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(8);
+            doc.setTextColor(150, 150, 150);
+            const date = new Date().toLocaleString();
+            doc.text("Tarikh Cetakan: " + date, 20, 285);
+            doc.text("ZEDNDREW EXPLORER V4 - AUTO GENERATED REPORT", 130, 285);
+
+            // 7. Save
+            doc.save("Laporan_Lot_" + currentLotData.NO_LOT + ".pdf");
         }
 
         function searchLot() {
-            var value = document.getElementById('lotSearch').value.trim();
-            var found = false;
-            layer_lotfinal_1.eachLayer(function(layer) {
-                if (String(layer.feature.properties.NO_LOT) === value) {
-                    if (lastClickedLayer) { layer_lotfinal_1.resetStyle(lastClickedLayer); }
-                    layer.setStyle(highlightStyle);
-                    lastClickedLayer = layer;
-                    updateDashboard(layer.feature.properties);
-                    map.fitBounds(layer.getBounds(), {padding: [100, 100]}); 
-                    found = true;
+            var val = document.getElementById('lotSearch').value.trim();
+            layer_lotfinal_1.eachLayer(function(l) {
+                if (String(l.feature.properties.NO_LOT) === val) {
+                    updateDashboard(l.feature.properties);
+                    map.fitBounds(l.getBounds());
                 }
             });
-            if (!found) alert("Lot " + value + " not found.");
         }
-
         function resetView() { location.reload(); }
-
-        if (typeof json_TANDASEMPADANLOTGABUNG_2 !== 'undefined') {
-            L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
-                pointToLayer: function (f, latlng) { 
-                    return L.circleMarker(latlng, {radius: 2, fillColor: '#d4a373', color: '#0d1117', weight: 1, fillOpacity: 1}); 
-                }
-            }).addTo(map);
-        }
         </script>
     </body>
 </html>
