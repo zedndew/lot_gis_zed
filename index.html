@@ -12,7 +12,7 @@
             background: #0d1117; 
         }
 
-        /* --- DASHBOARD DARK ELITE (LEFT) --- */
+        /* --- DASHBOARD DARK ELITE --- */
         .sidebar {
             height: 100%; width: 0; position: fixed; z-index: 2000;
             top: 0; left: 0; background: rgba(13, 17, 23, 0.98);
@@ -33,19 +33,10 @@
         }
         .close-btn:hover { color: #fff; transform: rotate(90deg); }
 
-        /* HEADER & TOTAL LOT (MINIMALIST) */
-        .sidebar-header {
-            display: flex; align-items: baseline; justify-content: space-between;
-            border-bottom: 1px solid rgba(212, 163, 115, 0.2);
-            margin-bottom: 30px; padding-bottom: 10px; padding-right: 35px;
-        }
         .sidebar h2 { 
             color: #d4a373; font-size: 18px; font-weight: 700;
-            letter-spacing: 1px; text-transform: uppercase; margin: 0;
-        }
-        .total-lot-badge {
-            font-size: 10px; color: #8b949e; font-weight: 600;
-            background: rgba(212, 163, 115, 0.1); padding: 4px 8px; border-radius: 5px;
+            letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase;
+            border-left: 4px solid #d4a373; padding-left: 15px;
         }
 
         .menu-section {
@@ -77,10 +68,10 @@
             border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 11px;
         }
 
-        /* Info Display */
+        /* Info Display Card */
         .info-card {
             background: rgba(212, 163, 115, 0.03); padding: 14px; border-radius: 10px;
-            margin-top: 12px; border-left: 3px solid #d4a373;
+            margin-top: 10px; border-bottom: 1px solid rgba(212, 163, 115, 0.2);
         }
         .info-label { font-size: 8px; color: #8b949e; font-weight: 600; text-transform: uppercase; }
         .info-value { font-size: 14px; font-weight: 500; color: #f0f6fc; margin-top: 4px; }
@@ -94,7 +85,7 @@
 
         .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
         </style>
-        <title>Zedndrew | Dark GIS v3</title>
+        <title>Zedndrew | Dark GIS v4</title>
     </head>
     <body>
 
@@ -104,10 +95,7 @@
             <div class="sidebar-content">
                 <button class="close-btn" onclick="closeNav()">&times;</button>
                 
-                <div class="sidebar-header">
-                    <h2>DASHBOARD</h2>
-                    <span class="total-lot-badge">67 LOTS</span>
-                </div>
+                <h2>DASHBOARD</h2>
 
                 <div class="menu-section">
                     <div class="section-title">Property Navigator</div>
@@ -117,10 +105,12 @@
                 </div>
 
                 <div class="menu-section">
-                    <div class="section-title">Selected Lot Info</div>
-                    <div class="info-card"><div class="info-label">Identification</div><div id="disp-lot" class="info-value">-</div></div>
-                    <div class="info-card"><div class="info-label">Legal Owner</div><div id="disp-owner" class="info-value">-</div></div>
-                    <div class="info-card"><div class="info-label">Computed Area</div><div id="disp-area" class="info-value">-</div></div>
+                    <div class="section-title">Property Details</div>
+                    <div class="info-card"><div class="info-label">TOTAL LOTS IN AREA</div><div class="info-value">67</div></div>
+                    
+                    <div class="info-card"><div class="info-label">IDENTIFICATION</div><div id="disp-lot" class="info-value">-</div></div>
+                    <div class="info-card"><div class="info-label">LEGAL OWNER</div><div id="disp-owner" class="info-value">-</div></div>
+                    <div class="info-card"><div class="info-label">COMPUTED AREA</div><div id="disp-area" class="info-value">-</div></div>
                 </div>
                 
                 <div style="font-size: 9px; text-align: center; color: #484f58; margin-top: 40px; letter-spacing: 1px;">
