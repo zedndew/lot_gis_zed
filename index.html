@@ -106,8 +106,11 @@
         .modal-body { margin: 20px 0; font-size: 13px; }
         .modal-body label { display: block; margin-bottom: 8px; color: #8b949e; font-size: 10px; font-weight: 700; }
         .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
+        
         .btn-confirm { flex: 1; padding: 12px; background: #d4a373; color: #0d1117; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
-        .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #ff4444; color: #ff4444; border-radius: 8px; font-weight: 800; cursor: pointer; }
+        
+        /* BUTTON CANCEL UBAH JADI BIASA (TAK MERAH) */
+        .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #30363d; color: #8b949e; border-radius: 8px; font-weight: 800; cursor: pointer; }
 
         .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
         </style>
@@ -147,19 +150,19 @@
 
         <div id="modalOverlay" class="modal-overlay">
             <div class="modal-box">
-                <h3>Report Preview</h3>
+                <h3>Report Confirmation</h3>
                 <div class="modal-body">
-                    <label>PENYEDIA LAPORAN (SILA ISI)</label>
-                    <input type="text" id="userName" class="search-box" placeholder="Contoh: Ahmid Explorer" style="margin-bottom: 20px;">
+                    <label>PREPARED BY (REQUIRED)</label>
+                    <input type="text" id="userName" class="search-box" placeholder="Enter your name..." style="margin-bottom: 20px;">
                     <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px;">
                         <div style="margin-bottom: 8px;"><b>LOT:</b> <span id="pre-lot"></span></div>
-                        <div style="margin-bottom: 8px;"><b>PEMILIK:</b> <span id="pre-owner"></span></div>
-                        <div><b>LUAS:</b> <span id="pre-area"></span></div>
+                        <div style="margin-bottom: 8px;"><b>OWNER:</b> <span id="pre-owner"></span></div>
+                        <div><b>AREA:</b> <span id="pre-area"></span></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn-cancel" onclick="closePreview()">BATAL</button>
-                    <button class="btn-confirm" onclick="confirmDownload()">MUAT TURUN PDF</button>
+                    <button class="btn-cancel" onclick="closePreview()">CANCEL</button>
+                    <button class="btn-confirm" onclick="confirmDownload()">DOWNLOAD PDF</button>
                 </div>
             </div>
         </div>
@@ -226,53 +229,53 @@
             }
         }).addTo(map);
 
-        // --- FUNGSI GENERATE PDF (DIUBAH UNTUK KEMAS MACAM GAMBAR KEDUA) ---
+        // --- PDF LAYOUT MACAM GAMBAR KEDUA (ENGLISH VERSION) ---
         function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            const user = (document.getElementById('userName').value || "Authorized User").toUpperCase();
+            const user = (document.getElementById('userName').value || "AUTHORIZED USER").toUpperCase();
 
-            // HEADER HITAM
+            // 1. BLACK HEADER
             doc.setFillColor(13, 17, 23);
             doc.rect(0, 0, 210, 50, 'F');
             
-            // GARISAN GOLD BAWAH HEADER
+            // 2. GOLD DIVIDER
             doc.setDrawColor(212, 163, 115);
             doc.setLineWidth(1.5);
             doc.line(0, 50, 210, 50);
 
-            // TAJUK
+            // 3. TITLE & SUBTITLE
             doc.setTextColor(212, 163, 115);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
-            doc.text("LAPORAN MAKLUMAT LOT", 20, 30);
+            doc.text("PROPERTY INFORMATION REPORT", 20, 30);
             
             doc.setFontSize(10);
             doc.setTextColor(150, 150, 150);
             doc.setFont("helvetica", "normal");
-            doc.text("ZEDNDREW EXPLORER | SISTEM MAKLUMAT GEOGRAFI", 20, 40);
+            doc.text("ZEDNDREW EXPLORER | GEOGRAPHIC INFORMATION SYSTEM", 20, 40);
 
-            // KOTAK KANDUNGAN
+            // 4. CONTENT BOX (LIGHT GREY)
             doc.setFillColor(248, 249, 250);
             doc.rect(20, 70, 170, 100, 'F');
-            doc.setDrawColor(200, 200, 200);
+            doc.setDrawColor(220, 220, 220);
             doc.setLineWidth(0.5);
             doc.rect(20, 70, 170, 100, 'S');
 
-            // TEKS KANDUNGAN
+            // 5. DATA LABELS
             doc.setTextColor(40, 40, 40);
             doc.setFontSize(13);
             doc.setFont("helvetica", "bold");
-            doc.text("BUTIRAN HAKMILIK:", 30, 85);
+            doc.text("OWNERSHIP DETAILS:", 30, 85);
             
             doc.setFontSize(11);
             let yPos = 100;
             const items = [
-                ["NO. LOT", ": " + currentLotData.NO_LOT],
-                ["PEMILIK", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")],
-                ["LUAS (m2)", ": " + currentLotData.AREA],
-                ["DAERAH", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")],
-                ["NO. PA", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "-")]
+                ["LOT NUMBER", ": " + currentLotData.NO_LOT],
+                ["LEGAL OWNER", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")],
+                ["TOTAL AREA", ": " + currentLotData.AREA + " m2"],
+                ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")],
+                ["PA NUMBER", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "-")]
             ];
 
             items.forEach(item => {
@@ -283,24 +286,24 @@
                 yPos += 12;
             });
 
-            // TANDATANGAN / PENGESAHAN
+            // 6. SIGNATURE SECTION
             doc.setFontSize(10);
-            doc.text("Disediakan Oleh:", 30, 200);
+            doc.text("Prepared By:", 30, 200);
             doc.setFont("helvetica", "bold");
             doc.text(user, 30, 215);
             doc.line(30, 217, 100, 217);
             doc.setFont("helvetica", "italic");
             doc.setFontSize(9);
-            doc.text("Penyedia Laporan", 30, 222);
+            doc.text("Authorized Personnel", 30, 222);
 
-            // FOOTER
+            // 7. FOOTER
             doc.setFont("helvetica", "normal");
             doc.setFontSize(8);
             doc.setTextColor(180, 180, 180);
-            doc.text("Tarikh Cetakan: " + new Date().toLocaleString(), 20, 285);
-            doc.text("ZEDNDREW EXPLORER &copy; 2026", 155, 285);
+            doc.text("Generated on: " + new Date().toLocaleString(), 20, 285);
+            doc.text("ZEDNDREW EXPLORER V4 - OFFICIAL DOCUMENT", 135, 285);
 
-            doc.save("Report_Lot_" + currentLotData.NO_LOT + ".pdf");
+            doc.save("Property_Report_" + currentLotData.NO_LOT + ".pdf");
         }
 
         function searchLot() {
