@@ -7,84 +7,58 @@
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <style>
-        /* Base Styling */
         html, body, #map { 
             width: 100%; height: 100%; padding: 0; margin: 0; 
             background: #0d1117; 
         }
 
-        /* --- DASHBOARD DARK AESTHETIC (RAPAT KE KIRI) --- */
+        /* --- DASHBOARD DARK ELITE (LEFT ALIGNED) --- */
         .sidebar {
-            height: 100%; 
-            width: 0; 
-            position: fixed; 
-            z-index: 2000;
-            top: 0; 
-            left: 0; 
-            background: rgba(13, 17, 23, 0.95); /* Deep Dark */
-            backdrop-filter: blur(15px);
-            overflow-x: hidden; 
+            height: 100%; width: 0; position: fixed; z-index: 2000;
+            top: 0; left: 0; background: rgba(13, 17, 23, 0.98);
+            backdrop-filter: blur(15px); overflow-x: hidden; 
             transition: 0.4s ease-in-out;
             box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-            font-family: 'Inter', 'Segoe UI', sans-serif;
+            font-family: 'Inter', sans-serif;
             border-right: 1px solid rgba(212, 163, 115, 0.2);
         }
 
         .sidebar-content { padding: 40px 25px; min-width: 280px; }
 
         .sidebar h2 { 
-            color: #d4a373; /* Gold Pitch */
-            font-size: 20px; 
-            font-weight: 700;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            border-left: 4px solid #d4a373;
-            padding-left: 15px;
+            color: #d4a373; font-size: 20px; font-weight: 700;
+            letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase;
+            border-left: 4px solid #d4a373; padding-left: 15px;
         }
 
         .menu-section {
-            background: rgba(255, 255, 255, 0.03);
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.03); padding: 20px;
+            border-radius: 12px; margin-bottom: 25px;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .section-title { 
-            font-size: 10px; 
-            font-weight: 700; 
-            color: #8b949e; 
-            margin-bottom: 15px; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 10px; font-weight: 700; color: #8b949e; 
+            margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px;
         }
 
-        /* Form Elements */
         .search-box {
             width: 100%; padding: 12px; margin-bottom: 15px;
             border: 1px solid #30363d; border-radius: 8px;
-            background: #0d1117; color: #c9d1d9; box-sizing: border-box;
-            outline: none; transition: 0.3s;
+            background: #0d1117; color: #c9d1d9; box-sizing: border-box; outline: none;
         }
-        .search-box:focus { border-color: #d4a373; }
 
         .btn-primary { 
             width: 100%; padding: 12px; background: #d4a373; color: #0d1117; 
             border: none; border-radius: 8px; cursor: pointer; font-weight: 800; 
-            margin-bottom: 10px; transition: 0.3s; text-transform: uppercase;
+            margin-bottom: 10px; text-transform: uppercase; transition: 0.3s;
         }
-        .btn-primary:hover { background: #faedcd; transform: translateY(-2px); }
+        .btn-primary:hover { background: #faedcd; }
 
         .btn-secondary { 
             width: 100%; padding: 12px; background: transparent; color: #d4a373; 
             border: 1px solid #d4a373; border-radius: 8px; cursor: pointer; font-weight: bold; 
-            transition: 0.3s;
         }
-        .btn-secondary:hover { background: rgba(212, 163, 115, 0.1); }
 
         /* Info Display */
         .info-card {
@@ -92,29 +66,21 @@
             margin-top: 15px; border-bottom: 2px solid rgba(212, 163, 115, 0.3);
         }
         .info-label { font-size: 9px; color: #8b949e; font-weight: 600; text-transform: uppercase; }
-        .info-value { font-size: 16px; font-weight: 500; color: #f0f6fc; margin-top: 5px; }
+        .info-value { font-size: 15px; font-weight: 500; color: #f0f6fc; margin-top: 5px; }
 
-        /* Floating Menu Button */
+        /* Buttons */
         .menu-btn {
             position: fixed; top: 20px; left: 20px; z-index: 1001;
             background: #0d1117; color: #d4a373; padding: 15px 25px; 
             border: 1px solid #d4a373; cursor: pointer; border-radius: 4px; 
             font-size: 12px; font-weight: 900; letter-spacing: 2px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3); transition: 0.3s;
         }
-        .menu-btn:hover { background: #d4a373; color: #0d1117; }
 
-        .close-btn { float: right; font-size: 20px; cursor: pointer; color: #d4a373; border: none; background: none; }
+        .close-btn { float: right; font-size: 14px; cursor: pointer; color: #d4a373; border: none; background: none; font-weight: bold; }
 
-        /* Custom Zoom Control */
         .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
-        .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-            background-color: #0d1117 !important; color: #d4a373 !important; 
-            border: 1px solid #d4a373 !important; border-radius: 4px !important;
-            font-weight: bold !important;
-        }
         </style>
-        <title>Zedndrew | Dark GIS Elite</title>
+        <title>Zedndrew | Interactive Dark GIS</title>
     </head>
     <body>
 
@@ -122,32 +88,24 @@
 
         <div id="mySidebar" class="sidebar">
             <div class="sidebar-content">
-                <button class="close-btn" onclick="closeNav()">CLOSE</button>
+                <button class="close-btn" onclick="closeNav()">[ CLOSE ]</button>
                 <h2>Zedndrew.GIS</h2>
-
-                <div class="menu-section">
-                    <div class="section-title">Visual Mode</div>
-                    <div style="display:flex; gap:10px;">
-                        <button class="btn-secondary" style="font-size: 10px; flex: 1;" onclick="switchMap('satelit')">Satellite</button>
-                        <button class="btn-secondary" style="font-size: 10px; flex: 1;" onclick="switchMap('osm')">Dark Map</button>
-                    </div>
-                </div>
 
                 <div class="menu-section">
                     <div class="section-title">Property Navigator</div>
                     <input type="text" id="lotSearch" class="search-box" placeholder="Insert Lot Number...">
                     <button class="btn-primary" onclick="searchLot()">Search</button>
-                    <button class="btn-secondary" onclick="resetView()">Reset</button>
+                    <button class="btn-secondary" onclick="resetView()">Reset Map</button>
                 </div>
 
                 <div class="menu-section">
-                    <div class="section-title">Live Data Feed</div>
+                    <div class="section-title">Selected Lot Data</div>
                     <div class="info-card"><div class="info-label">Identification</div><div id="disp-lot" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">Legal Owner</div><div id="disp-owner" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">Computed Area</div><div id="disp-area" class="info-value">-</div></div>
                 </div>
                 
-                <div style="font-size: 10px; text-align: center; color: #8b949e; margin-top: 40px; letter-spacing: 1px;">
+                <div style="font-size: 10px; text-align: center; color: #8b949e; margin-top: 40px;">
                     &copy; 2026 ZEDNDREW EXPLORER
                 </div>
             </div>
@@ -156,7 +114,6 @@
         <div id="map"></div>
 
         <script src="js/leaflet.js"></script>
-        <script src="data/LOTGABUNGREAL_0.js"></script>
         <script src="data/lotfinal_1.js"></script>
         <script src="data/TANDASEMPADANLOTGABUNG_2.js"></script>
 
@@ -168,40 +125,62 @@
             .fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
         map.zoomControl.setPosition('bottomright');
 
-        // Dark-themed tile layer
-        var layer_OSM = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxNativeZoom: 19, maxZoom: 28 });
-        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 });
-        map.addLayer(layer_GoogleSatellite);
+        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 }).addTo(map);
 
-        function switchMap(type) {
-            if (type === 'satelit') { map.addLayer(layer_GoogleSatellite); map.removeLayer(layer_OSM); }
-            else { map.addLayer(layer_OSM); map.removeLayer(layer_GoogleSatellite); }
+        // --- FUNGSI UPDATE DASHBOARD ---
+        function updateDashboard(props) {
+            document.getElementById('disp-lot').innerText = props.NO_LOT || '-';
+            document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "N/A";
+            document.getElementById('disp-area').innerText = (props.AREA || '-') + ' SQM';
+            openNav(); // Automatik buka dashboard bila klik lot
         }
 
-        // Layer lotfinal_1 dengan gaya Dark Aesthetic (Line gold nipis)
+        // --- STYLE DEFAULT & HIGHLIGHT ---
+        var defaultStyle = { opacity: 1, color: '#d4a373', weight: 1, fill: true, fillOpacity: 0.2, fillColor: '#d4a373' };
+        var highlightStyle = { opacity: 1, color: '#fff', weight: 3, fill: true, fillOpacity: 0.7, fillColor: '#d4a373' };
+
+        var lastClickedLayer;
+
         var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
-            style: { opacity: 1, color: '#d4a373', weight: 1, fill: true, fillOpacity: 0.3, fillColor: '#d4a373' },
+            style: defaultStyle,
             onEachFeature: function(feature, layer) {
+                layer.on({
+                    click: function(e) {
+                        // Reset style lot sebelum ni
+                        if (lastClickedLayer) {
+                            layer_lotfinal_1.resetStyle(lastClickedLayer);
+                        }
+                        // Highlight lot baru yang diklik
+                        layer.setStyle(highlightStyle);
+                        lastClickedLayer = layer;
+                        
+                        // Update Data
+                        updateDashboard(feature.properties);
+                        
+                        // Zoom ke lot
+                        map.fitBounds(e.target.getBounds(), {padding: [100, 100]});
+                    }
+                });
                 layer.bindPopup('Lot: ' + feature.properties.NO_LOT);
             }
         }).addTo(map);
 
+        // --- FUNGSI SEARCH ---
         function searchLot() {
             var value = document.getElementById('lotSearch').value.trim();
             var found = false;
-            
             layer_lotfinal_1.eachLayer(function(layer) {
-                var props = layer.feature.properties;
-                if (String(props.NO_LOT) === value) {
+                if (String(layer.feature.properties.NO_LOT) === value) {
+                    if (lastClickedLayer) { layer_lotfinal_1.resetStyle(lastClickedLayer); }
+                    layer.setStyle(highlightStyle);
+                    lastClickedLayer = layer;
+                    updateDashboard(layer.feature.properties);
                     map.fitBounds(layer.getBounds(), {padding: [100, 100]});
-                    document.getElementById('disp-lot').innerText = props.NO_LOT;
-                    document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "Record Not Found";
-                    document.getElementById('disp-area').innerText = props.AREA + ' SQM';
                     layer.openPopup();
                     found = true;
                 }
             });
-            if (!found) alert("Error: Lot " + value + " is not in the database.");
+            if (!found) alert("Lot " + value + " not found.");
         }
 
         function resetView() { location.reload(); }
@@ -209,7 +188,7 @@
         if (typeof json_TANDASEMPADANLOTGABUNG_2 !== 'undefined') {
             L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
                 pointToLayer: function (f, latlng) { 
-                    return L.circleMarker(latlng, {radius: 3, fillColor: '#d4a373', color: '#0d1117', weight: 1, fillOpacity: 1}); 
+                    return L.circleMarker(latlng, {radius: 2, fillColor: '#d4a373', color: '#0d1117', weight: 1, fillOpacity: 1}); 
                 }
             }).addTo(map);
         }
