@@ -4,11 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
-        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
-        <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <style>
         html, body, #map {
@@ -16,148 +12,239 @@
             height: 100%;
             padding: 0;
             margin: 0;
+            background: #1a1a1a;
         }
 
-        /* --- CSS UNTUK SIDEBAR --- */
+        /* --- SIDEBAR / DASHBOARD (GAMBAR 2) --- */
         .sidebar {
             height: 100%;
             width: 0;
             position: fixed;
-            z-index: 1000;
+            z-index: 2000;
             top: 0;
             left: 0;
-            background-color: white;
+            background-color: #22272e; /* Warna gelap aesthetic */
             overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.2);
-            font-family: Arial, sans-serif;
+            transition: 0.4s;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.5);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
         }
+
         .sidebar-content {
             padding: 20px;
+            min-width: 260px;
         }
-        .sidebar h2 { color: #333; }
-        .menu-btn {
-            position: fixed;
-            top: 10px;
-            left: 50px; /* Sebelah butang zoom */
-            z-index: 1001;
-            background: white;
-            padding: 10px 15px;
+
+        .sidebar h2 { 
+            color: #72bd6c; 
+            font-size: 18px; 
+            text-transform: uppercase; 
+            border-bottom: 1px solid #3e444d;
+            padding-bottom: 10px;
+        }
+
+        /* Seksyen Grouping */
+        .menu-section {
+            background: #2d333b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #444c56;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #adbac7;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Butang & Input */
+        .search-box {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #444c56;
+            border-radius: 5px;
+            background: #1c2128;
+            color: white;
+            box-sizing: border-box;
+        }
+
+        .btn-green {
+            width: 100%;
+            padding: 10px;
+            background: #347d39;
+            color: white;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-            border-radius: 4px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .btn-red {
+            width: 100%;
+            padding: 10px;
+            background: #ae2c2c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             font-weight: bold;
         }
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 25px;
+
+        .btn-map {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: none;
             cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Info Display (Total Lot, Area, etc) */
+        .info-card {
+            background: #1c2128;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            border-left: 4px solid #347d39;
+        }
+
+        .info-label { font-size: 10px; color: #768390; text-transform: uppercase; }
+        .info-value { font-size: 16px; font-weight: bold; color: #539bf5; }
+
+        /* BUTANG MENU (KIRI ATAS - GAMBAR 1) */
+        .menu-btn {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            z-index: 1001;
+            background: #2d333b;
+            color: white;
+            padding: 12px;
+            border: 1px solid #444c56;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 20px;
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ae2c2c;
             border: none;
             background: none;
         }
-        .search-box {
-            width: 100%;
-            padding: 8px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+
+        /* CUSTOM ZOOM CONTROL (KANAN BAWAH - GAMBAR 1) */
+        .leaflet-bottom.leaflet-right {
+            margin-bottom: 20px;
+            margin-right: 15px;
         }
-        .layer-toggle {
-            margin-top: 20px;
-            display: block;
-            padding: 10px;
-            background: #f4f4f4;
-            border-radius: 5px;
-            cursor: pointer;
+        .leaflet-control-zoom {
+            border: none !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5) !important;
+        }
+        .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+            background-color: #347d39 !important;
+            color: white !important;
+            border: 1px solid #2d333b !important;
         }
         </style>
-        <title>Map Interactive</title>
+        <title>Dashboard Map Aesthetic</title>
     </head>
     <body>
 
-        <button class="menu-btn" onclick="openNav()">☰ MENU</button>
+        <button class="menu-btn" onclick="openNav()"><i class="fas fa-bars"></i></button>
 
         <div id="mySidebar" class="sidebar">
-            <button class="close-btn" onclick="closeNav()">×</button>
             <div class="sidebar-content">
-                <h2>Carian Lot</h2>
-                <input type="text" id="lotSearch" class="search-box" placeholder="Masukkan No Lot...">
-                <button onclick="searchLot()" style="width:100%; padding:8px; cursor:pointer;">Cari</button>
+                <button class="close-btn" onclick="closeNav()">×</button>
+                <h2>DASHBOARD</h2>
 
-                <hr>
-                <h2>Tetapan Peta</h2>
-                <label class="layer-toggle">
-                    <input type="radio" name="basemap" onclick="switchMap('osm')" checked> Peta Biasa
-                </label>
-                <label class="layer-toggle">
-                    <input type="radio" name="basemap" onclick="switchMap('satelit')"> Peta Satelit
-                </label>
+                <div class="menu-section">
+                    <div class="section-title">🗺️ INTERFACE LAYER</div>
+                    <div style="display:flex; gap:10px;">
+                        <button class="btn-map" id="btnSat" style="background:#347d39; color:white;" onclick="switchMap('satelit')">Satellite</button>
+                        <button class="btn-map" id="btnStreet" style="background:#444c56; color:white;" onclick="switchMap('osm')">Street</button>
+                    </div>
+                </div>
+
+                <div class="menu-section">
+                    <div class="section-title">🌍 LAND EXPLORER</div>
+                    <input type="text" id="lotSearch" class="search-box" placeholder="Insert No Lot...">
+                    <button class="btn-green" onclick="searchLot()">Find Lot</button>
+                    <button class="btn-red" onclick="resetView()">Reset Lot</button>
+                </div>
+
+                <div class="menu-section">
+                    <div class="info-card">
+                        <div class="info-label">TOTAL LOT</div>
+                        <div class="info-value">67</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">NO LOT</div>
+                        <div id="disp-lot" class="info-value">-</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">OWNER</div>
+                        <div id="disp-owner" class="info-value">-</div>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-label">AREA</div>
+                        <div id="disp-area" class="info-value">-</div>
+                    </div>
+                </div>
+                
+                <div style="font-size: 10px; text-align: center; color: #768390; margin-top: 20px;">
+                    Hak Cipta Terpelihara 2026 © Hzrul
+                </div>
             </div>
         </div>
 
         <div id="map"></div>
 
-        <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
-        <script src="js/L.Control.Layers.Tree.min.js"></script>
-        <script src="js/leaflet.rotatedMarker.js"></script>
-        <script src="js/leaflet.pattern.js"></script>
-        <script src="js/leaflet-hash.js"></script>
-        <script src="js/Autolinker.min.js"></script>
-        <script src="js/rbush.min.js"></script>
-        <script src="js/labelgun.min.js"></script>
-        <script src="js/labels.js"></script>
         <script src="data/LOTGABUNGREAL_0.js"></script>
         <script src="data/lotfinal_1.js"></script>
         <script src="data/TANDASEMPADANLOTGABUNG_2.js"></script>
-        <script>
-        var highlightLayer;
-        function highlightFeature(e) {
-            highlightLayer = e.target;
-            highlightLayer.openPopup();
-        }
 
+        <script>
         /* --- FUNGSI SIDEBAR --- */
-        function openNav() { document.getElementById("mySidebar").style.width = "250px"; }
+        function openNav() { document.getElementById("mySidebar").style.width = "300px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
-        // Set maxZoom tinggi (28) supaya boleh zoom rapat
+        /* --- SETUP MAP (Zoom di Kanan Bawah) --- */
         var map = L.map('map', {
-            zoomControl:false, maxZoom:28, minZoom:1
+            zoomControl: true, // Biarkan true, tapi kita ubah position dia
+            maxZoom: 28, 
+            minZoom: 1
         }).fitBounds([[2.1024896462129306,102.52064420999763],[2.104750631291431,102.52466260867483]]);
-        
-        var hash = new L.Hash(map);
-        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
-        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
-        
-        // --- SETUP LAYERS DENGAN MAXNATIVEZOOM ---
-        // maxNativeZoom 19 bermaksud tile terakhir adalah zoom 19. Zoom 20-28 akan "stretch" gambar sedia ada.
-        var layer_OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            opacity: 1.0,
-            maxNativeZoom: 19,
-            maxZoom: 28
-        });
 
-        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-            opacity: 1.0,
-            maxNativeZoom: 20,
-            maxZoom: 28
-        });
-        
-        map.addLayer(layer_OSM); // Default
+        // Pindahkan butang zoom ke kanan bawah
+        map.zoomControl.setPosition('bottomright');
 
-        /* --- FUNGSI TUKAR MAP --- */
+        var layer_OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxNativeZoom: 19, maxZoom: 28 });
+        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 });
+        
+        map.addLayer(layer_GoogleSatellite); // Start dengan satellite ikut gambar 2
+
         function switchMap(type) {
             if (type === 'satelit') {
-                map.addLayer(layer_GoogleSatellite);
-                map.removeLayer(layer_OSM);
+                map.addLayer(layer_GoogleSatellite); map.removeLayer(layer_OSM);
+                document.getElementById('btnSat').style.background = '#347d39';
+                document.getElementById('btnStreet').style.background = '#444c56';
             } else {
-                map.addLayer(layer_OSM);
-                map.removeLayer(layer_GoogleSatellite);
+                map.addLayer(layer_OSM); map.removeLayer(layer_GoogleSatellite);
+                document.getElementById('btnStreet').style.background = '#347d39';
+                document.getElementById('btnSat').style.background = '#444c56';
             }
         }
 
@@ -168,6 +255,10 @@
             layer_LOTGABUNGREAL_0.eachLayer(function(layer) {
                 if (layer.feature.properties.NO_LOT == value) {
                     map.fitBounds(layer.getBounds(), {padding: [50, 50]});
+                    // Update dashboard info
+                    document.getElementById('disp-lot').innerText = layer.feature.properties.NO_LOT || '-';
+                    document.getElementById('disp-owner').innerText = layer.feature.properties.OWNER || 'N/A';
+                    document.getElementById('disp-area').innerText = (layer.feature.properties.AREA || '-') + ' m²';
                     layer.openPopup();
                     found = true;
                 }
@@ -175,74 +266,42 @@
             if (!found) alert("No Lot tidak dijumpai!");
         }
 
-        function removeEmptyRowsFromPopupContent(content, feature) {
-         var tempDiv = document.createElement('div');
-         tempDiv.innerHTML = content;
-         var rows = tempDiv.querySelectorAll('tr');
-         for (var i = 0; i < rows.length; i++) {
-             var td = rows[i].querySelector('td.visible-with-data');
-             var key = td ? td.id : '';
-             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
-                 rows[i].parentNode.removeChild(rows[i]);
-             }
-         }
-         return tempDiv.innerHTML;
+        function resetView() {
+            location.reload(); // Paling mudah untuk reset semua
         }
 
-        var zoomControl = L.control.zoom({ position: 'topleft' }).addTo(map);
-        var bounds_group = new L.featureGroup([]);
-
-        function pop_LOTGABUNGREAL_0(feature, layer) {
-            layer.on({
-                mouseout: function(e) { layer.closePopup(); },
-                mouseover: highlightFeature,
-            });
-            var popupContent = '<table>\
-                    <tr><td colspan="2">LOT: ' + (feature.properties['NO_LOT'] !== null ? feature.properties['NO_LOT'] : '') + '</td></tr>\
-                    <tr><td colspan="2">AREA: ' + (feature.properties['AREA'] !== null ? feature.properties['AREA'] : '') + '</td></tr>\
-                </table>';
-            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
-            layer.bindPopup(content, { maxHeight: 400 });
-        }
-
-        function style_LOTGABUNGREAL_0_0() {
+        /* --- STYLES & LAYERS (HIJAU IKUT GAMBAR) --- */
+        function style_Hijau(feature) {
             return {
-                pane: 'pane_LOTGABUNGREAL_0',
                 opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
+                color: 'rgba(0,0,0,1.0)', // Border hitam nipis
                 weight: 1.0, 
                 fill: true,
-                fillOpacity: 0.6,
-                fillColor: 'rgba(231,113,72,1.0)',
+                fillOpacity: 0.5,
+                fillColor: '#72bd6c', // Warna Hijau Aesthetic
                 interactive: true,
             }
         }
-        map.createPane('pane_LOTGABUNGREAL_0');
-        map.getPane('pane_LOTGABUNGREAL_0').style.zIndex = 400;
+
+        map.createPane('pane_LOT');
+        map.getPane('pane_LOT').style.zIndex = 400;
+
         var layer_LOTGABUNGREAL_0 = new L.geoJson(json_LOTGABUNGREAL_0, {
-            onEachFeature: pop_LOTGABUNGREAL_0,
-            style: style_LOTGABUNGREAL_0_0,
-        });
-        bounds_group.addLayer(layer_LOTGABUNGREAL_0);
-        map.addLayer(layer_LOTGABUNGREAL_0);
+            style: style_Hijau,
+            onEachFeature: function(feature, layer) {
+                layer.bindPopup('Lot: ' + feature.properties.NO_LOT);
+            }
+        }).addTo(map);
 
-        // --- LOT FINAL & SEMPADAN ---
-        map.createPane('pane_lotfinal_1');
-        map.getPane('pane_lotfinal_1').style.zIndex = 401;
-        var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
-            pane: 'pane_lotfinal_1',
-            style: style_LOTGABUNGREAL_0_0,
-        });
-        map.addLayer(layer_lotfinal_1);
-
-        map.createPane('pane_TANDASEMPADANLOTGABUNG_2');
-        map.getPane('pane_TANDASEMPADANLOTGABUNG_2').style.zIndex = 402;
-        var layer_TANDASEMPADANLOTGABUNG_2 = new L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
-            pointToLayer: function (feature, latlng) {
-                return L.circleMarker(latlng, {radius: 4, fillColor: 'rgba(190,207,80,1.0)', color: '#000', weight: 1, fillOpacity: 1});
-            },
-        });
-        map.addLayer(layer_TANDASEMPADANLOTGABUNG_2);
+        // Tambah layer lain (lotfinal & sempadan) ikut kod asal kau
+        if (typeof json_lotfinal_1 !== 'undefined') {
+            L.geoJson(json_lotfinal_1, { style: style_Hijau }).addTo(map);
+        }
+        if (typeof json_TANDASEMPADANLOTGABUNG_2 !== 'undefined') {
+            L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
+                pointToLayer: function (f, latlng) { return L.circleMarker(latlng, {radius: 3, fillColor: '#beaf50'}); }
+            }).addTo(map);
+        }
 
         </script>
     </body>
