@@ -15,7 +15,7 @@
             background: #1a1a1a;
         }
 
-        /* --- SIDEBAR / DASHBOARD (GAMBAR 2) --- */
+        /* --- SIDEBAR / DASHBOARD AESTHETIC --- */
         .sidebar {
             height: 100%;
             width: 0;
@@ -23,7 +23,7 @@
             z-index: 2000;
             top: 0;
             left: 0;
-            background-color: #22272e; /* Warna gelap aesthetic */
+            background-color: #22272e; 
             overflow-x: hidden;
             transition: 0.4s;
             box-shadow: 4px 0 15px rgba(0,0,0,0.5);
@@ -44,7 +44,6 @@
             padding-bottom: 10px;
         }
 
-        /* Seksyen Grouping */
         .menu-section {
             background: #2d333b;
             padding: 15px;
@@ -63,7 +62,6 @@
             gap: 8px;
         }
 
-        /* Butang & Input */
         .search-box {
             width: 100%;
             padding: 10px;
@@ -107,7 +105,6 @@
             font-weight: bold;
         }
 
-        /* Info Display (Total Lot, Area, etc) */
         .info-card {
             background: #1c2128;
             padding: 10px;
@@ -119,7 +116,7 @@
         .info-label { font-size: 10px; color: #768390; text-transform: uppercase; }
         .info-value { font-size: 16px; font-weight: bold; color: #539bf5; }
 
-        /* BUTANG MENU (KIRI ATAS - GAMBAR 1) */
+        /* BUTANG MENU (KIRI ATAS) */
         .menu-btn {
             position: fixed;
             top: 15px;
@@ -143,7 +140,7 @@
             background: none;
         }
 
-        /* CUSTOM ZOOM CONTROL (KANAN BAWAH - GAMBAR 1) */
+        /* ZOOM CONTROL (KANAN BAWAH) */
         .leaflet-bottom.leaflet-right {
             margin-bottom: 20px;
             margin-right: 15px;
@@ -204,7 +201,7 @@
                 </div>
                 
                 <div style="font-size: 10px; text-align: center; color: #768390; margin-top: 20px;">
-                    Hak Cipta Terpelihara 2026 © Hzrul
+                    Hak Cipta Terpelihara 2026 © Zedndrew
                 </div>
             </div>
         </div>
@@ -217,24 +214,21 @@
         <script src="data/TANDASEMPADANLOTGABUNG_2.js"></script>
 
         <script>
-        /* --- FUNGSI SIDEBAR --- */
         function openNav() { document.getElementById("mySidebar").style.width = "300px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
-        /* --- SETUP MAP (Zoom di Kanan Bawah) --- */
         var map = L.map('map', {
-            zoomControl: true, // Biarkan true, tapi kita ubah position dia
+            zoomControl: true,
             maxZoom: 28, 
             minZoom: 1
         }).fitBounds([[2.1024896462129306,102.52064420999763],[2.104750631291431,102.52466260867483]]);
 
-        // Pindahkan butang zoom ke kanan bawah
         map.zoomControl.setPosition('bottomright');
 
         var layer_OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxNativeZoom: 19, maxZoom: 28 });
         var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 });
         
-        map.addLayer(layer_GoogleSatellite); // Start dengan satellite ikut gambar 2
+        map.addLayer(layer_GoogleSatellite);
 
         function switchMap(type) {
             if (type === 'satelit') {
@@ -248,14 +242,12 @@
             }
         }
 
-        /* --- FUNGSI CARI LOT --- */
         function searchLot() {
             var value = document.getElementById('lotSearch').value;
             var found = false;
             layer_LOTGABUNGREAL_0.eachLayer(function(layer) {
                 if (layer.feature.properties.NO_LOT == value) {
                     map.fitBounds(layer.getBounds(), {padding: [50, 50]});
-                    // Update dashboard info
                     document.getElementById('disp-lot').innerText = layer.feature.properties.NO_LOT || '-';
                     document.getElementById('disp-owner').innerText = layer.feature.properties.OWNER || 'N/A';
                     document.getElementById('disp-area').innerText = (layer.feature.properties.AREA || '-') + ' m²';
@@ -267,18 +259,17 @@
         }
 
         function resetView() {
-            location.reload(); // Paling mudah untuk reset semua
+            location.reload();
         }
 
-        /* --- STYLES & LAYERS (HIJAU IKUT GAMBAR) --- */
         function style_Hijau(feature) {
             return {
                 opacity: 1,
-                color: 'rgba(0,0,0,1.0)', // Border hitam nipis
+                color: 'rgba(0,0,0,1.0)',
                 weight: 1.0, 
                 fill: true,
                 fillOpacity: 0.5,
-                fillColor: '#72bd6c', // Warna Hijau Aesthetic
+                fillColor: '#72bd6c', 
                 interactive: true,
             }
         }
@@ -293,7 +284,6 @@
             }
         }).addTo(map);
 
-        // Tambah layer lain (lotfinal & sempadan) ikut kod asal kau
         if (typeof json_lotfinal_1 !== 'undefined') {
             L.geoJson(json_lotfinal_1, { style: style_Hijau }).addTo(map);
         }
@@ -302,7 +292,6 @@
                 pointToLayer: function (f, latlng) { return L.circleMarker(latlng, {radius: 3, fillColor: '#beaf50'}); }
             }).addTo(map);
         }
-
         </script>
     </body>
 </html>
