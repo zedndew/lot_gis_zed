@@ -24,11 +24,13 @@
 
         .sidebar-content { padding: 40px 25px; min-width: 280px; position: relative; }
 
+        /* LOGO PANGKAH (X) */
         .close-btn { 
             position: absolute; top: 20px; right: 20px;
             font-size: 28px; cursor: pointer; color: #d4a373; 
             border: none; background: none; transition: 0.3s;
         }
+        .close-btn:hover { color: #fff; transform: rotate(90deg); }
 
         .sidebar h2 { 
             color: #d4a373; font-size: 18px; font-weight: 700;
@@ -42,6 +44,9 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
+        .section-title { font-size: 9px; font-weight: 700; color: #8b949e; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
+
+        /* Info Card Style */
         .info-card {
             background: rgba(212, 163, 115, 0.03); padding: 14px; border-radius: 10px;
             margin-top: 10px; border-bottom: 1px solid rgba(212, 163, 115, 0.2);
@@ -49,7 +54,7 @@
         .info-label { font-size: 8px; color: #8b949e; font-weight: 600; text-transform: uppercase; }
         .info-value { font-size: 14px; font-weight: 500; color: #f0f6fc; margin-top: 4px; }
 
-        /* BUTANG PDF */
+        /* Butang Generate PDF */
         .btn-pdf {
             width: 100%; padding: 12px; background: transparent; color: #ffb366;
             border: 1px solid #ffb366; border-radius: 8px; cursor: pointer;
@@ -61,22 +66,19 @@
         /* --- MODAL PREVIEW (AESTHETIC) --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
             z-index: 3000; display: none; align-items: center; justify-content: center;
         }
         .modal-box {
-            background: #161b22; width: 90%; max-width: 450px;
+            background: #0d1117; width: 90%; max-width: 400px;
             padding: 30px; border-radius: 20px; border: 1px solid #d4a373;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); font-family: 'Inter', sans-serif;
+            box-shadow: 0 20px 50px rgba(0,0,0,1); text-align: left;
         }
-        .modal-box h3 { color: #d4a373; margin-top: 0; font-size: 18px; text-transform: uppercase; border-bottom: 1px solid #30363d; padding-bottom: 15px; }
-        .preview-list { margin: 20px 0; color: #c9d1d9; font-size: 14px; }
-        .preview-item { display: flex; justify-content: space-between; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px shadow #30363d; }
-        .preview-item span:first-child { color: #8b949e; font-weight: bold; font-size: 11px; }
-
-        .modal-footer { display: flex; gap: 10px; margin-top: 25px; }
-        .btn-confirm { flex: 1; padding: 12px; background: #d4a373; border: none; border-radius: 8px; color: #0d1117; font-weight: 800; cursor: pointer; }
-        .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #ff4444; border-radius: 8px; color: #ff4444; font-weight: 800; cursor: pointer; }
+        .modal-box h3 { color: #d4a373; margin-bottom: 20px; font-size: 16px; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
+        .preview-content { color: #c9d1d9; font-size: 13px; line-height: 1.8; margin-bottom: 25px; }
+        .modal-footer { display: flex; gap: 10px; }
+        .btn-confirm { flex: 1; padding: 12px; background: #d4a373; color: #0d1117; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+        .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #ff4444; color: #ff4444; border-radius: 8px; font-weight: 800; cursor: pointer; }
 
         .menu-btn {
             position: fixed; top: 20px; left: 20px; z-index: 1001;
@@ -84,7 +86,7 @@
             border: 1px solid #d4a373; cursor: pointer; border-radius: 4px; font-size: 11px; font-weight: 900;
         }
         </style>
-        <title>Zedndrew | Dark GIS Pro</title>
+        <title>Zedndrew GIS | Pro Mode</title>
     </head>
     <body>
 
@@ -94,11 +96,14 @@
             <div class="sidebar-content">
                 <button class="close-btn" onclick="closeNav()">&times;</button>
                 <h2>DASHBOARD</h2>
+                
                 <div class="menu-section">
                     <div class="section-title">Property Details</div>
+                    <div class="info-card"><div class="info-label">TOTAL LOTS IN AREA</div><div class="info-value">67</div></div>
                     <div class="info-card"><div class="info-label">IDENTIFICATION</div><div id="disp-lot" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">LEGAL OWNER</div><div id="disp-owner" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">COMPUTED AREA</div><div id="disp-area" class="info-value">-</div></div>
+                    
                     <button id="pdfBtn" class="btn-pdf" onclick="openPreview()">Generate Report</button>
                 </div>
             </div>
@@ -106,17 +111,15 @@
 
         <div id="modalOverlay" class="modal-overlay">
             <div class="modal-box">
-                <h3>Report Preview</h3>
-                <div class="preview-list">
-                    <div class="preview-item"><span>LOT NO</span><span id="pre-lot"></span></div>
-                    <div class="preview-item"><span>OWNER</span><span id="pre-owner"></span></div>
-                    <div class="preview-item"><span>AREA</span><span id="pre-area"></span></div>
-                    <div class="preview-item"><span>STATUS</span><span>Official Record</span></div>
+                <h3>REPORT PREVIEW</h3>
+                <div class="preview-content">
+                    <div><b>Lot No:</b> <span id="pre-lot"></span></div>
+                    <div><b>Owner:</b> <span id="pre-owner"></span></div>
+                    <div><b>Area:</b> <span id="pre-area"></span></div>
                 </div>
-                <p style="font-size: 10px; color: #8b949e;">Adakah anda pasti untuk menjana dokumen PDF bagi lot ini?</p>
                 <div class="modal-footer">
                     <button class="btn-cancel" onclick="closePreview()">CANCEL</button>
-                    <button class="btn-confirm" onclick="confirmDownload()">CONFIRM & PRINT</button>
+                    <button class="btn-confirm" onclick="confirmDownload()">DOWNLOAD PDF</button>
                 </div>
             </div>
         </div>
@@ -125,6 +128,7 @@
 
         <script src="js/leaflet.js"></script>
         <script src="data/lotfinal_1.js"></script>
+        <script src="data/TANDASEMPADANLOTGABUNG_2.js"></script>
 
         <script>
         var currentData = null;
@@ -132,7 +136,7 @@
         function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
-        // Fungsi Modal
+        // Modal Logic
         function openPreview() {
             document.getElementById('pre-lot').innerText = currentData.NO_LOT;
             document.getElementById('pre-owner').innerText = currentData["tsp — pemilik_PEMILIK"] || "N/A";
@@ -146,22 +150,28 @@
             closePreview();
         }
 
-        var map = L.map('map', { zoomControl: false }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
+        var map = L.map('map', { zoomControl: true }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
+        map.zoomControl.setPosition('bottomright');
+
         L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}').addTo(map);
 
         function updateDashboard(props) {
             currentData = props;
-            document.getElementById('disp-lot').innerText = props.NO_LOT;
+            document.getElementById('disp-lot').innerText = props.NO_LOT || '-';
             document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "N/A";
-            document.getElementById('disp-area').innerHTML = props.AREA + ' m<sup>2</sup>';
+            document.getElementById('disp-area').innerHTML = (props.AREA || '-') + ' m<sup>2</sup>';
             document.getElementById('pdfBtn').style.display = 'block';
             openNav();
         }
 
+        var lastClickedLayer;
         var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
             style: { color: '#d4a373', weight: 1, fillOpacity: 0.2 },
             onEachFeature: function(feature, layer) {
                 layer.on('click', function(e) {
+                    if (lastClickedLayer) { layer_lotfinal_1.resetStyle(lastClickedLayer); }
+                    layer.setStyle({ color: '#fff', weight: 3, fillOpacity: 0.6 });
+                    lastClickedLayer = layer;
                     updateDashboard(feature.properties);
                     L.DomEvent.stopPropagation(e);
                 });
@@ -174,12 +184,14 @@
             doc.setFillColor(13, 17, 23);
             doc.rect(0, 0, 210, 40, 'F');
             doc.setTextColor(212, 163, 115);
+            doc.setFontSize(18);
             doc.text("LOT PROPERTY REPORT", 20, 25);
             doc.setTextColor(40, 40, 40);
+            doc.setFontSize(12);
             doc.text("Lot Number: " + currentData.NO_LOT, 20, 60);
             doc.text("Owner: " + (currentData["tsp — pemilik_PEMILIK"] || "N/A"), 20, 70);
             doc.text("Area: " + currentData.AREA + " m2", 20, 80);
-            doc.save("Report_Lot_" + currentData.NO_LOT + ".pdf");
+            doc.save("Lot_" + currentData.NO_LOT + ".pdf");
         }
         </script>
     </body>
