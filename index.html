@@ -69,7 +69,6 @@
             border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 11px;
         }
 
-        /* Butang Generate PDF */
         .btn-pdf {
             width: 100%; padding: 12px; background: transparent; color: #ffb366;
             border: 1px solid #ffb366; border-radius: 8px; cursor: pointer;
@@ -92,7 +91,7 @@
             font-size: 11px; font-weight: 900; letter-spacing: 2px;
         }
 
-        /* --- MODAL PREVIEW (AESTHETIC) --- */
+        /* --- MODAL PREVIEW --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
@@ -121,7 +120,6 @@
         <div id="mySidebar" class="sidebar">
             <div class="sidebar-content">
                 <button class="close-btn" onclick="closeNav()">&times;</button>
-                
                 <h2>DASHBOARD</h2>
 
                 <div class="menu-section">
@@ -134,7 +132,6 @@
                 <div class="menu-section">
                     <div class="section-title">Property Details</div>
                     <div class="info-card"><div class="info-label">TOTAL LOTS IN AREA</div><div class="info-value">67</div></div>
-                    
                     <div class="info-card"><div class="info-label">IDENTIFICATION</div><div id="disp-lot" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">LEGAL OWNER</div><div id="disp-owner" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">COMPUTED AREA</div><div id="disp-area" class="info-value">-</div></div>
@@ -153,8 +150,7 @@
                 <h3>Report Preview</h3>
                 <div class="modal-body">
                     <label>PENYEDIA LAPORAN (SILA ISI)</label>
-                    <input type="text" id="userName" class="search-box" placeholder="Contoh: Ahmid Explorer" style="margin-bottom: 20px;">
-                    
+                    <input type="text" id="userName" class="search-box" placeholder="Masukkan nama anda..." style="margin-bottom: 20px;">
                     <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px;">
                         <div style="margin-bottom: 8px;"><b>LOT:</b> <span id="pre-lot"></span></div>
                         <div style="margin-bottom: 8px;"><b>PEMILIK:</b> <span id="pre-owner"></span></div>
@@ -180,7 +176,6 @@
         function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
-        // --- Fungsi Modal Preview ---
         function openPreview() {
             if(!currentLotData) return;
             document.getElementById('pre-lot').innerText = currentLotData.NO_LOT;
@@ -191,6 +186,7 @@
 
         function closePreview() { document.getElementById('modalOverlay').style.display = 'none'; }
 
+        // Fungsi yang kau nak: Download + Tutup Modal
         function confirmDownload() {
             generatePDF();
             closePreview();
@@ -203,12 +199,10 @@
         var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 }).addTo(map);
 
         function updateDashboard(props) {
-            currentLotData = props; // Simpan data lot yang dipilih
+            currentLotData = props;
             document.getElementById('disp-lot').innerText = props.NO_LOT || '-';
             document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "N/A";
             document.getElementById('disp-area').innerHTML = (props.AREA || '-') + ' m<sup>2</sup>';
-            
-            // Tunjukkan butang PDF
             document.getElementById('pdfBtn').style.display = 'block';
             openNav();
         }
@@ -233,13 +227,11 @@
             }
         }).addTo(map);
 
-        // --- Fungsi Generate PDF ---
         function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const user = document.getElementById('userName').value || "Authorized User";
 
-            // Header Dark
             doc.setFillColor(13, 17, 23);
             doc.rect(0, 0, 210, 45, 'F');
             doc.setTextColor(212, 163, 115);
@@ -250,29 +242,20 @@
             doc.setTextColor(150, 150, 150);
             doc.text("Penyedia: " + user, 20, 35);
 
-            // Body
             doc.setTextColor(40, 40, 40);
             doc.setFontSize(14);
             doc.text("MAKLUMAT LOT", 20, 65);
             doc.line(20, 67, 190, 67);
 
             doc.setFontSize(12);
-            doc.text("No. Lot:", 20, 80);
-            doc.text(String(currentLotData.NO_LOT), 70, 80);
+            doc.text("No. Lot: " + currentLotData.NO_LOT, 20, 80);
+            doc.text("Nama Pemilik: " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A"), 20, 95);
+            doc.text("Luas Kawasan: " + currentLotData.AREA + " m2", 20, 110);
+            doc.text("Daerah: " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK"), 20, 125);
 
-            doc.text("Nama Pemilik:", 20, 95);
-            doc.text(String(currentLotData["tsp — pemilik_PEMILIK"] || "N/A"), 70, 95);
-
-            doc.text("Luas Kawasan:", 20, 110);
-            doc.text(String(currentLotData.AREA) + " m2", 70, 110);
-
-            doc.text("Daerah:", 20, 125);
-            doc.text(String(currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK"), 70, 125);
-
-            // Footer
             doc.setFontSize(9);
             doc.setTextColor(180, 180, 180);
-            doc.text("Diterbitkan oleh Zedndrew Explorer pada: " + new Date().toLocaleString(), 20, 285);
+            doc.text("Diterbitkan pada: " + new Date().toLocaleString(), 20, 285);
 
             doc.save("Report_Lot_" + currentLotData.NO_LOT + ".pdf");
         }
