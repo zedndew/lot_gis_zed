@@ -7,57 +7,154 @@
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <style>
-        html, body, #map { width: 100%; height: 100%; padding: 0; margin: 0; background: #1a1a1a; }
-        .sidebar { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0; background-color: #22272e; overflow-x: hidden; transition: 0.4s; box-shadow: 4px 0 15px rgba(0,0,0,0.5); font-family: 'Segoe UI', sans-serif; color: white; }
-        .sidebar-content { padding: 20px; min-width: 260px; }
-        .sidebar h2 { color: #72bd6c; font-size: 18px; border-bottom: 1px solid #3e444d; padding-bottom: 10px; margin-top: 0; }
-        .menu-section { background: #2d333b; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #444c56; }
-        .section-title { font-size: 11px; font-weight: bold; color: #adbac7; margin-bottom: 10px; text-transform: uppercase; }
-        .search-box { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #444c56; border-radius: 5px; background: #1c2128; color: white; box-sizing: border-box; }
-        .btn-green { width: 100%; padding: 10px; background: #347d39; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 5px; }
-        .btn-red { width: 100%; padding: 10px; background: #ae2c2c; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        .info-card { background: #1c2128; padding: 12px; border-radius: 8px; margin-top: 10px; border-left: 5px solid #347d39; }
-        .info-label { font-size: 10px; color: #768390; text-transform: uppercase; }
-        .info-value { font-size: 16px; font-weight: bold; color: #539bf5; margin-top: 4px; }
-        .menu-btn { position: fixed; top: 15px; left: 15px; z-index: 1001; background: #347d39; color: white; padding: 12px 15px; border: none; cursor: pointer; border-radius: 8px; font-size: 16px; font-weight: bold; }
-        .close-btn { float: right; font-size: 24px; cursor: pointer; color: #ae2c2c; border: none; background: none; }
-        .leaflet-bottom.leaflet-right { margin-bottom: 20px; margin-right: 15px; }
+        /* Base Styling */
+        html, body, #map { 
+            width: 100%; height: 100%; padding: 0; margin: 0; 
+            background: #fdf5e6; /* Warna cream lembut */
+        }
+
+        /* --- DASHBOARD GAYA BARU (SOFT PEACH THEME) --- */
+        .sidebar {
+            height: 95%; 
+            width: 0; 
+            position: fixed; 
+            z-index: 2000;
+            top: 2.5%; 
+            left: 15px; 
+            background: rgba(255, 255, 255, 0.85); /* Glassmorphism */
+            backdrop-filter: blur(10px);
+            overflow-x: hidden; 
+            transition: 0.5s;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            font-family: 'Poppins', 'Segoe UI', sans-serif;
+            border: 1px solid rgba(255, 218, 185, 0.5);
+        }
+
+        .sidebar-content { padding: 30px; min-width: 280px; }
+
+        .sidebar h2 { 
+            color: #d4a373; 
+            font-size: 22px; 
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            text-align: center;
+            border-bottom: 2px solid #faedcd;
+            padding-bottom: 10px;
+        }
+
+        .menu-section {
+            background: #ffffff;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(212, 163, 115, 0.1);
+        }
+
+        .section-title { 
+            font-size: 12px; 
+            font-weight: 700; 
+            color: #bc6c25; 
+            margin-bottom: 12px; 
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Input & Search Box */
+        .search-box {
+            width: 100%; padding: 12px; margin-bottom: 12px;
+            border: 1px solid #faedcd; border-radius: 10px;
+            background: #fffcf2; color: #606c38; box-sizing: border-box;
+            outline: none; transition: 0.3s;
+        }
+        .search-box:focus { border-color: #dda15e; box-shadow: 0 0 8px rgba(221, 161, 94, 0.2); }
+
+        /* Aesthetic Buttons */
+        .btn-green { 
+            width: 100%; padding: 12px; background: #dda15e; color: white; 
+            border: none; border-radius: 10px; cursor: pointer; font-weight: bold; 
+            margin-bottom: 8px; transition: 0.3s;
+        }
+        .btn-green:hover { background: #bc6c25; transform: translateY(-2px); }
+
+        .btn-red { 
+            width: 100%; padding: 12px; background: #f2cc8f; color: #5e503f; 
+            border: none; border-radius: 10px; cursor: pointer; font-weight: bold; 
+            transition: 0.3s;
+        }
+
+        .btn-layer {
+            flex: 1; padding: 10px; border: none; border-radius: 8px;
+            cursor: pointer; font-size: 11px; font-weight: bold; transition: 0.3s;
+        }
+
+        /* Info Display Cards */
+        .info-card {
+            background: #fefae0; padding: 14px; border-radius: 12px;
+            margin-top: 12px; border: 1px solid #faedcd;
+            transition: 0.3s;
+        }
+        .info-card:hover { transform: scale(1.02); }
+        .info-label { font-size: 9px; color: #bc6c25; font-weight: 800; text-transform: uppercase; }
+        .info-value { font-size: 15px; font-weight: 600; color: #283618; margin-top: 5px; }
+
+        /* Floating Menu Button */
+        .menu-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: #dda15e; color: white; padding: 15px 20px; border: none;
+            cursor: pointer; border-radius: 15px; font-size: 14px; font-weight: bold;
+            box-shadow: 0 5px 15px rgba(221, 161, 94, 0.4); transition: 0.3s;
+        }
+        .menu-btn:hover { background: #bc6c25; box-shadow: 0 8px 20px rgba(188, 108, 37, 0.5); }
+
+        .close-btn { float: right; font-size: 24px; cursor: pointer; color: #bc6c25; border: none; background: none; }
+
+        /* Zoom Control Styling */
+        .leaflet-bottom.leaflet-right { margin-bottom: 25px; margin-right: 20px; }
+        .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+            background-color: #ffffff !important; color: #dda15e !important; 
+            border: 2px solid #faedcd !important; border-radius: 10px !important;
+            font-weight: bold !important; width: 40px !important; height: 40px !important; line-height: 40px !important;
+        }
         </style>
-        <title>Interactive Land Map - Zedndrew</title>
+        <title>Zedndrew | Land GIS Aesthetic</title>
     </head>
     <body>
 
-        <button class="menu-btn" onclick="openNav()"><i class="fas fa-bars"></i> MENU</button>
+        <button class="menu-btn" onclick="openNav()"><i class="fas fa-map-marked-alt"></i> EXPLORE</button>
 
         <div id="mySidebar" class="sidebar">
             <div class="sidebar-content">
                 <button class="close-btn" onclick="closeNav()">×</button>
-                <h2>DASHBOARD</h2>
+                <h2>Zedndrew GIS</h2>
 
                 <div class="menu-section">
-                    <div class="section-title">🗺️ Interface Layer</div>
+                    <div class="section-title"><i class="fas fa-layer-group"></i> Basemap View</div>
                     <div style="display:flex; gap:10px;">
-                        <button style="flex:1; padding:8px; background:#347d39; color:white; border:none; border-radius:5px; cursor:pointer;" onclick="switchMap('satelit')">Satellite</button>
-                        <button style="flex:1; padding:8px; background:#444c56; color:white; border:none; border-radius:5px; cursor:pointer;" onclick="switchMap('osm')">Street</button>
+                        <button class="btn-layer" style="background:#dda15e; color:white;" onclick="switchMap('satelit')">Satellite</button>
+                        <button class="btn-layer" style="background:#f2cc8f; color:#5e503f;" onclick="switchMap('osm')">Minimalist</button>
                     </div>
                 </div>
 
                 <div class="menu-section">
-                    <div class="section-title">🌍 Land Explorer</div>
-                    <input type="text" id="lotSearch" class="search-box" placeholder="Insert No Lot...">
-                    <button class="btn-green" onclick="searchLot()">Find Lot</button>
-                    <button class="btn-red" onclick="resetView()">Reset Lot</button>
+                    <div class="section-title"><i class="fas fa-search-location"></i> Find Property</div>
+                    <input type="text" id="lotSearch" class="search-box" placeholder="Contoh: 11469">
+                    <button class="btn-green" onclick="searchLot()">Mula Carian</button>
+                    <button class="btn-red" onclick="resetView()">Set Semula</button>
                 </div>
 
                 <div class="menu-section">
-                    <div class="info-card"><div class="info-label">TOTAL LOT</div><div class="info-value">67</div></div>
-                    <div class="info-card"><div class="info-label">NO LOT</div><div id="disp-lot" class="info-value">-</div></div>
-                    <div class="info-card"><div class="info-label">OWNER</div><div id="disp-owner" class="info-value">-</div></div>
-                    <div class="info-card"><div class="info-label">AREA</div><div id="disp-area" class="info-value">-</div></div>
+                    <div class="section-title"><i class="fas fa-info-circle"></i> Property Details</div>
+                    <div class="info-card"><div class="info-label">ID LOT</div><div id="disp-lot" class="info-value">-</div></div>
+                    <div class="info-card"><div class="info-label">NAMA PEMILIK</div><div id="disp-owner" class="info-value">-</div></div>
+                    <div class="info-card"><div class="info-label">LUAS (m²)</div><div id="disp-area" class="info-value">-</div></div>
                 </div>
                 
-                <div style="font-size: 10px; text-align: center; color: #768390; margin-top: 20px;">
-                    Hak Cipta Terpelihara 2026 © Zedndrew
+                <div style="font-size: 10px; text-align: center; color: #bc6c25; margin-top: 30px; font-weight: bold; opacity: 0.7;">
+                    Handcrafted by Zedndrew &copy; 2026
                 </div>
             </div>
         </div>
@@ -70,14 +167,14 @@
         <script src="data/TANDASEMPADANLOTGABUNG_2.js"></script>
 
         <script>
-        function openNav() { document.getElementById("mySidebar").style.width = "300px"; }
+        function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
         var map = L.map('map', { zoomControl: true, maxZoom: 28, minZoom: 1 })
             .fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
         map.zoomControl.setPosition('bottomright');
 
-        var layer_OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxNativeZoom: 19, maxZoom: 28 });
+        var layer_OSM = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxNativeZoom: 19, maxZoom: 28 });
         var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 });
         map.addLayer(layer_GoogleSatellite);
 
@@ -86,12 +183,11 @@
             else { map.addLayer(layer_OSM); map.removeLayer(layer_GoogleSatellite); }
         }
 
-        // --- LAYER lotfinal_1 DIGUNAKAN UNTUK CARIAN KERANA ADA DATA PEMILIK ---
+        // Pakai data lotfinal_1 sebab ada data pemilik (PEMILIK)
         var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
-            style: { opacity: 1, color: 'black', weight: 1.2, fill: true, fillOpacity: 0.5, fillColor: '#72bd6c' },
+            style: { opacity: 1, color: '#bc6c25', weight: 1.5, fill: true, fillOpacity: 0.4, fillColor: '#f2cc8f' },
             onEachFeature: function(feature, layer) {
-                var p = feature.properties;
-                layer.bindPopup('Lot: ' + p.NO_LOT);
+                layer.bindPopup('Lot: ' + feature.properties.NO_LOT);
             }
         }).addTo(map);
 
@@ -102,19 +198,16 @@
             layer_lotfinal_1.eachLayer(function(layer) {
                 var props = layer.feature.properties;
                 if (String(props.NO_LOT) === value) {
-                    map.fitBounds(layer.getBounds(), {padding: [50, 50]});
-                    
+                    map.fitBounds(layer.getBounds(), {padding: [100, 100]});
                     document.getElementById('disp-lot').innerText = props.NO_LOT;
-                    
-                    // Membaca kunci spesifik "tsp — pemilik_PEMILIK" dari fail lotfinal_1.js
-                    document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "Tiada Nama";
+                    // Ambil data pemilik guna key yang ada dalam fail kau
+                    document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "N/A";
                     document.getElementById('disp-area').innerText = props.AREA + ' m²';
-                    
                     layer.openPopup();
                     found = true;
                 }
             });
-            if (!found) alert("No Lot " + value + " tidak dijumpai!");
+            if (!found) alert("Maaf, No Lot " + value + " tidak dijumpai.");
         }
 
         function resetView() { location.reload(); }
@@ -122,7 +215,7 @@
         if (typeof json_TANDASEMPADANLOTGABUNG_2 !== 'undefined') {
             L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
                 pointToLayer: function (f, latlng) { 
-                    return L.circleMarker(latlng, {radius: 3, fillColor: '#beaf50', color: '#000', weight: 1, fillOpacity: 1}); 
+                    return L.circleMarker(latlng, {radius: 4, fillColor: '#bc6c25', color: '#fff', weight: 2, fillOpacity: 1}); 
                 }
             }).addTo(map);
         }
