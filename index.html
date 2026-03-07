@@ -105,16 +105,17 @@
             font-weight: bold;
         }
 
+        /* Info Card Style (Sama macam Gambar 2) */
         .info-card {
             background: #1c2128;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 12px;
+            border-radius: 8px;
             margin-top: 10px;
-            border-left: 4px solid #347d39;
+            border-left: 5px solid #347d39;
         }
 
-        .info-label { font-size: 10px; color: #768390; text-transform: uppercase; }
-        .info-value { font-size: 16px; font-weight: bold; color: #539bf5; }
+        .info-label { font-size: 10px; color: #768390; text-transform: uppercase; letter-spacing: 1px; }
+        .info-value { font-size: 16px; font-weight: bold; color: #539bf5; margin-top: 4px; }
 
         /* BUTANG MENU (KIRI ATAS) */
         .menu-btn {
@@ -122,13 +123,14 @@
             top: 15px;
             left: 15px;
             z-index: 1001;
-            background: #2d333b;
+            background: #347d39;
             color: white;
             padding: 12px;
-            border: 1px solid #444c56;
+            border: none;
             cursor: pointer;
             border-radius: 8px;
-            font-size: 20px;
+            font-size: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
         .close-btn {
@@ -153,13 +155,14 @@
             background-color: #347d39 !important;
             color: white !important;
             border: 1px solid #2d333b !important;
+            font-weight: bold !important;
         }
         </style>
-        <title>Dashboard Map Aesthetic</title>
+        <title>Interactive Land Map - Zedndrew</title>
     </head>
     <body>
 
-        <button class="menu-btn" onclick="openNav()"><i class="fas fa-bars"></i></button>
+        <button class="menu-btn" onclick="openNav()"><i class="fas fa-bars"></i> Menu</button>
 
         <div id="mySidebar" class="sidebar">
             <div class="sidebar-content">
@@ -225,6 +228,7 @@
 
         map.zoomControl.setPosition('bottomright');
 
+        // Tiles dengan maxNativeZoom supaya tak putih bila zoom rapat
         var layer_OSM = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxNativeZoom: 19, maxZoom: 28 });
         var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 });
         
@@ -242,31 +246,37 @@
             }
         }
 
+        // FIX: Fungsi Search untuk paparkan Owner
         function searchLot() {
             var value = document.getElementById('lotSearch').value;
             var found = false;
             layer_LOTGABUNGREAL_0.eachLayer(function(layer) {
                 if (layer.feature.properties.NO_LOT == value) {
                     map.fitBounds(layer.getBounds(), {padding: [50, 50]});
+                    
+                    // Update data ke dashboard
                     document.getElementById('disp-lot').innerText = layer.feature.properties.NO_LOT || '-';
+                    // Pastikan column OWNER wujud dalam data GeoJSON kau
                     document.getElementById('disp-owner').innerText = layer.feature.properties.OWNER || 'N/A';
                     document.getElementById('disp-area').innerText = (layer.feature.properties.AREA || '-') + ' m²';
+                    
                     layer.openPopup();
                     found = true;
                 }
             });
-            if (!found) alert("No Lot tidak dijumpai!");
+            if (!found) alert("No Lot " + value + " tidak dijumpai!");
         }
 
         function resetView() {
             location.reload();
         }
 
+        // Style Hijau Aesthetic (Gambar 3)
         function style_Hijau(feature) {
             return {
                 opacity: 1,
-                color: 'rgba(0,0,0,1.0)',
-                weight: 1.0, 
+                color: 'rgba(0,0,0,0.8)',
+                weight: 1.2, 
                 fill: true,
                 fillOpacity: 0.5,
                 fillColor: '#72bd6c', 
@@ -274,13 +284,10 @@
             }
         }
 
-        map.createPane('pane_LOT');
-        map.getPane('pane_LOT').style.zIndex = 400;
-
         var layer_LOTGABUNGREAL_0 = new L.geoJson(json_LOTGABUNGREAL_0, {
             style: style_Hijau,
             onEachFeature: function(feature, layer) {
-                layer.bindPopup('Lot: ' + feature.properties.NO_LOT);
+                layer.bindPopup('<strong>Lot: ' + feature.properties.NO_LOT + '</strong><br>Owner: ' + (feature.properties.OWNER || 'N/A'));
             }
         }).addTo(map);
 
@@ -289,7 +296,9 @@
         }
         if (typeof json_TANDASEMPADANLOTGABUNG_2 !== 'undefined') {
             L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
-                pointToLayer: function (f, latlng) { return L.circleMarker(latlng, {radius: 3, fillColor: '#beaf50'}); }
+                pointToLayer: function (f, latlng) { 
+                    return L.circleMarker(latlng, {radius: 3, fillColor: '#beaf50', color: '#000', weight: 1, fillOpacity: 1}); 
+                }
             }).addTo(map);
         }
         </script>
