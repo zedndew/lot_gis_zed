@@ -11,9 +11,78 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
         
         <style>
-        html, body, #map { 
+        html, body { 
             width: 100%; height: 100%; padding: 0; margin: 0; 
             background: #0d1117; 
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Supaya scrollbar tak kacau layout */
+        }
+
+        /* --- HEADER SMART RESIDENT DENGAN VIDEO --- */
+        .hero-header {
+            position: relative;
+            width: 100%;
+            height: 120px; /* Ketinggian header */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            border-bottom: 3px solid #d4a373;
+        }
+
+        .hero-header video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+
+        /* Overlay Gelap supaya teks nampak */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 2;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0 30px;
+        }
+
+        .header-content img {
+            height: 60px;
+            margin-right: 20px;
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
+        }
+
+        .header-content h1 {
+            color: #fff;
+            font-family: 'Georgia', serif; /* Font seakan gambar kedua */
+            font-style: italic;
+            font-size: 32px;
+            margin: 0;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            letter-spacing: 1px;
+        }
+
+        /* --- MAP CONTAINER --- */
+        #map { 
+            flex-grow: 1; /* Map akan ambil baki ruang bawah */
+            width: 100%;
         }
 
         /* --- DASHBOARD DARK ELITE --- */
@@ -87,7 +156,7 @@
         .info-value { font-size: 14px; font-weight: 500; color: #f0f6fc; margin-top: 4px; }
 
         .menu-btn {
-            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            position: fixed; top: 140px; left: 20px; z-index: 1001; /* Diletakkan bawah header */
             background: #0d1117; color: #d4a373; padding: 12px 20px; 
             border: 1px solid #d4a373; cursor: pointer; border-radius: 4px; 
             font-size: 11px; font-weight: 900; letter-spacing: 2px;
@@ -114,9 +183,21 @@
 
         .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
         </style>
-        <title>Zedndrew | Dark GIS v4</title>
+        <title>Zedndrew | Smart Resident GIS</title>
     </head>
     <body>
+
+        <header class="hero-header">
+            <video autoplay muted loop playsinline>
+                <source src="videogislab2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="video-overlay"></div>
+            <div class="header-content">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/be/Logo_Politeknik_Malaysia.png" alt="Logo">
+                <h1>saujana putra smart resident</h1>
+            </div>
+        </header>
 
         <button class="menu-btn" onclick="openNav()"><i class="fas fa-bars"></i> MENU</button>
 
@@ -238,16 +319,12 @@
             }
         }).addTo(map);
 
-        // --- FUNGSI GENERATE PDF: DENGAN LOGO POLITEKNIK & SUSUNAN KEMAS ---
         async function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const user = (document.getElementById('userName').value || "AUTHORIZED USER").toUpperCase();
-
-            // Link Logo Politeknik Malaysia (Transparent PNG)
             const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/b/be/Logo_Politeknik_Malaysia.png';
 
-            // 1. CAPTURE MAP
             const mapContainer = document.getElementById('map');
             const canvas = await html2canvas(mapContainer, {
                 useCORS: true,
@@ -257,20 +334,16 @@
             });
             const mapImgData = canvas.toDataURL('image/png');
 
-            // 2. HEADER ELITE (DARK THEME)
             doc.setFillColor(13, 17, 23);
             doc.rect(0, 0, 210, 50, 'F');
             doc.setDrawColor(212, 163, 115);
             doc.setLineWidth(1.5);
             doc.line(0, 50, 210, 50);
 
-            // 3. MELETAK LOGO DAN TAJUK (SUSUNAN CANTIK)
             try {
-                // Letak Logo di penjuru kiri atas
                 doc.addImage(logoUrl, 'PNG', 15, 10, 30, 25);
             } catch (e) { console.error("Logo Error"); }
 
-            // Tajuk diletakkan di sebelah logo (Anjak ke kanan skit)
             doc.setTextColor(212, 163, 115);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(20);
@@ -282,19 +355,16 @@
             doc.text("POLITEKNIK MALAYSIA | GEOGRAPHIC INFORMATION SYSTEM", 50, 32);
             doc.text("ZEDNDREW EXPLORER OFFICIAL DATA RECORD", 50, 37);
 
-            // 4. GAMBAR LOT (TANGKAPAN PETA)
             doc.setTextColor(40, 40, 40);
             doc.setFontSize(11);
             doc.setFont("helvetica", "bold");
             doc.text("LOT VISUALIZATION:", 20, 65);
             
-            // Map Frame
             doc.setDrawColor(212, 163, 115);
             doc.setLineWidth(0.5);
             doc.addImage(mapImgData, 'PNG', 20, 70, 170, 85);
             doc.rect(20, 70, 170, 85, 'S');
 
-            // 5. MAKLUMAT DETAIL (KEMAS DALAM BOX)
             doc.setFillColor(248, 249, 250);
             doc.rect(20, 165, 170, 85, 'F');
             doc.setDrawColor(220, 220, 220);
@@ -324,7 +394,6 @@
                 yPos += 9;
             });
 
-            // 6. SIGNATURE & FOOTER
             doc.setFontSize(9);
             doc.setTextColor(100, 100, 100);
             doc.text("Prepared By: " + user, 20, 265);
