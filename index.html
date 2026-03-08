@@ -6,7 +6,9 @@
         <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
         
         <style>
         html, body, #map { 
@@ -194,11 +196,20 @@
             closePreview();
         }
 
-        var map = L.map('map', { zoomControl: true, maxZoom: 28, minZoom: 1 })
-            .fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
+        var map = L.map('map', { 
+            zoomControl: true, 
+            maxZoom: 28, 
+            minZoom: 1,
+            preferCanvas: true // PENTING: Untuk mudahkan html2canvas capture map
+        }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
+        
         map.zoomControl.setPosition('bottomright');
 
-        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28 }).addTo(map);
+        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { 
+            maxNativeZoom: 20, 
+            maxZoom: 28,
+            crossOrigin: true // PENTING: Untuk kebenaran capture image peta
+        }).addTo(map);
 
         function updateDashboard(props) {
             currentLotData = props;
@@ -229,22 +240,30 @@
             }
         }).addTo(map);
 
-        // --- PDF LAYOUT MACAM GAMBAR KEDUA (ENGLISH VERSION) ---
-        function generatePDF() {
+        // --- FUNGSI GENERATE PDF DENGAN GAMBAR LOT (MAP CAPTURE) ---
+        async function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const user = (document.getElementById('userName').value || "AUTHORIZED USER").toUpperCase();
 
-            // 1. BLACK HEADER
+            // 1. CAPTURE MAP MENGGUNAKAN HTML2CANVAS
+            const mapContainer = document.getElementById('map');
+            const canvas = await html2canvas(mapContainer, {
+                useCORS: true, // Benarkan ambil gambar dari Google Satellite
+                logging: false,
+                height: mapContainer.offsetHeight,
+                width: mapContainer.offsetWidth
+            });
+            const mapImgData = canvas.toDataURL('image/png');
+
+            // 2. HEADER HITAM & GOLD DIVIDER
             doc.setFillColor(13, 17, 23);
             doc.rect(0, 0, 210, 50, 'F');
-            
-            // 2. GOLD DIVIDER
             doc.setDrawColor(212, 163, 115);
             doc.setLineWidth(1.5);
             doc.line(0, 50, 210, 50);
 
-            // 3. TITLE & SUBTITLE
+            // 3. TAJUK
             doc.setTextColor(212, 163, 115);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
@@ -255,53 +274,54 @@
             doc.setFont("helvetica", "normal");
             doc.text("ZEDNDREW EXPLORER | GEOGRAPHIC INFORMATION SYSTEM", 20, 40);
 
-            // 4. CONTENT BOX (LIGHT GREY)
-            doc.setFillColor(248, 249, 250);
-            doc.rect(20, 70, 170, 100, 'F');
-            doc.setDrawColor(220, 220, 220);
-            doc.setLineWidth(0.5);
-            doc.rect(20, 70, 170, 100, 'S');
-
-            // 5. DATA LABELS
+            // 4. MASUKKAN GAMBAR MAP (Visual Lot)
             doc.setTextColor(40, 40, 40);
-            doc.setFontSize(13);
+            doc.setFontSize(12);
             doc.setFont("helvetica", "bold");
-            doc.text("OWNERSHIP DETAILS:", 30, 85);
+            doc.text("LOT VISUALIZATION:", 20, 65);
             
+            // Draw map image (x, y, width, height)
+            doc.addImage(mapImgData, 'PNG', 20, 70, 170, 80);
+            doc.setDrawColor(212, 163, 115);
+            doc.setLineWidth(0.5);
+            doc.rect(20, 70, 170, 80, 'S'); // Border untuk gambar map
+
+            // 5. DATA MAKLUMAT (BAWAH GAMBAR)
+            doc.setFillColor(248, 249, 250);
+            doc.rect(20, 155, 170, 75, 'F');
+            doc.setDrawColor(220, 220, 220);
+            doc.rect(20, 155, 170, 75, 'S');
+
+            doc.setTextColor(40, 40, 40);
             doc.setFontSize(11);
-            let yPos = 100;
+            doc.setFont("helvetica", "bold");
+            doc.text("OWNERSHIP DETAILS:", 30, 165);
+            
+            let yPos = 175;
             const items = [
                 ["LOT NUMBER", ": " + currentLotData.NO_LOT],
                 ["LEGAL OWNER", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")],
                 ["TOTAL AREA", ": " + currentLotData.AREA + " m2"],
-                ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")],
-                ["PA NUMBER", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "-")]
+                ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")]
             ];
 
             items.forEach(item => {
                 doc.setFont("helvetica", "bold");
                 doc.text(item[0], 35, yPos);
                 doc.setFont("helvetica", "normal");
-                doc.text(item[1], 75, yPos);
-                yPos += 12;
+                doc.text(item[1], 80, yPos);
+                yPos += 10;
             });
 
-            // 6. SIGNATURE SECTION
-            doc.setFontSize(10);
-            doc.text("Prepared By:", 30, 200);
-            doc.setFont("helvetica", "bold");
-            doc.text(user, 30, 215);
-            doc.line(30, 217, 100, 217);
-            doc.setFont("helvetica", "italic");
+            // 6. SIGNATURE
             doc.setFontSize(9);
-            doc.text("Authorized Personnel", 30, 222);
+            doc.text("Prepared By: " + user, 20, 250);
+            doc.text("Date Generated: " + new Date().toLocaleString(), 20, 255);
 
             // 7. FOOTER
-            doc.setFont("helvetica", "normal");
             doc.setFontSize(8);
             doc.setTextColor(180, 180, 180);
-            doc.text("Generated on: " + new Date().toLocaleString(), 20, 285);
-            doc.text("ZEDNDREW EXPLORER V4 - OFFICIAL DOCUMENT", 135, 285);
+            doc.text("ZEDNDREW EXPLORER V4 - OFFICIAL DOCUMENT", 70, 285);
 
             doc.save("Property_Report_" + currentLotData.NO_LOT + ".pdf");
         }
