@@ -19,7 +19,7 @@
             overflow: hidden;
         }
 
-        /* --- HEADER DENGAN VIDEO & SUSUNAN BARU --- */
+        /* --- HEADER DENGAN VIDEO & TIGA ELEMEN (KIRI, TENGAH, KANAN) --- */
         .hero-header {
             position: relative;
             width: 100%;
@@ -58,16 +58,24 @@
             z-index: 3;
             display: flex;
             align-items: center;
-            justify-content: center; /* Memastikan kandungan berada di tengah */
+            justify-content: center;
             width: 100%;
             padding: 0 30px;
         }
 
-        /* Logo diletakkan secara absolute supaya tidak mengganggu posisi tengah teks */
+        /* Logo Politeknik Bulat (Kiri) */
         .header-logo-left {
             position: absolute;
             left: 30px;
-            height: 70px; /* Saiz logo poli bulat */
+            height: 70px;
+            width: auto;
+        }
+
+        /* Logo POU Kuning (Kanan) - Penambahan Baru */
+        .header-logo-right {
+            position: absolute;
+            right: 30px;
+            height: 70px; /* Saiz diselaraskan dengan logo kiri */
             width: auto;
         }
 
@@ -79,7 +87,7 @@
             margin: 0;
             text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
             letter-spacing: 1px;
-            text-align: center; /* Teks di tengah */
+            text-align: center;
         }
 
         /* --- MAP AREA --- */
@@ -196,8 +204,11 @@
             </video>
             <div class="video-overlay"></div>
             <div class="header-content">
-                <img src="logopolibulat.png" class="header-logo-left" alt="Logo Poli">
+                <img src="logopolibulat.png" class="header-logo-left" alt="Logo Poli Kiri">
+                
                 <h1>saujana putra smart resident</h1>
+
+                <img src="Logo_POUkuning.png" class="header-logo-right" alt="Logo Poli Kanan">
             </div>
         </header>
 
