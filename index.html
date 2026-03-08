@@ -19,7 +19,7 @@
             overflow: hidden;
         }
 
-        /* --- HEADER DENGAN VIDEO & TIGA ELEMEN --- */
+        /* --- HEADER DENGAN VIDEO --- */
         .hero-header {
             position: relative;
             width: 100%;
@@ -63,19 +63,8 @@
             padding: 0 30px;
         }
 
-        .header-logo-left {
-            position: absolute;
-            left: 30px;
-            height: 70px;
-            width: auto;
-        }
-
-        .header-logo-right {
-            position: absolute;
-            right: 30px;
-            height: 70px;
-            width: auto;
-        }
+        .header-logo-left { position: absolute; left: 30px; height: 70px; width: auto; }
+        .header-logo-right { position: absolute; right: 30px; height: 70px; width: auto; }
 
         .header-content h1 {
             color: #fff;
@@ -88,11 +77,7 @@
             text-align: center;
         }
 
-        /* --- MAP AREA --- */
-        #map { 
-            flex-grow: 1;
-            width: 100%;
-        }
+        #map { flex-grow: 1; width: 100%; }
 
         /* --- DASHBOARD DARK ELITE --- */
         .sidebar {
@@ -126,10 +111,7 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        .section-title { 
-            font-size: 9px; font-weight: 700; color: #8b949e; 
-            margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px;
-        }
+        .section-title { font-size: 9px; font-weight: 700; color: #8b949e; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px; }
 
         .search-box {
             width: 100%; padding: 12px; margin-bottom: 12px;
@@ -144,10 +126,7 @@
         }
         .btn-primary:hover { background: #faedcd; }
 
-        .btn-secondary { 
-            width: 100%; padding: 10px; background: transparent; color: #8b949e; 
-            border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 11px;
-        }
+        .btn-secondary { width: 100%; padding: 10px; background: transparent; color: #8b949e; border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 11px; }
 
         .btn-pdf {
             width: 100%; padding: 12px; background: transparent; color: #ffb366;
@@ -164,11 +143,34 @@
         .info-label { font-size: 8px; color: #8b949e; font-weight: 600; text-transform: uppercase; }
         .info-value { font-size: 14px; font-weight: 500; color: #f0f6fc; margin-top: 4px; }
 
+        /* --- MENU BUTTON BUBBLE STYLE & RAPAT KIRI --- */
         .menu-btn {
-            position: fixed; top: 140px; left: 20px; z-index: 1001; 
-            background: #0d1117; color: #d4a373; padding: 12px 20px; 
-            border: 1px solid #d4a373; cursor: pointer; border-radius: 4px; 
-            font-size: 11px; font-weight: 900; letter-spacing: 2px;
+            position: fixed; 
+            top: 140px; 
+            left: 0 !important; /* TETAP RAPAT KE KIRI */
+            z-index: 1001; 
+            background: #0d1117; 
+            color: #d4a373; 
+            padding: 15px 25px 15px 15px; /* Padding kanan lebih sikit untuk balance */
+            border: 2px solid #d4a373; 
+            border-left: none !important; /* Buang border kiri supaya nampak 'tumbuh' dari tepi */
+            cursor: pointer; 
+            border-radius: 0 50px 50px 0 !important; /* STYLE BUBBLE */
+            font-size: 12px; 
+            font-weight: 900; 
+            letter-spacing: 2px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .menu-btn:hover {
+            padding-left: 25px;
+            background: #d4a373;
+            color: #0d1117;
+            box-shadow: 0 0 20px rgba(212, 163, 115, 0.4);
         }
 
         .modal-overlay {
@@ -191,41 +193,21 @@
 
         .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
 
-        /* --- PENAMBAHAN KOD ZOOM AESTHETIC (YANG ANDA MINTA) --- */
-        .leaflet-control-zoom {
-            border: none !important;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.6) !important;
-        }
-        .leaflet-control-zoom-in, 
-        .leaflet-control-zoom-out {
+        /* --- ZOOM CONTROLS --- */
+        .leaflet-control-zoom { border: none !important; box-shadow: 0 8px 25px rgba(0,0,0,0.6) !important; }
+        .leaflet-control-zoom-in, .leaflet-control-zoom-out {
             background-color: #0d1117 !important;
             color: #d4a373 !important;
             border: 1px solid rgba(212, 163, 115, 0.4) !important;
             font-family: 'Inter', sans-serif;
             font-weight: bold !important;
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-            width: 40px !important;
-            height: 40px !important;
-            line-height: 40px !important;
-            font-size: 18px !important;
+            width: 40px !important; height: 40px !important; line-height: 40px !important; font-size: 18px !important;
         }
         .leaflet-bar a:first-child { border-top-left-radius: 12px !important; border-top-right-radius: 12px !important; }
         .leaflet-bar a:last-child { border-bottom-left-radius: 12px !important; border-bottom-right-radius: 12px !important; border-top: none !important; }
-        
-        .leaflet-control-zoom-in:hover, 
-        .leaflet-control-zoom-out:hover {
-            background-color: #d4a373 !important;
-            color: #0d1117 !important;
-            transform: scale(1.1);
-            z-index: 10;
-        }
-        .leaflet-control-attribution {
-            background: rgba(13, 17, 23, 0.7) !important;
-            color: #8b949e !important;
-            font-size: 9px !important;
-            backdrop-filter: blur(5px);
-            border-radius: 10px 0 0 0;
-        }
+        .leaflet-control-zoom-in:hover, .leaflet-control-zoom-out:hover { background-color: #d4a373 !important; color: #0d1117 !important; transform: scale(1.1); z-index: 10; }
+        .leaflet-control-attribution { background: rgba(13, 17, 23, 0.7) !important; color: #8b949e !important; font-size: 9px !important; backdrop-filter: blur(5px); border-radius: 10px 0 0 0; }
         .leaflet-control-attribution a { color: #d4a373 !important; }
         </style>
         <title>Zedndrew | Smart Resident GIS</title>
@@ -235,14 +217,11 @@
         <header class="hero-header">
             <video autoplay muted loop playsinline>
                 <source src="videogisreal.mp4" type="video/mp4">
-                Your browser does not support the video tag.
             </video>
             <div class="video-overlay"></div>
             <div class="header-content">
                 <img src="logopolibulat.png" class="header-logo-left" alt="Logo Poli Kiri">
-                
                 <h1>saujana putra smart resident</h1>
-
                 <img src="Logo_POUkuning.png" class="header-logo-right" alt="Logo Poli Kanan">
             </div>
         </header>
@@ -253,27 +232,21 @@
             <div class="sidebar-content">
                 <button class="close-btn" onclick="closeNav()">&times;</button>
                 <h2>DASHBOARD</h2>
-
                 <div class="menu-section">
                     <div class="section-title">Property Navigator</div>
                     <input type="text" id="lotSearch" class="search-box" placeholder="Insert Lot Number...">
                     <button class="btn-primary" onclick="searchLot()">Search</button>
                     <button class="btn-secondary" style="width:100%" onclick="resetView()">Reset View</button>
                 </div>
-
                 <div class="menu-section">
                     <div class="section-title">Property Details</div>
                     <div class="info-card"><div class="info-label">TOTAL LOTS IN AREA</div><div class="info-value">67</div></div>
                     <div class="info-card"><div class="info-label">IDENTIFICATION</div><div id="disp-lot" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">LEGAL OWNER</div><div id="disp-owner" class="info-value">-</div></div>
                     <div class="info-card"><div class="info-label">COMPUTED AREA</div><div id="disp-area" class="info-value">-</div></div>
-
                     <button id="pdfBtn" class="btn-pdf" onclick="openPreview()">Generate Report</button>
                 </div>
-                
-                <div style="font-size: 9px; text-align: center; color: #484f58; margin-top: 40px; letter-spacing: 1px;">
-                    ZEDNDREW EXPLORER &copy; 2026
-                </div>
+                <div style="font-size: 9px; text-align: center; color: #484f58; margin-top: 40px; letter-spacing: 1px;">ZEDNDREW EXPLORER &copy; 2026</div>
             </div>
         </div>
 
@@ -304,10 +277,8 @@
 
         <script>
         var currentLotData = null;
-
         function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-
         function openPreview() {
             if(!currentLotData) return;
             document.getElementById('pre-lot').innerText = currentLotData.NO_LOT;
@@ -315,28 +286,13 @@
             document.getElementById('pre-area').innerText = currentLotData.AREA + " m2";
             document.getElementById('modalOverlay').style.display = 'flex';
         }
-
         function closePreview() { document.getElementById('modalOverlay').style.display = 'none'; }
+        function confirmDownload() { generatePDF(); closePreview(); }
 
-        function confirmDownload() {
-            generatePDF();
-            closePreview();
-        }
-
-        var map = L.map('map', { 
-            zoomControl: true, 
-            maxZoom: 28, 
-            minZoom: 1,
-            preferCanvas: true 
-        }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
-        
+        var map = L.map('map', { zoomControl: true, maxZoom: 28, minZoom: 1, preferCanvas: true }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
         map.zoomControl.setPosition('bottomright');
 
-        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { 
-            maxNativeZoom: 20, 
-            maxZoom: 28,
-            crossOrigin: 'Anonymous' 
-        }).addTo(map);
+        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { maxNativeZoom: 20, maxZoom: 28, crossOrigin: 'Anonymous' }).addTo(map);
 
         function updateDashboard(props) {
             currentLotData = props;
@@ -349,7 +305,6 @@
 
         var defaultStyle = { opacity: 1, color: '#d4a373', weight: 1, fill: true, fillOpacity: 0.2, fillColor: '#d4a373' };
         var highlightStyle = { opacity: 1, color: '#fff', weight: 3, fill: true, fillOpacity: 0.6, fillColor: '#d4a373' };
-
         var lastClickedLayer;
 
         var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
@@ -372,85 +327,25 @@
             const doc = new jsPDF();
             const user = (document.getElementById('userName').value || "AUTHORIZED USER").toUpperCase();
             const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/b/be/Logo_Politeknik_Malaysia.png';
-
             const mapContainer = document.getElementById('map');
-            const canvas = await html2canvas(mapContainer, {
-                useCORS: true,
-                logging: false,
-                height: mapContainer.offsetHeight,
-                width: mapContainer.offsetWidth
-            });
+            const canvas = await html2canvas(mapContainer, { useCORS: true, logging: false, height: mapContainer.offsetHeight, width: mapContainer.offsetWidth });
             const mapImgData = canvas.toDataURL('image/png');
-
-            doc.setFillColor(13, 17, 23);
-            doc.rect(0, 0, 210, 50, 'F');
-            doc.setDrawColor(212, 163, 115);
-            doc.setLineWidth(1.5);
-            doc.line(0, 50, 210, 50);
-
-            try {
-                doc.addImage(logoUrl, 'PNG', 15, 10, 30, 25);
-            } catch (e) { console.error("Logo Error"); }
-
-            doc.setTextColor(212, 163, 115);
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(20);
-            doc.text("PROPERTY INFORMATION REPORT", 50, 25);
-            
-            doc.setFontSize(9);
-            doc.setTextColor(150, 150, 150);
-            doc.setFont("helvetica", "normal");
-            doc.text("POLITEKNIK MALAYSIA | GEOGRAPHIC INFORMATION SYSTEM", 50, 32);
+            doc.setFillColor(13, 17, 23); doc.rect(0, 0, 210, 50, 'F');
+            doc.setDrawColor(212, 163, 115); doc.setLineWidth(1.5); doc.line(0, 50, 210, 50);
+            try { doc.addImage(logoUrl, 'PNG', 15, 10, 30, 25); } catch (e) { console.error("Logo Error"); }
+            doc.setTextColor(212, 163, 115); doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.text("PROPERTY INFORMATION REPORT", 50, 25);
+            doc.setFontSize(9); doc.setTextColor(150, 150, 150); doc.setFont("helvetica", "normal"); doc.text("POLITEKNIK MALAYSIA | GEOGRAPHIC INFORMATION SYSTEM", 50, 32);
             doc.text("ZEDNDREW EXPLORER OFFICIAL DATA RECORD", 50, 37);
-
-            doc.setTextColor(40, 40, 40);
-            doc.setFontSize(11);
-            doc.setFont("helvetica", "bold");
-            doc.text("LOT VISUALIZATION:", 20, 65);
-            
-            doc.setDrawColor(212, 163, 115);
-            doc.setLineWidth(0.5);
-            doc.addImage(mapImgData, 'PNG', 20, 70, 170, 85);
-            doc.rect(20, 70, 170, 85, 'S');
-
-            doc.setFillColor(248, 249, 250);
-            doc.rect(20, 165, 170, 85, 'F');
-            doc.setDrawColor(220, 220, 220);
-            doc.rect(20, 165, 170, 85, 'S');
-
-            doc.setTextColor(40, 40, 40);
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "bold");
-            doc.text("OFFICIAL PROPERTY DATA:", 30, 178);
-            
+            doc.setTextColor(40, 40, 40); doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.text("LOT VISUALIZATION:", 20, 65);
+            doc.setDrawColor(212, 163, 115); doc.setLineWidth(0.5); doc.addImage(mapImgData, 'PNG', 20, 70, 170, 85); doc.rect(20, 70, 170, 85, 'S');
+            doc.setFillColor(248, 249, 250); doc.rect(20, 165, 170, 85, 'F');
+            doc.setDrawColor(220, 220, 220); doc.rect(20, 165, 170, 85, 'S');
+            doc.setTextColor(40, 40, 40); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("OFFICIAL PROPERTY DATA:", 30, 178);
             let yPos = 190;
-            const items = [
-                ["LOT NUMBER", ": " + (currentLotData.NO_LOT || "-")],
-                ["PA NUMBER", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "N/A")],
-                ["LEGAL OWNER", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")],
-                ["TOTAL AREA", ": " + (currentLotData.AREA || "-") + " m2"],
-                ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")],
-                ["LAND USE", ": " + (currentLotData["tsp — hakmilik_KEGUNAAN_TANAH"] || "-")]
-            ];
-
-            items.forEach(item => {
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(10);
-                doc.text(item[0], 35, yPos);
-                doc.setFont("helvetica", "normal");
-                doc.text(item[1], 80, yPos);
-                yPos += 9;
-            });
-
-            doc.setFontSize(9);
-            doc.setTextColor(100, 100, 100);
-            doc.text("Prepared By: " + user, 20, 265);
-            doc.text("Generated on: " + new Date().toLocaleString(), 20, 270);
-
-            doc.setFontSize(8);
-            doc.setTextColor(180, 180, 180);
-            doc.text("CONFIDENTIAL - ZEDNDREW EXPLORER V4", 140, 285);
-
+            const items = [ ["LOT NUMBER", ": " + (currentLotData.NO_LOT || "-")], ["PA NUMBER", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "N/A")], ["LEGAL OWNER", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")], ["TOTAL AREA", ": " + (currentLotData.AREA || "-") + " m2"], ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")], ["LAND USE", ": " + (currentLotData["tsp — hakmilik_KEGUNAAN_TANAH"] || "-")] ];
+            items.forEach(item => { doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.text(item[0], 35, yPos); doc.setFont("helvetica", "normal"); doc.text(item[1], 80, yPos); yPos += 9; });
+            doc.setFontSize(9); doc.setTextColor(100, 100, 100); doc.text("Prepared By: " + user, 20, 265); doc.text("Generated on: " + new Date().toLocaleString(), 20, 270);
+            doc.setFontSize(8); doc.setTextColor(180, 180, 180); doc.text("CONFIDENTIAL - ZEDNDREW EXPLORER V4", 140, 285);
             doc.save("Report_Lot_" + (currentLotData.NO_LOT || "Unknown") + ".pdf");
         }
 
@@ -460,24 +355,15 @@
             layer_lotfinal_1.eachLayer(function(layer) {
                 if (String(layer.feature.properties.NO_LOT) === value) {
                     if (lastClickedLayer) { layer_lotfinal_1.resetStyle(lastClickedLayer); }
-                    layer.setStyle(highlightStyle);
-                    lastClickedLayer = layer;
-                    updateDashboard(layer.feature.properties);
-                    map.fitBounds(layer.getBounds(), {padding: [100, 100]}); 
-                    found = true;
+                    layer.setStyle(highlightStyle); lastClickedLayer = layer;
+                    updateDashboard(layer.feature.properties); map.fitBounds(layer.getBounds(), {padding: [100, 100]}); found = true;
                 }
             });
             if (!found) alert("Lot " + value + " not found.");
         }
-
         function resetView() { location.reload(); }
-
         if (typeof json_TANDASEMPADANLOTGABUNG_2 !== 'undefined') {
-            L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
-                pointToLayer: function (f, latlng) { 
-                    return L.circleMarker(latlng, {radius: 2, fillColor: '#d4a373', color: '#0d1117', weight: 1, fillOpacity: 1}); 
-                }
-            }).addTo(map);
+            L.geoJson(json_TANDASEMPADANLOTGABUNG_2, { pointToLayer: function (f, latlng) { return L.circleMarker(latlng, {radius: 2, fillColor: '#d4a373', color: '#0d1117', weight: 1, fillOpacity: 1}); } }).addTo(map);
         }
         </script>
     </body>
