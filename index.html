@@ -199,16 +199,15 @@
                 zoomControl: true, 
                 maxZoom: 28, 
                 minZoom: 1,
-                preferCanvas: false // Set false for better html2canvas compatibility
+                preferCanvas: false
             }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
             
             map.zoomControl.setPosition('bottomright');
 
-            // Google Hybrid with CORS fix
             var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { 
                 maxNativeZoom: 20, 
                 maxZoom: 28,
-                crossOrigin: true // PENTING untuk PDF Capture
+                crossOrigin: true 
             }).addTo(map);
 
             function updateDashboard(props) {
@@ -238,16 +237,16 @@
                 }
             }).addTo(map);
 
-            // --- FUNGSI GENERATE PDF ---
+            // --- FUNGSI GENERATE PDF DENGAN LOGO ---
             async function generatePDF() {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF('p', 'mm', 'a4');
                 const user = (document.getElementById('userName').value || "AUTHORIZED USER").toUpperCase();
                 
-                // Guna URL Proxy/Base64 jika image biasa sangkut CORS. Ini logo Politeknik.
-                const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/b/be/Logo_Politeknik_Malaysia.png';
+                // Logo Politeknik Malaysia (Base64) - Menjamin gambar sentiasa keluar
+                const logoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADNQTFRF////AAAA/0RE/2Zm/5mZ/7u7/9zc/9PT/8PD/7u7/6mp/5mZ/4CA/2Zm/0RE/yAg////////7GZ66AAAABB0Uk5T////////////////////AO7997YAAALTSURBVHja7NvZctpAFAXQYIuYxSAsYv//v0YF6pZUnIuT6un7S9W8OAnZp6pU6Z8N8AtAAAIQgAAEIAABCEAAAhCAAAQgAAEIQAAC/A/A7vY0m712+o8A9vM97XvY/XWw+v1m/pUAX4K5m/X3YfP7nL8S4FOwi0GfP9375z9v5p8B+BBsA4L+fLj7v24WnwD4EOwKBP0Z6/9pM/8AwL8Fu9f9W0P9PwTwV7B7A9S/+7eY+S8A+C7YDZD+68P9P/4ZAECHAFvAtgC2/9cW8AcAQA0CHAHr9TptAL8vH9vAngAtAAn/6yv6WwIeX89/CdgSkPCDpL8D4C8I+AnYEpDwv66WvwHwSwP2BPj678v6OwD+vB6/BLAFuALX1vS3BPx+Pf8hYA9wBTrN7vR3ALzXy68Be4IrcKzV/C0Ajy/n7wGuwLVW+i8N+PnyX07AbwIeL8D/IuDPn3/zLcCvgK9vXf85/68A6L6uNf9PAbj/G36mAnD8R//h5/0XAbj+T6YCcPwfTwXg+A/fCUDfTQXg9L9mKwCnX81eAE6/yv4K0PcfTAWg785eAE5/yr4C8Pg7NgJw/EemAnD8G3YC0Hd9qwB9N7AK0Hfj6QLQ91mrAP1XvArQf8arAP1HnArAf9iqAPzHrArAf9KqAPz7rArAv9GqAPzr6QLAr6YLAL+mLgD8WqoA8GuuAsCvvgoAv/QqAPyqqwDwS6oC8CuuAsCvoAoAn1sFfW6PAsBnFvS5PgoAn1rQ5/YkAHxyQZ87kwDwiQV9Hk0CwEcV9PlvEgB+UUGff6YF8AsK+vw7LYAfXtDnx7QAfnBBnz9mA+B7F/T5VzYAvndBn79kA+D7FfT5RzYAvldBn/9jA+D7FPQpWAD4FfSpWAD4FfSpWAD4lUvQp1QB4FfSp1IB4FfSr04B4FfSr0oB4FfSD6MCwK+kn18Ff/VfAQYA8vFf0Xv9UeIAAAAASUVORK5CYII=";
 
-                // 1. Capture Map with html2canvas
+                // 1. Capture Map
                 const mapContainer = document.getElementById('map');
                 const canvas = await html2canvas(mapContainer, {
                     useCORS: true,
@@ -260,24 +259,22 @@
                 doc.setFillColor(13, 17, 23);
                 doc.rect(0, 0, 210, 45, 'F');
                 doc.setDrawColor(212, 163, 115);
-                doc.setLineWidth(1);
+                doc.setLineWidth(1.2);
                 doc.line(0, 45, 210, 45);
 
-                // 3. Header Text & Logo
-                try {
-                    doc.addImage(logoUrl, 'PNG', 15, 8, 25, 22);
-                } catch (e) { console.warn("Logo blocked by CORS"); }
+                // 3. Header Text & Logo Arrangement (SUSUNAN CANTIK)
+                doc.addImage(logoBase64, 'PNG', 15, 8, 28, 28); 
 
                 doc.setTextColor(212, 163, 115);
                 doc.setFont("helvetica", "bold");
-                doc.setFontSize(18);
-                doc.text("PROPERTY INFORMATION REPORT", 45, 20);
+                doc.setFontSize(19);
+                doc.text("PROPERTY INFORMATION REPORT", 48, 20);
                 
                 doc.setFontSize(9);
-                doc.setTextColor(160, 160, 160);
+                doc.setTextColor(180, 180, 180);
                 doc.setFont("helvetica", "normal");
-                doc.text("POLITEKNIK MALAYSIA | GEOGRAPHIC INFORMATION SYSTEM", 45, 27);
-                doc.text("ZEDNDREW EXPLORER V4 OFFICIAL DATA RECORD", 45, 32);
+                doc.text("POLITEKNIK MALAYSIA | JABATAN KEJURUTERAAN AWAM", 48, 27);
+                doc.text("ZEDNDREW EXPLORER V4 OFFICIAL DATA RECORD", 48, 32);
 
                 // 4. Map Image Placement
                 doc.setTextColor(40, 40, 40);
