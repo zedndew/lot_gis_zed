@@ -81,7 +81,8 @@
 
         /* --- DASHBOARD DARK ELITE --- */
         .sidebar {
-            height: 100%; width: 0; position: fixed; z-index: 2000;
+            height: 100%; width: 0; position: fixed; 
+            z-index: 4000; /* DITINGKATKAN SUPAYA DI ATAS FOOTER */
             top: 0; left: 0; background: rgba(13, 17, 23, 0.98);
             backdrop-filter: blur(15px); overflow-x: hidden; 
             transition: 0.4s ease-in-out;
@@ -147,15 +148,15 @@
         .menu-btn {
             position: fixed; 
             top: 140px; 
-            left: 0 !important; /* TETAP RAPAT KE KIRI */
+            left: 0 !important;
             z-index: 1001; 
             background: #0d1117; 
             color: #d4a373; 
-            padding: 15px 25px 15px 15px; /* Padding kanan lebih sikit untuk balance */
+            padding: 15px 25px 15px 15px; 
             border: 2px solid #d4a373; 
-            border-left: none !important; /* Buang border kiri supaya nampak 'tumbuh' dari tepi */
+            border-left: none !important; 
             cursor: pointer; 
-            border-radius: 0 50px 50px 0 !important; /* STYLE BUBBLE */
+            border-radius: 0 50px 50px 0 !important; 
             font-size: 12px; 
             font-weight: 900; 
             letter-spacing: 2px;
@@ -176,7 +177,7 @@
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
-            z-index: 3000; display: none; align-items: center; justify-content: center;
+            z-index: 5000; display: none; align-items: center; justify-content: center;
         }
         .modal-box {
             background: #0d1117; width: 90%; max-width: 400px;
@@ -210,7 +211,7 @@
         .leaflet-control-attribution { background: rgba(13, 17, 23, 0.7) !important; color: #8b949e !important; font-size: 9px !important; backdrop-filter: blur(5px); border-radius: 10px 0 0 0; }
         .leaflet-control-attribution a { color: #d4a373 !important; }
 
-        /* --- FOOTER CSS TAMBAHAN SAHAJA --- */
+        /* --- FOOTER CSS --- */
         .aesthetic-footer {
             position: fixed;
             bottom: 0;
@@ -222,7 +223,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 2500;
+            z-index: 2500; /* LEBIH RENDAH DARI SIDEBAR */
             backdrop-filter: blur(5px);
         }
         .footer-text {
