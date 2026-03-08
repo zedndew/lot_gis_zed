@@ -11,108 +11,108 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
         
         <style>
-            html, body, #map { 
-                width: 100%; height: 100%; padding: 0; margin: 0; 
-                background: #0d1117; 
-            }
+        html, body, #map { 
+            width: 100%; height: 100%; padding: 0; margin: 0; 
+            background: #0d1117; 
+        }
 
-            /* --- DASHBOARD DARK ELITE --- */
-            .sidebar {
-                height: 100%; width: 0; position: fixed; z-index: 2000;
-                top: 0; left: 0; background: rgba(13, 17, 23, 0.98);
-                backdrop-filter: blur(15px); overflow-x: hidden; 
-                transition: 0.4s ease-in-out;
-                box-shadow: 10px 0 30px rgba(0,0,0,0.5);
-                font-family: 'Inter', sans-serif;
-                border-right: 1px solid rgba(212, 163, 115, 0.2);
-            }
+        /* --- DASHBOARD DARK ELITE --- */
+        .sidebar {
+            height: 100%; width: 0; position: fixed; z-index: 2000;
+            top: 0; left: 0; background: rgba(13, 17, 23, 0.98);
+            backdrop-filter: blur(15px); overflow-x: hidden; 
+            transition: 0.4s ease-in-out;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+            font-family: 'Inter', sans-serif;
+            border-right: 1px solid rgba(212, 163, 115, 0.2);
+        }
 
-            .sidebar-content { padding: 40px 25px; min-width: 280px; position: relative; }
+        .sidebar-content { padding: 40px 25px; min-width: 280px; position: relative; }
 
-            .close-btn { 
-                position: absolute; top: 20px; right: 20px;
-                font-size: 28px; cursor: pointer; color: #d4a373; 
-                border: none; background: none; transition: 0.3s;
-            }
-            .close-btn:hover { color: #fff; transform: rotate(90deg); }
+        .close-btn { 
+            position: absolute; top: 20px; right: 20px;
+            font-size: 28px; cursor: pointer; color: #d4a373; 
+            border: none; background: none; transition: 0.3s;
+        }
+        .close-btn:hover { color: #fff; transform: rotate(90deg); }
 
-            .sidebar h2 { 
-                color: #d4a373; font-size: 18px; font-weight: 700;
-                letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase;
-                border-left: 4px solid #d4a373; padding-left: 15px;
-            }
+        .sidebar h2 { 
+            color: #d4a373; font-size: 18px; font-weight: 700;
+            letter-spacing: 2px; margin-bottom: 30px; text-transform: uppercase;
+            border-left: 4px solid #d4a373; padding-left: 15px;
+        }
 
-            .menu-section {
-                background: rgba(255, 255, 255, 0.02); padding: 18px;
-                border-radius: 12px; margin-bottom: 20px;
-                border: 1px solid rgba(255, 255, 255, 0.05);
-            }
+        .menu-section {
+            background: rgba(255, 255, 255, 0.02); padding: 18px;
+            border-radius: 12px; margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-            .section-title { 
-                font-size: 9px; font-weight: 700; color: #8b949e; 
-                margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px;
-            }
+        .section-title { 
+            font-size: 9px; font-weight: 700; color: #8b949e; 
+            margin-bottom: 12px; text-transform: uppercase; letter-spacing: 1.5px;
+        }
 
-            .search-box {
-                width: 100%; padding: 12px; margin-bottom: 12px;
-                border: 1px solid #30363d; border-radius: 8px;
-                background: #0d1117; color: #c9d1d9; box-sizing: border-box; outline: none;
-            }
+        .search-box {
+            width: 100%; padding: 12px; margin-bottom: 12px;
+            border: 1px solid #30363d; border-radius: 8px;
+            background: #0d1117; color: #c9d1d9; box-sizing: border-box; outline: none;
+        }
 
-            .btn-primary { 
-                width: 100%; padding: 12px; background: #d4a373; color: #0d1117; 
-                border: none; border-radius: 8px; cursor: pointer; font-weight: 800; 
-                margin-bottom: 8px; text-transform: uppercase; transition: 0.3s;
-            }
-            .btn-primary:hover { background: #faedcd; }
+        .btn-primary { 
+            width: 100%; padding: 12px; background: #d4a373; color: #0d1117; 
+            border: none; border-radius: 8px; cursor: pointer; font-weight: 800; 
+            margin-bottom: 8px; text-transform: uppercase; transition: 0.3s;
+        }
+        .btn-primary:hover { background: #faedcd; }
 
-            .btn-secondary { 
-                width: 100%; padding: 10px; background: transparent; color: #8b949e; 
-                border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 11px;
-            }
+        .btn-secondary { 
+            width: 100%; padding: 10px; background: transparent; color: #8b949e; 
+            border: 1px solid #30363d; border-radius: 8px; cursor: pointer; font-size: 11px;
+        }
 
-            .btn-pdf {
-                width: 100%; padding: 12px; background: transparent; color: #ffb366;
-                border: 1px solid #ffb366; border-radius: 8px; cursor: pointer;
-                font-weight: 800; font-size: 11px; text-transform: uppercase;
-                margin-top: 15px; transition: 0.3s; display: none;
-            }
-            .btn-pdf:hover { background: rgba(255, 179, 102, 0.1); }
+        .btn-pdf {
+            width: 100%; padding: 12px; background: transparent; color: #ffb366;
+            border: 1px solid #ffb366; border-radius: 8px; cursor: pointer;
+            font-weight: 800; font-size: 11px; text-transform: uppercase;
+            margin-top: 15px; transition: 0.3s; display: none;
+        }
+        .btn-pdf:hover { background: rgba(255, 179, 102, 0.1); }
 
-            .info-card {
-                background: rgba(212, 163, 115, 0.03); padding: 14px; border-radius: 10px;
-                margin-top: 10px; border-bottom: 1px solid rgba(212, 163, 115, 0.2);
-            }
-            .info-label { font-size: 8px; color: #8b949e; font-weight: 600; text-transform: uppercase; }
-            .info-value { font-size: 14px; font-weight: 500; color: #f0f6fc; margin-top: 4px; }
+        .info-card {
+            background: rgba(212, 163, 115, 0.03); padding: 14px; border-radius: 10px;
+            margin-top: 10px; border-bottom: 1px solid rgba(212, 163, 115, 0.2);
+        }
+        .info-label { font-size: 8px; color: #8b949e; font-weight: 600; text-transform: uppercase; }
+        .info-value { font-size: 14px; font-weight: 500; color: #f0f6fc; margin-top: 4px; }
 
-            .menu-btn {
-                position: fixed; top: 20px; left: 20px; z-index: 1001;
-                background: #0d1117; color: #d4a373; padding: 12px 20px; 
-                border: 1px solid #d4a373; cursor: pointer; border-radius: 4px; 
-                font-size: 11px; font-weight: 900; letter-spacing: 2px;
-            }
+        .menu-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 1001;
+            background: #0d1117; color: #d4a373; padding: 12px 20px; 
+            border: 1px solid #d4a373; cursor: pointer; border-radius: 4px; 
+            font-size: 11px; font-weight: 900; letter-spacing: 2px;
+        }
 
-            /* --- MODAL PREVIEW --- */
-            .modal-overlay {
-                position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-                background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
-                z-index: 3000; display: none; align-items: center; justify-content: center;
-            }
-            .modal-box {
-                background: #0d1117; width: 90%; max-width: 400px;
-                padding: 30px; border-radius: 20px; border: 1px solid #d4a373;
-                box-shadow: 0 20px 50px rgba(0,0,0,1); color: #fff;
-            }
-            .modal-box h3 { color: #d4a373; margin-top: 0; font-size: 16px; text-transform: uppercase; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
-            .modal-body { margin: 20px 0; font-size: 13px; }
-            .modal-body label { display: block; margin-bottom: 8px; color: #8b949e; font-size: 10px; font-weight: 700; }
-            .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
-            
-            .btn-confirm { flex: 1; padding: 12px; background: #d4a373; color: #0d1117; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
-            .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #30363d; color: #8b949e; border-radius: 8px; font-weight: 800; cursor: pointer; }
+        /* --- MODAL PREVIEW --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px);
+            z-index: 3000; display: none; align-items: center; justify-content: center;
+        }
+        .modal-box {
+            background: #0d1117; width: 90%; max-width: 400px;
+            padding: 30px; border-radius: 20px; border: 1px solid #d4a373;
+            box-shadow: 0 20px 50px rgba(0,0,0,1); color: #fff;
+        }
+        .modal-box h3 { color: #d4a373; margin-top: 0; font-size: 16px; text-transform: uppercase; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
+        .modal-body { margin: 20px 0; font-size: 13px; }
+        .modal-body label { display: block; margin-bottom: 8px; color: #8b949e; font-size: 10px; font-weight: 700; }
+        .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
+        
+        .btn-confirm { flex: 1; padding: 12px; background: #d4a373; color: #0d1117; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+        .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #30363d; color: #8b949e; border-radius: 8px; font-weight: 800; cursor: pointer; }
 
-            .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
+        .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
         </style>
         <title>Zedndrew | Dark GIS v4</title>
     </head>
@@ -174,182 +174,194 @@
         <script src="data/TANDASEMPADANLOTGABUNG_2.js"></script>
 
         <script>
-            var currentLotData = null;
-            var lastClickedLayer = null;
+        var currentLotData = null;
 
-            function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
-            function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
+        function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
+        function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
 
-            function openPreview() {
-                if(!currentLotData) return;
-                document.getElementById('pre-lot').innerText = currentLotData.NO_LOT || "N/A";
-                document.getElementById('pre-owner').innerText = currentLotData["tsp — pemilik_PEMILIK"] || "N/A";
-                document.getElementById('pre-area').innerText = (currentLotData.AREA || "0") + " m2";
-                document.getElementById('modalOverlay').style.display = 'flex';
-            }
+        function openPreview() {
+            if(!currentLotData) return;
+            document.getElementById('pre-lot').innerText = currentLotData.NO_LOT;
+            document.getElementById('pre-owner').innerText = currentLotData["tsp — pemilik_PEMILIK"] || "N/A";
+            document.getElementById('pre-area').innerText = currentLotData.AREA + " m2";
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
 
-            function closePreview() { document.getElementById('modalOverlay').style.display = 'none'; }
+        function closePreview() { document.getElementById('modalOverlay').style.display = 'none'; }
 
-            function confirmDownload() {
-                generatePDF();
-                closePreview();
-            }
+        function confirmDownload() {
+            generatePDF();
+            closePreview();
+        }
 
-            var map = L.map('map', { 
-                zoomControl: true, 
-                maxZoom: 28, 
-                minZoom: 1,
-                preferCanvas: false
-            }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
-            
-            map.zoomControl.setPosition('bottomright');
+        var map = L.map('map', { 
+            zoomControl: true, 
+            maxZoom: 28, 
+            minZoom: 1,
+            preferCanvas: true 
+        }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
+        
+        map.zoomControl.setPosition('bottomright');
 
-            var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', { 
-                maxNativeZoom: 20, 
-                maxZoom: 28,
-                crossOrigin: true 
-            }).addTo(map);
+        var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { 
+            maxNativeZoom: 20, 
+            maxZoom: 28,
+            crossOrigin: 'Anonymous' 
+        }).addTo(map);
 
-            function updateDashboard(props) {
-                currentLotData = props;
-                document.getElementById('disp-lot').innerText = props.NO_LOT || '-';
-                document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "N/A";
-                document.getElementById('disp-area').innerHTML = (props.AREA || '-') + ' m<sup>2</sup>';
-                document.getElementById('pdfBtn').style.display = 'block';
-                openNav();
-            }
+        function updateDashboard(props) {
+            currentLotData = props;
+            document.getElementById('disp-lot').innerText = props.NO_LOT || '-';
+            document.getElementById('disp-owner').innerText = props["tsp — pemilik_PEMILIK"] || "N/A";
+            document.getElementById('disp-area').innerHTML = (props.AREA || '-') + ' m<sup>2</sup>';
+            document.getElementById('pdfBtn').style.display = 'block';
+            openNav();
+        }
 
-            var defaultStyle = { opacity: 1, color: '#d4a373', weight: 1, fill: true, fillOpacity: 0.2, fillColor: '#d4a373' };
-            var highlightStyle = { opacity: 1, color: '#fff', weight: 3, fill: true, fillOpacity: 0.6, fillColor: '#d4a373' };
+        var defaultStyle = { opacity: 1, color: '#d4a373', weight: 1, fill: true, fillOpacity: 0.2, fillColor: '#d4a373' };
+        var highlightStyle = { opacity: 1, color: '#fff', weight: 3, fill: true, fillOpacity: 0.6, fillColor: '#d4a373' };
 
-            var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
-                style: defaultStyle,
-                onEachFeature: function(feature, layer) {
-                    layer.on({
-                        click: function(e) {
-                            if (lastClickedLayer) { layer_lotfinal_1.resetStyle(lastClickedLayer); }
-                            layer.setStyle(highlightStyle);
-                            lastClickedLayer = layer;
-                            updateDashboard(feature.properties);
-                            L.DomEvent.stopPropagation(e);
-                        }
-                    });
-                }
-            }).addTo(map);
+        var lastClickedLayer;
 
-            // --- FUNGSI GENERATE PDF DENGAN LOGO ---
-            async function generatePDF() {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('p', 'mm', 'a4');
-                const user = (document.getElementById('userName').value || "AUTHORIZED USER").toUpperCase();
-                
-                // Logo Politeknik Malaysia (Base64) - Menjamin gambar sentiasa keluar
-                const logoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAMAAAD04JH5AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAADNQTFRF////AAAA/0RE/2Zm/5mZ/7u7/9zc/9PT/8PD/7u7/6mp/5mZ/4CA/2Zm/0RE/yAg////////7GZ66AAAABB0Uk5T////////////////////AO7997YAAALTSURBVHja7NvZctpAFAXQYIuYxSAsYv//v0YF6pZUnIuT6un7S9W8OAnZp6pU6Z8N8AtAAAIQgAAEIAABCEAAAhCAAAQgAAEIQAAC/A/A7vY0m712+o8A9vM97XvY/XWw+v1m/pUAX4K5m/X3YfP7nL8S4FOwi0GfP9375z9v5p8B+BBsA4L+fLj7v24WnwD4EOwKBP0Z6/9pM/8AwL8Fu9f9W0P9PwTwV7B7A9S/+7eY+S8A+C7YDZD+68P9P/4ZAECHAFvAtgC2/9cW8AcAQA0CHAHr9TptAL8vH9vAngAtAAn/6yv6WwIeX89/CdgSkPCDpL8D4C8I+AnYEpDwv66WvwHwSwP2BPj678v6OwD+vB6/BLAFuALX1vS3BPx+Pf8hYA9wBTrN7vR3ALzXy68Be4IrcKzV/C0Ajy/n7wGuwLVW+i8N+PnyX07AbwIeL8D/IuDPn3/zLcCvgK9vXf85/68A6L6uNf9PAbj/G36mAnD8R//h5/0XAbj+T6YCcPwfTwXg+A/fCUDfTQXg9L9mKwCnX81eAE6/yv4K0PcfTAWg785eAE5/yr4C8Pg7NgJw/EemAnD8G3YC0Hd9qwB9N7AK0Hfj6QLQ91mrAP1XvArQf8arAP1HnArAf9iqAPzHrArAf9KqAPz7rArAv9GqAPzr6QLAr6YLAL+mLgD8WqoA8GuuAsCvvgoAv/QqAPyqqwDwS6oC8CuuAsCvoAoAn1sFfW6PAsBnFvS5PgoAn1rQ5/YkAHxyQZ87kwDwiQV9Hk0CwEcV9PlvEgB+UUGff6YF8AsK+vw7LYAfXtDnx7QAfnBBnz9mA+B7F/T5VzYAvndBn79kA+D7FfT5RzYAvldBn/9jA+D7FPQpWAD4FfSpWAD4FfSpWAD4lUvQp1QB4FfSp1IB4FfSr04B4FfSr0oB4FfSD6MCwK+kn18Ff/VfAQYA8vFf0Xv9UeIAAAAASUVORK5CYII=";
-
-                // 1. Capture Map
-                const mapContainer = document.getElementById('map');
-                const canvas = await html2canvas(mapContainer, {
-                    useCORS: true,
-                    allowTaint: false,
-                    ignoreElements: (node) => node.classList.contains('leaflet-control-container')
-                });
-                const mapImgData = canvas.toDataURL('image/png');
-
-                // 2. Styling PDF - Header Dark
-                doc.setFillColor(13, 17, 23);
-                doc.rect(0, 0, 210, 45, 'F');
-                doc.setDrawColor(212, 163, 115);
-                doc.setLineWidth(1.2);
-                doc.line(0, 45, 210, 45);
-
-                // 3. Header Text & Logo Arrangement (SUSUNAN CANTIK)
-                doc.addImage(logoBase64, 'PNG', 15, 8, 28, 28); 
-
-                doc.setTextColor(212, 163, 115);
-                doc.setFont("helvetica", "bold");
-                doc.setFontSize(19);
-                doc.text("PROPERTY INFORMATION REPORT", 48, 20);
-                
-                doc.setFontSize(9);
-                doc.setTextColor(180, 180, 180);
-                doc.setFont("helvetica", "normal");
-                doc.text("POLITEKNIK MALAYSIA | JABATAN KEJURUTERAAN AWAM", 48, 27);
-                doc.text("ZEDNDREW EXPLORER V4 OFFICIAL DATA RECORD", 48, 32);
-
-                // 4. Map Image Placement
-                doc.setTextColor(40, 40, 40);
-                doc.setFontSize(11);
-                doc.setFont("helvetica", "bold");
-                doc.text("SITE VISUALIZATION (SATELLITE VIEW):", 20, 58);
-                
-                doc.setDrawColor(212, 163, 115);
-                doc.addImage(mapImgData, 'PNG', 20, 62, 170, 95);
-                doc.rect(20, 62, 170, 95, 'S');
-
-                // 5. Data Table/Box
-                doc.setFillColor(248, 249, 250);
-                doc.rect(20, 165, 170, 80, 'F');
-                doc.setDrawColor(200, 200, 200);
-                doc.rect(20, 165, 170, 80, 'S');
-
-                doc.setTextColor(13, 17, 23);
-                doc.setFontSize(12);
-                doc.text("TECHNICAL LAND DATA:", 30, 178);
-
-                let yPos = 190;
-                const items = [
-                    ["LOT NUMBER", ": " + (currentLotData.NO_LOT || "-")],
-                    ["PA NUMBER", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "N/A")],
-                    ["LEGAL OWNER", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")],
-                    ["TOTAL AREA", ": " + (currentLotData.AREA || "-") + " SQ. METERS"],
-                    ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")],
-                    ["LAND USE", ": " + (currentLotData["tsp — hakmilik_KEGUNAAN_TANAH"] || "-")]
-                ];
-
-                items.forEach(item => {
-                    doc.setFont("helvetica", "bold");
-                    doc.setFontSize(10);
-                    doc.text(item[0], 35, yPos);
-                    doc.setFont("helvetica", "normal");
-                    doc.text(item[1], 80, yPos);
-                    yPos += 8;
-                });
-
-                // 6. Footer
-                doc.setFontSize(8);
-                doc.setTextColor(150, 150, 150);
-                doc.text("Report Prepared By: " + user, 20, 260);
-                doc.text("Generated on: " + new Date().toLocaleString(), 20, 265);
-                doc.text("PAGE 1 OF 1 - SYSTEM GENERATED DOCUMENT", 140, 285);
-
-                doc.save("Report_Lot_" + (currentLotData.NO_LOT || "Data") + ".pdf");
-            }
-
-            function searchLot() {
-                var value = document.getElementById('lotSearch').value.trim();
-                var found = false;
-                layer_lotfinal_1.eachLayer(function(layer) {
-                    if (String(layer.feature.properties.NO_LOT) === value) {
+        var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
+            style: defaultStyle,
+            onEachFeature: function(feature, layer) {
+                layer.on({
+                    click: function(e) {
                         if (lastClickedLayer) { layer_lotfinal_1.resetStyle(lastClickedLayer); }
                         layer.setStyle(highlightStyle);
                         lastClickedLayer = layer;
-                        updateDashboard(layer.feature.properties);
-                        map.fitBounds(layer.getBounds(), {padding: [100, 100]}); 
-                        found = true;
+                        updateDashboard(feature.properties);
+                        L.DomEvent.stopPropagation(e);
                     }
                 });
-                if (!found) alert("Lot " + value + " not found.");
             }
+        }).addTo(map);
 
-            function resetView() { location.reload(); }
+        // --- FUNGSI GENERATE PDF: DENGAN LOGO POLITEKNIK & SUSUNAN KEMAS ---
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const user = (document.getElementById('userName').value || "AUTHORIZED USER").toUpperCase();
 
-            if (typeof json_TANDASEMPADANLOTGABUNG_2 !== 'undefined') {
-                L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
-                    pointToLayer: function (f, latlng) { 
-                        return L.circleMarker(latlng, {radius: 2, fillColor: '#d4a373', color: '#0d1117', weight: 1, fillOpacity: 1}); 
-                    }
-                }).addTo(map);
-            }
+            // Link Logo Politeknik Malaysia (Transparent PNG)
+            const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/b/be/Logo_Politeknik_Malaysia.png';
+
+            // 1. CAPTURE MAP
+            const mapContainer = document.getElementById('map');
+            const canvas = await html2canvas(mapContainer, {
+                useCORS: true,
+                logging: false,
+                height: mapContainer.offsetHeight,
+                width: mapContainer.offsetWidth
+            });
+            const mapImgData = canvas.toDataURL('image/png');
+
+            // 2. HEADER ELITE (DARK THEME)
+            doc.setFillColor(13, 17, 23);
+            doc.rect(0, 0, 210, 50, 'F');
+            doc.setDrawColor(212, 163, 115);
+            doc.setLineWidth(1.5);
+            doc.line(0, 50, 210, 50);
+
+            // 3. MELETAK LOGO DAN TAJUK (SUSUNAN CANTIK)
+            try {
+                // Letak Logo di penjuru kiri atas
+                doc.addImage(logoUrl, 'PNG', 15, 10, 30, 25);
+            } catch (e) { console.error("Logo Error"); }
+
+            // Tajuk diletakkan di sebelah logo (Anjak ke kanan skit)
+            doc.setTextColor(212, 163, 115);
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("PROPERTY INFORMATION REPORT", 50, 25);
+            
+            doc.setFontSize(9);
+            doc.setTextColor(150, 150, 150);
+            doc.setFont("helvetica", "normal");
+            doc.text("POLITEKNIK MALAYSIA | GEOGRAPHIC INFORMATION SYSTEM", 50, 32);
+            doc.text("ZEDNDREW EXPLORER OFFICIAL DATA RECORD", 50, 37);
+
+            // 4. GAMBAR LOT (TANGKAPAN PETA)
+            doc.setTextColor(40, 40, 40);
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "bold");
+            doc.text("LOT VISUALIZATION:", 20, 65);
+            
+            // Map Frame
+            doc.setDrawColor(212, 163, 115);
+            doc.setLineWidth(0.5);
+            doc.addImage(mapImgData, 'PNG', 20, 70, 170, 85);
+            doc.rect(20, 70, 170, 85, 'S');
+
+            // 5. MAKLUMAT DETAIL (KEMAS DALAM BOX)
+            doc.setFillColor(248, 249, 250);
+            doc.rect(20, 165, 170, 85, 'F');
+            doc.setDrawColor(220, 220, 220);
+            doc.rect(20, 165, 170, 85, 'S');
+
+            doc.setTextColor(40, 40, 40);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text("OFFICIAL PROPERTY DATA:", 30, 178);
+            
+            let yPos = 190;
+            const items = [
+                ["LOT NUMBER", ": " + (currentLotData.NO_LOT || "-")],
+                ["PA NUMBER", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "N/A")],
+                ["LEGAL OWNER", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")],
+                ["TOTAL AREA", ": " + (currentLotData.AREA || "-") + " m2"],
+                ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")],
+                ["LAND USE", ": " + (currentLotData["tsp — hakmilik_KEGUNAAN_TANAH"] || "-")]
+            ];
+
+            items.forEach(item => {
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(10);
+                doc.text(item[0], 35, yPos);
+                doc.setFont("helvetica", "normal");
+                doc.text(item[1], 80, yPos);
+                yPos += 9;
+            });
+
+            // 6. SIGNATURE & FOOTER
+            doc.setFontSize(9);
+            doc.setTextColor(100, 100, 100);
+            doc.text("Prepared By: " + user, 20, 265);
+            doc.text("Generated on: " + new Date().toLocaleString(), 20, 270);
+
+            doc.setFontSize(8);
+            doc.setTextColor(180, 180, 180);
+            doc.text("CONFIDENTIAL - ZEDNDREW EXPLORER V4", 140, 285);
+
+            doc.save("Report_Lot_" + (currentLotData.NO_LOT || "Unknown") + ".pdf");
+        }
+
+        function searchLot() {
+            var value = document.getElementById('lotSearch').value.trim();
+            var found = false;
+            layer_lotfinal_1.eachLayer(function(layer) {
+                if (String(layer.feature.properties.NO_LOT) === value) {
+                    if (lastClickedLayer) { layer_lotfinal_1.resetStyle(lastClickedLayer); }
+                    layer.setStyle(highlightStyle);
+                    lastClickedLayer = layer;
+                    updateDashboard(layer.feature.properties);
+                    map.fitBounds(layer.getBounds(), {padding: [100, 100]}); 
+                    found = true;
+                }
+            });
+            if (!found) alert("Lot " + value + " not found.");
+        }
+
+        function resetView() { location.reload(); }
+
+        if (typeof json_TANDASEMPADANLOTGABUNG_2 !== 'undefined') {
+            L.geoJson(json_TANDASEMPADANLOTGABUNG_2, {
+                pointToLayer: function (f, latlng) { 
+                    return L.circleMarker(latlng, {radius: 2, fillColor: '#d4a373', color: '#0d1117', weight: 1, fillOpacity: 1}); 
+                }
+            }).addTo(map);
+        }
         </script>
     </body>
 </html>
