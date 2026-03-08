@@ -110,8 +110,6 @@
         .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
         
         .btn-confirm { flex: 1; padding: 12px; background: #d4a373; color: #0d1117; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
-        
-        /* BUTTON CANCEL UBAH JADI BIASA (TAK MERAH) */
         .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #30363d; color: #8b949e; border-radius: 8px; font-weight: 800; cursor: pointer; }
 
         .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
@@ -200,7 +198,7 @@
             zoomControl: true, 
             maxZoom: 28, 
             minZoom: 1,
-            preferCanvas: true // PENTING: Untuk mudahkan html2canvas capture map
+            preferCanvas: true 
         }).fitBounds([[2.1024, 102.5206], [2.1047, 102.5246]]);
         
         map.zoomControl.setPosition('bottomright');
@@ -208,7 +206,7 @@
         var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { 
             maxNativeZoom: 20, 
             maxZoom: 28,
-            crossOrigin: true // PENTING: Untuk kebenaran capture image peta
+            crossOrigin: 'Anonymous' 
         }).addTo(map);
 
         function updateDashboard(props) {
@@ -240,30 +238,29 @@
             }
         }).addTo(map);
 
-        // --- FUNGSI GENERATE PDF DENGAN GAMBAR LOT (MAP CAPTURE) ---
+        // --- FUNGSI GENERATE PDF: FOCUS PADA PA NUMBER & DATA MAKLUMAT ---
         async function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
             const user = (document.getElementById('userName').value || "AUTHORIZED USER").toUpperCase();
 
-            // 1. CAPTURE MAP MENGGUNAKAN HTML2CANVAS
+            // 1. CAPTURE MAP
             const mapContainer = document.getElementById('map');
             const canvas = await html2canvas(mapContainer, {
-                useCORS: true, // Benarkan ambil gambar dari Google Satellite
+                useCORS: true,
                 logging: false,
                 height: mapContainer.offsetHeight,
                 width: mapContainer.offsetWidth
             });
             const mapImgData = canvas.toDataURL('image/png');
 
-            // 2. HEADER HITAM & GOLD DIVIDER
+            // 2. HEADER ELITE
             doc.setFillColor(13, 17, 23);
             doc.rect(0, 0, 210, 50, 'F');
             doc.setDrawColor(212, 163, 115);
             doc.setLineWidth(1.5);
             doc.line(0, 50, 210, 50);
 
-            // 3. TAJUK
             doc.setTextColor(212, 163, 115);
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
@@ -274,56 +271,56 @@
             doc.setFont("helvetica", "normal");
             doc.text("ZEDNDREW EXPLORER | GEOGRAPHIC INFORMATION SYSTEM", 20, 40);
 
-            // 4. MASUKKAN GAMBAR MAP (Visual Lot)
-            doc.setTextColor(40, 40, 40);
-            doc.setFontSize(12);
-            doc.setFont("helvetica", "bold");
-            doc.text("LOT VISUALIZATION:", 20, 65);
-            
-            // Draw map image (x, y, width, height)
-            doc.addImage(mapImgData, 'PNG', 20, 70, 170, 80);
-            doc.setDrawColor(212, 163, 115);
-            doc.setLineWidth(0.5);
-            doc.rect(20, 70, 170, 80, 'S'); // Border untuk gambar map
-
-            // 5. DATA MAKLUMAT (BAWAH GAMBAR)
-            doc.setFillColor(248, 249, 250);
-            doc.rect(20, 155, 170, 75, 'F');
-            doc.setDrawColor(220, 220, 220);
-            doc.rect(20, 155, 170, 75, 'S');
-
+            // 3. GAMBAR LOT (TANGKAPAN PETA)
             doc.setTextColor(40, 40, 40);
             doc.setFontSize(11);
             doc.setFont("helvetica", "bold");
-            doc.text("OWNERSHIP DETAILS:", 30, 165);
+            doc.text("LOT VISUALIZATION:", 20, 65);
+            doc.addImage(mapImgData, 'PNG', 20, 70, 170, 85);
+            doc.rect(20, 70, 170, 85, 'S');
+
+            // 4. MAKLUMAT DETAIL (PA NUMBER & OTHERS)
+            doc.setFillColor(248, 249, 250);
+            doc.rect(20, 165, 170, 85, 'F');
+            doc.setDrawColor(220, 220, 220);
+            doc.rect(20, 165, 170, 85, 'S');
+
+            doc.setTextColor(40, 40, 40);
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text("OFFICIAL DATA RECORD:", 30, 178);
             
-            let yPos = 175;
+            let yPos = 190;
+            // Menarik data PA Number dan maklumat lain dari GeoJSON properties
             const items = [
-                ["LOT NUMBER", ": " + currentLotData.NO_LOT],
+                ["LOT NUMBER", ": " + (currentLotData.NO_LOT || "-")],
+                ["PA NUMBER", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "N/A")], // Fokus utama
                 ["LEGAL OWNER", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")],
-                ["TOTAL AREA", ": " + currentLotData.AREA + " m2"],
-                ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")]
+                ["TOTAL AREA", ": " + (currentLotData.AREA || "-") + " m2"],
+                ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")],
+                ["LAND USE", ": " + (currentLotData["tsp — hakmilik_KEGUNAAN_TANAH"] || "-")]
             ];
 
             items.forEach(item => {
                 doc.setFont("helvetica", "bold");
+                doc.setFontSize(10);
                 doc.text(item[0], 35, yPos);
                 doc.setFont("helvetica", "normal");
                 doc.text(item[1], 80, yPos);
-                yPos += 10;
+                yPos += 9;
             });
 
-            // 6. SIGNATURE
+            // 5. SIGNATURE & FOOTER
             doc.setFontSize(9);
-            doc.text("Prepared By: " + user, 20, 250);
-            doc.text("Date Generated: " + new Date().toLocaleString(), 20, 255);
+            doc.setTextColor(100, 100, 100);
+            doc.text("Prepared By: " + user, 20, 265);
+            doc.text("Generated on: " + new Date().toLocaleString(), 20, 270);
 
-            // 7. FOOTER
             doc.setFontSize(8);
             doc.setTextColor(180, 180, 180);
-            doc.text("ZEDNDREW EXPLORER V4 - OFFICIAL DOCUMENT", 70, 285);
+            doc.text("CONFIDENTIAL - ZEDNDREW EXPLORER V4", 140, 285);
 
-            doc.save("Property_Report_" + currentLotData.NO_LOT + ".pdf");
+            doc.save("Report_Lot_" + (currentLotData.NO_LOT || "Unknown") + ".pdf");
         }
 
         function searchLot() {
