@@ -26,37 +26,62 @@
             z-index: 9999; display: flex; align-items: center; justify-content: center;
         }
         .login-box {
+            position: relative; /* Penting untuk video background */
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(20px);
-            padding: 40px; border-radius: 24px;
-            border: 1px solid rgba(212, 163, 115, 0.3);
-            width: 90%; max-width: 350px;
+            padding: 50px 40px; border-radius: 30px; /* Besarkan sikit */
+            border: 1px solid rgba(212, 163, 115, 0.5);
+            width: 95%; max-width: 420px; /* Lebar ikut arahan kau */
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.8);
+            overflow: hidden; /* Supaya video tak terkeluar bucu */
         }
-        .login-box img { height: 60px; margin-bottom: 20px; }
-        .login-box h2 { 
+
+        /* Tambahan Video Background dalam Box */
+        .login-video-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; z-index: -2; opacity: 0.6;
+        }
+        .login-box-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(13,17,23,0.8), rgba(13,17,23,0.95));
+            z-index: -1;
+        }
+
+        .login-box img { height: 65px; margin-bottom: 20px; position: relative; z-index: 2; }
+        
+        /* Tajuk Aesthetic Baru */
+        .login-title-main { 
             color: #d4a373; font-family: 'Georgia', serif; font-style: italic; 
-            margin-bottom: 30px; letter-spacing: 1px;
+            margin-bottom: 5px; letter-spacing: 2px; font-size: 22px;
+            text-transform: uppercase; font-weight: bold;
         }
+        .login-title-sub {
+            color: #fff; font-family: 'Georgia', serif; font-style: italic;
+            font-size: 12px; letter-spacing: 3px; margin-bottom: 25px;
+            opacity: 0.8; text-transform: uppercase;
+        }
+
         .login-input {
-            width: 100%; padding: 14px; margin-bottom: 15px;
-            background: rgba(0,0,0,0.3); border: 1px solid #30363d;
-            border-radius: 12px; color: #fff; outline: none; box-sizing: border-box;
-            transition: 0.3s; text-align: center;
+            width: 100%; padding: 16px; margin-bottom: 18px;
+            background: rgba(0,0,0,0.5); border: 1px solid rgba(212,163,115,0.3);
+            border-radius: 15px; color: #fff; outline: none; box-sizing: border-box;
+            transition: 0.3s; text-align: center; position: relative; z-index: 2;
         }
-        .login-input:focus { border-color: #d4a373; box-shadow: 0 0 10px rgba(212, 163, 115, 0.2); }
+        .login-input:focus { border-color: #d4a373; box-shadow: 0 0 15px rgba(212, 163, 115, 0.3); }
+        
         .btn-login {
-            width: 100%; padding: 14px; background: #d4a373; color: #0d1117;
-            border: none; border-radius: 12px; font-weight: 800; cursor: pointer;
+            width: 100%; padding: 16px; background: #d4a373; color: #0d1117;
+            border: none; border-radius: 15px; font-weight: 800; cursor: pointer;
             text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+            position: relative; z-index: 2;
         }
         .btn-login:disabled { background: #484f58; cursor: not-allowed; }
-        #loginMsg { margin-top: 15px; font-size: 11px; letter-spacing: 0.5px; min-height: 15px; }
+        #loginMsg { margin-top: 20px; font-size: 11px; letter-spacing: 0.5px; min-height: 15px; position: relative; z-index: 2; }
         .msg-error { color: #ff7b72; }
         .msg-warning { color: #d4a373; font-weight: bold; }
 
-        /* --- HEADER DENGAN VIDEO --- */
+        /* --- HEADER DENGAN VIDEO (KOD ASAL KAU) --- */
         .hero-header {
             position: relative;
             width: 100%;
@@ -96,7 +121,7 @@
 
         #map { flex-grow: 1; width: 100%; }
 
-        /* --- DASHBOARD DARK ELITE --- */
+        /* --- DASHBOARD DARK ELITE (KOD ASAL KAU) --- */
         .sidebar {
             height: 100%; width: 0; position: fixed; 
             z-index: 4000; top: 0; left: 0; background: rgba(13, 17, 23, 0.98);
@@ -210,8 +235,16 @@
 
         <div id="loginOverlay">
             <div class="login-box">
+                <video autoplay muted loop playsinline class="login-video-bg">
+                    <source src="videokucing.mp4" type="video/mp4">
+                </video>
+                <div class="login-box-overlay"></div>
+
                 <img src="logopolibulat.png" alt="Logo">
-                <h2>SECURITY ACCESS</h2>
+                
+                <div class="login-title-main">Saujana Putra Smart Resident & Security</div>
+                <div class="login-title-sub">Zedndrew Official Website</div>
+
                 <input type="text" id="inputId" class="login-input" placeholder="ACCESS ID">
                 <input type="password" id="inputPass" class="login-input" placeholder="PASSWORD">
                 <button id="loginBtn" class="btn-login" onclick="validateLogin()">Unlock System</button>
@@ -324,7 +357,7 @@
             }
         }
 
-        // --- MAP & GIS LOGIC (TIADA PERUBAHAN) ---
+        // --- MAP & GIS LOGIC (KOD ASAL KAU - TIADA PERUBAHAN) ---
         var currentLotData = null;
         function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
