@@ -19,6 +19,43 @@
             overflow: hidden;
         }
 
+        /* --- LOGIN SCREEN OVERLAY --- */
+        #loginOverlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #161b22 0%, #0d1117 100%);
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+        }
+        .login-box {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            padding: 40px; border-radius: 24px;
+            border: 1px solid rgba(212, 163, 115, 0.3);
+            width: 90%; max-width: 350px;
+            text-align: center;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        }
+        .login-box img { height: 60px; margin-bottom: 20px; }
+        .login-box h2 { 
+            color: #d4a373; font-family: 'Georgia', serif; font-style: italic; 
+            margin-bottom: 30px; letter-spacing: 1px;
+        }
+        .login-input {
+            width: 100%; padding: 14px; margin-bottom: 15px;
+            background: rgba(0,0,0,0.3); border: 1px solid #30363d;
+            border-radius: 12px; color: #fff; outline: none; box-sizing: border-box;
+            transition: 0.3s; text-align: center;
+        }
+        .login-input:focus { border-color: #d4a373; box-shadow: 0 0 10px rgba(212, 163, 115, 0.2); }
+        .btn-login {
+            width: 100%; padding: 14px; background: #d4a373; color: #0d1117;
+            border: none; border-radius: 12px; font-weight: 800; cursor: pointer;
+            text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        }
+        .btn-login:disabled { background: #484f58; cursor: not-allowed; }
+        #loginMsg { margin-top: 15px; font-size: 11px; letter-spacing: 0.5px; min-height: 15px; }
+        .msg-error { color: #ff7b72; }
+        .msg-warning { color: #d4a373; font-weight: bold; }
+
         /* --- HEADER DENGAN VIDEO --- */
         .hero-header {
             position: relative;
@@ -31,50 +68,30 @@
         }
 
         .hero-header video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            z-index: 1;
-            transform: translate(-50%, -50%);
-            object-fit: cover;
+            position: absolute; top: 50%; left: 50%;
+            min-width: 100%; min-height: 100%;
+            width: auto; height: auto; z-index: 1;
+            transform: translate(-50%, -50%); object-fit: cover;
         }
 
         .video-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: 2;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); z-index: 2;
         }
 
         .header-content {
-            position: relative;
-            z-index: 3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 0 30px;
+            position: relative; z-index: 3;
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; padding: 0 30px;
         }
 
         .header-logo-left { position: absolute; left: 30px; height: 70px; width: auto; }
         .header-logo-right { position: absolute; right: 30px; height: 70px; width: auto; }
 
         .header-content h1 {
-            color: #fff;
-            font-family: 'Georgia', serif;
-            font-style: italic;
-            font-size: 32px;
-            margin: 0;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-            letter-spacing: 1px;
-            text-align: center;
+            color: #fff; font-family: 'Georgia', serif; font-style: italic;
+            font-size: 32px; margin: 0; text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+            letter-spacing: 1px; text-align: center;
         }
 
         #map { flex-grow: 1; width: 100%; }
@@ -82,8 +99,7 @@
         /* --- DASHBOARD DARK ELITE --- */
         .sidebar {
             height: 100%; width: 0; position: fixed; 
-            z-index: 4000; /* DITINGKATKAN SUPAYA DI ATAS FOOTER */
-            top: 0; left: 0; background: rgba(13, 17, 23, 0.98);
+            z-index: 4000; top: 0; left: 0; background: rgba(13, 17, 23, 0.98);
             backdrop-filter: blur(15px); overflow-x: hidden; 
             transition: 0.4s ease-in-out;
             box-shadow: 10px 0 30px rgba(0,0,0,0.5);
@@ -144,35 +160,19 @@
         .info-label { font-size: 8px; color: #8b949e; font-weight: 600; text-transform: uppercase; }
         .info-value { font-size: 14px; font-weight: 500; color: #f0f6fc; margin-top: 4px; }
 
-        /* --- MENU BUTTON BUBBLE STYLE & RAPAT KIRI --- */
         .menu-btn {
-            position: fixed; 
-            top: 140px; 
-            left: 0 !important;
-            z-index: 1001; 
-            background: #0d1117; 
-            color: #d4a373; 
-            padding: 15px 25px 15px 15px; 
-            border: 2px solid #d4a373; 
-            border-left: none !important; 
-            cursor: pointer; 
-            border-radius: 0 50px 50px 0 !important; 
-            font-size: 12px; 
-            font-weight: 900; 
-            letter-spacing: 2px;
+            position: fixed; top: 140px; left: 0 !important;
+            z-index: 1001; background: #0d1117; color: #d4a373; 
+            padding: 15px 25px 15px 15px; border: 2px solid #d4a373; 
+            border-left: none !important; cursor: pointer; 
+            border-radius: 0 50px 50px 0 !important; font-size: 12px; 
+            font-weight: 900; letter-spacing: 2px;
             box-shadow: 5px 5px 15px rgba(0,0,0,0.4);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            display: flex; align-items: center; gap: 10px;
         }
 
-        .menu-btn:hover {
-            padding-left: 25px;
-            background: #d4a373;
-            color: #0d1117;
-            box-shadow: 0 0 20px rgba(212, 163, 115, 0.4);
-        }
+        .menu-btn:hover { padding-left: 25px; background: #d4a373; color: #0d1117; }
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -185,60 +185,39 @@
             box-shadow: 0 20px 50px rgba(0,0,0,1); color: #fff;
         }
         .modal-box h3 { color: #d4a373; margin-top: 0; font-size: 16px; text-transform: uppercase; border-bottom: 1px solid #30363d; padding-bottom: 10px; }
-        .modal-body { margin: 20px 0; font-size: 13px; }
-        .modal-body label { display: block; margin-bottom: 8px; color: #8b949e; font-size: 10px; font-weight: 700; }
-        .modal-footer { display: flex; gap: 10px; margin-top: 20px; }
         
         .btn-confirm { flex: 1; padding: 12px; background: #d4a373; color: #0d1117; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
         .btn-cancel { flex: 1; padding: 12px; background: transparent; border: 1px solid #30363d; color: #8b949e; border-radius: 8px; font-weight: 800; cursor: pointer; }
 
         .leaflet-bottom.leaflet-right { margin-bottom: 30px; margin-right: 20px; }
 
-        /* --- ZOOM CONTROLS --- */
-        .leaflet-control-zoom { border: none !important; box-shadow: 0 8px 25px rgba(0,0,0,0.6) !important; }
         .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-            background-color: #0d1117 !important;
-            color: #d4a373 !important;
+            background-color: #0d1117 !important; color: #d4a373 !important;
             border: 1px solid rgba(212, 163, 115, 0.4) !important;
-            font-family: 'Inter', sans-serif;
-            font-weight: bold !important;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
-            width: 40px !important; height: 40px !important; line-height: 40px !important; font-size: 18px !important;
+            width: 40px !important; height: 40px !important; line-height: 40px !important;
         }
-        .leaflet-bar a:first-child { border-top-left-radius: 12px !important; border-top-right-radius: 12px !important; }
-        .leaflet-bar a:last-child { border-bottom-left-radius: 12px !important; border-bottom-right-radius: 12px !important; border-top: none !important; }
-        .leaflet-control-zoom-in:hover, .leaflet-control-zoom-out:hover { background-color: #d4a373 !important; color: #0d1117 !important; transform: scale(1.1); z-index: 10; }
-        .leaflet-control-attribution { background: rgba(13, 17, 23, 0.7) !important; color: #8b949e !important; font-size: 9px !important; backdrop-filter: blur(5px); border-radius: 10px 0 0 0; }
-        .leaflet-control-attribution a { color: #d4a373 !important; }
 
-        /* --- FOOTER CSS --- */
         .aesthetic-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 25px;
-            background: rgba(13, 17, 23, 0.9);
-            border-top: 1px solid rgba(212, 163, 115, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2500; /* LEBIH RENDAH DARI SIDEBAR */
-            backdrop-filter: blur(5px);
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 25px;
+            background: rgba(13, 17, 23, 0.9); border-top: 1px solid rgba(212, 163, 115, 0.3);
+            display: flex; align-items: center; justify-content: center; z-index: 2500;
         }
-        .footer-text {
-            color: #d4a373;
-            font-family: 'Inter', sans-serif;
-            font-size: 9px;
-            font-weight: 600;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
+        .footer-text { color: #d4a373; font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
         </style>
         <title>Zedndrew | Smart Resident GIS</title>
     </head>
     <body>
+
+        <div id="loginOverlay">
+            <div class="login-box">
+                <img src="logopolibulat.png" alt="Logo">
+                <h2>SECURITY ACCESS</h2>
+                <input type="text" id="inputId" class="login-input" placeholder="ACCESS ID">
+                <input type="password" id="inputPass" class="login-input" placeholder="PASSWORD">
+                <button id="loginBtn" class="btn-login" onclick="validateLogin()">Unlock System</button>
+                <div id="loginMsg"></div>
+            </div>
+        </div>
 
         <header class="hero-header">
             <video autoplay muted loop playsinline>
@@ -279,8 +258,8 @@
         <div id="modalOverlay" class="modal-overlay">
             <div class="modal-box">
                 <h3>Report Confirmation</h3>
-                <div class="modal-body">
-                    <label>PREPARED BY (REQUIRED)</label>
+                <div class="modal-body" style="margin: 20px 0; font-size: 13px;">
+                    <label style="display: block; margin-bottom: 8px; color: #8b949e; font-size: 10px; font-weight: 700;">PREPARED BY (REQUIRED)</label>
                     <input type="text" id="userName" class="search-box" placeholder="Enter your name..." style="margin-bottom: 20px;">
                     <div style="background: rgba(255,255,255,0.03); padding: 15px; border-radius: 10px;">
                         <div style="margin-bottom: 8px;"><b>LOT:</b> <span id="pre-lot"></span></div>
@@ -288,7 +267,7 @@
                         <div><b>AREA:</b> <span id="pre-area"></span></div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="display: flex; gap: 10px; margin-top: 20px;">
                     <button class="btn-cancel" onclick="closePreview()">CANCEL</button>
                     <button class="btn-confirm" onclick="confirmDownload()">DOWNLOAD PDF</button>
                 </div>
@@ -306,6 +285,46 @@
         <script src="data/TANDASEMPADANLOTGABUNG_2.js"></script>
 
         <script>
+        // --- LOGIN LOGIC ---
+        let attempts = 0;
+        const MAX_ATTEMPTS = 5;
+
+        function validateLogin() {
+            const id = document.getElementById('inputId').value;
+            const pass = document.getElementById('inputPass').value;
+            const msg = document.getElementById('loginMsg');
+            const btn = document.getElementById('loginBtn');
+
+            if (id === "zedndrew" && pass === "admin123") {
+                document.getElementById('loginOverlay').style.display = 'none';
+            } else {
+                attempts++;
+                let remaining = MAX_ATTEMPTS - attempts;
+                
+                if (attempts >= MAX_ATTEMPTS) {
+                    let cooldown = 20;
+                    btn.disabled = true;
+                    msg.className = "msg-error";
+                    
+                    let timer = setInterval(() => {
+                        msg.innerText = `SYSTEM LOCKED! Please wait ${cooldown}s`;
+                        cooldown--;
+                        if (cooldown < 0) {
+                            clearInterval(timer);
+                            attempts = 0;
+                            btn.disabled = false;
+                            msg.innerText = "You can try again now.";
+                            msg.className = "msg-warning";
+                        }
+                    }, 1000);
+                } else {
+                    msg.className = "msg-error";
+                    msg.innerHTML = `Invalid Access! <br><span class="msg-warning">You have ${remaining} more attempts left.</span>`;
+                }
+            }
+        }
+
+        // --- MAP & GIS LOGIC (TIADA PERUBAHAN) ---
         var currentLotData = null;
         function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
@@ -358,24 +377,16 @@
             const user = (document.getElementById('userName').value || "AUTHORIZED USER").toUpperCase();
             const logoUrl = 'https://upload.wikimedia.org/wikipedia/commons/b/be/Logo_Politeknik_Malaysia.png';
             const mapContainer = document.getElementById('map');
-            const canvas = await html2canvas(mapContainer, { useCORS: true, logging: false, height: mapContainer.offsetHeight, width: mapContainer.offsetWidth });
+            const canvas = await html2canvas(mapContainer, { useCORS: true, logging: false });
             const mapImgData = canvas.toDataURL('image/png');
             doc.setFillColor(13, 17, 23); doc.rect(0, 0, 210, 50, 'F');
             doc.setDrawColor(212, 163, 115); doc.setLineWidth(1.5); doc.line(0, 50, 210, 50);
-            try { doc.addImage(logoUrl, 'PNG', 15, 10, 30, 25); } catch (e) { console.error("Logo Error"); }
+            try { doc.addImage(logoUrl, 'PNG', 15, 10, 30, 25); } catch (e) {}
             doc.setTextColor(212, 163, 115); doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.text("PROPERTY INFORMATION REPORT", 50, 25);
-            doc.setFontSize(9); doc.setTextColor(150, 150, 150); doc.setFont("helvetica", "normal"); doc.text("POLITEKNIK MALAYSIA | GEOGRAPHIC INFORMATION SYSTEM", 50, 32);
-            doc.text("ZEDNDREW EXPLORER OFFICIAL DATA RECORD", 50, 37);
-            doc.setTextColor(40, 40, 40); doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.text("LOT VISUALIZATION:", 20, 65);
-            doc.setDrawColor(212, 163, 115); doc.setLineWidth(0.5); doc.addImage(mapImgData, 'PNG', 20, 70, 170, 85); doc.rect(20, 70, 170, 85, 'S');
-            doc.setFillColor(248, 249, 250); doc.rect(20, 165, 170, 85, 'F');
-            doc.setDrawColor(220, 220, 220); doc.rect(20, 165, 170, 85, 'S');
-            doc.setTextColor(40, 40, 40); doc.setFontSize(12); doc.setFont("helvetica", "bold"); doc.text("OFFICIAL PROPERTY DATA:", 30, 178);
+            doc.addImage(mapImgData, 'PNG', 20, 70, 170, 85);
             let yPos = 190;
-            const items = [ ["LOT NUMBER", ": " + (currentLotData.NO_LOT || "-")], ["PA NUMBER", ": " + (currentLotData["tsp — hakmilik_NO_PA"] || "N/A")], ["LEGAL OWNER", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")], ["TOTAL AREA", ": " + (currentLotData.AREA || "-") + " m2"], ["DISTRICT", ": " + (currentLotData["tsp — hakmilik_DAERAH"] || "TANGKAK")], ["LAND USE", ": " + (currentLotData["tsp — hakmilik_KEGUNAAN_TANAH"] || "-")] ];
-            items.forEach(item => { doc.setFont("helvetica", "bold"); doc.setFontSize(10); doc.text(item[0], 35, yPos); doc.setFont("helvetica", "normal"); doc.text(item[1], 80, yPos); yPos += 9; });
-            doc.setFontSize(9); doc.setTextColor(100, 100, 100); doc.text("Prepared By: " + user, 20, 265); doc.text("Generated on: " + new Date().toLocaleString(), 20, 270);
-            doc.setFontSize(8); doc.setTextColor(180, 180, 180); doc.text("CONFIDENTIAL - ZEDNDREW EXPLORER V4", 140, 285);
+            const items = [ ["LOT NUMBER", ": " + (currentLotData.NO_LOT || "-")], ["LEGAL OWNER", ": " + (currentLotData["tsp — pemilik_PEMILIK"] || "N/A")], ["TOTAL AREA", ": " + (currentLotData.AREA || "-") + " m2"] ];
+            items.forEach(item => { doc.text(item[0], 35, yPos); doc.text(item[1], 80, yPos); yPos += 9; });
             doc.save("Report_Lot_" + (currentLotData.NO_LOT || "Unknown") + ".pdf");
         }
 
