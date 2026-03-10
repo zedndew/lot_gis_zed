@@ -19,38 +19,37 @@
             overflow: hidden;
         }
 
+        /* --- VIDEO BACKGROUND FULL WEBSITE --- */
+        .full-website-bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; /* Duduk paling belakang sekali */
+        }
+
         /* --- LOGIN SCREEN OVERLAY --- */
         #loginOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #161b22 0%, #0d1117 100%);
+            background: transparent; /* Buat transparent sbb nak nampak video kat belakang */
             z-index: 9999; display: flex; align-items: center; justify-content: center;
         }
         .login-box {
-            position: relative; /* Penting untuk video background */
+            position: relative;
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            padding: 50px 40px; border-radius: 30px; /* Besarkan sikit */
+            backdrop-filter: blur(25px); /* Bagi kesan blur sikit pada kotak supaya teks nampak */
+            padding: 50px 40px; border-radius: 30px;
             border: 1px solid rgba(212, 163, 115, 0.5);
-            width: 95%; max-width: 420px; /* Lebar ikut arahan kau */
+            width: 95%; max-width: 420px;
             text-align: center;
             box-shadow: 0 25px 80px rgba(0,0,0,0.8);
-            overflow: hidden; /* Supaya video tak terkeluar bucu */
-        }
-
-        /* Tambahan Video Background dalam Box */
-        .login-video-bg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; z-index: -2; opacity: 0.6;
-        }
-        .login-box-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(13,17,23,0.8), rgba(13,17,23,0.95));
-            z-index: -1;
+            overflow: hidden;
         }
 
         .login-box img { height: 65px; margin-bottom: 20px; position: relative; z-index: 2; }
         
-        /* Tajuk Aesthetic Baru */
         .login-title-main { 
             color: #d4a373; font-family: 'Georgia', serif; font-style: italic; 
             margin-bottom: 5px; letter-spacing: 2px; font-size: 22px;
@@ -233,13 +232,12 @@
     </head>
     <body>
 
+        <video autoplay muted loop playsinline class="full-website-bg-video">
+            <source src="videokucing.mp4" type="video/mp4">
+        </video>
+
         <div id="loginOverlay">
             <div class="login-box">
-                <video autoplay muted loop playsinline class="login-video-bg">
-                    <source src="videokucing.mp4" type="video/mp4">
-                </video>
-                <div class="login-box-overlay"></div>
-
                 <img src="logopolibulat.png" alt="Logo">
                 
                 <div class="login-title-main">Saujana Putra Smart Resident & Security</div>
@@ -357,7 +355,7 @@
             }
         }
 
-        // --- MAP & GIS LOGIC (KOD ASAL KAU - TIADA PERUBAHAN) ---
+        // --- MAP & GIS LOGIC (TIADA PERUBAHAN) ---
         var currentLotData = null;
         function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
