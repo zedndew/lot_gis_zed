@@ -19,33 +19,36 @@
             overflow: hidden;
         }
 
-        /* --- VIDEO BACKGROUND FULL WEBSITE --- */
-        .full-website-bg-video {
+        /* --- VIDEO KUCING BACKGROUND (UTAMA) --- */
+        #bgVideoKucingFull {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -1; /* Duduk paling belakang sekali */
+            z-index: 9997; /* Duduk belakang overlay */
+            display: block;
         }
 
         /* --- LOGIN SCREEN OVERLAY --- */
         #loginOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: transparent; /* Buat transparent sbb nak nampak video kat belakang */
+            background: rgba(13, 17, 23, 0.2); /* Biar nampak video kucing tu terang */
             z-index: 9999; display: flex; align-items: center; justify-content: center;
         }
+        
         .login-box {
             position: relative;
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(25px); /* Bagi kesan blur sikit pada kotak supaya teks nampak */
+            backdrop-filter: blur(20px);
             padding: 50px 40px; border-radius: 30px;
             border: 1px solid rgba(212, 163, 115, 0.5);
             width: 95%; max-width: 420px;
             text-align: center;
             box-shadow: 0 25px 80px rgba(0,0,0,0.8);
             overflow: hidden;
+            z-index: 10000;
         }
 
         .login-box img { height: 65px; margin-bottom: 20px; position: relative; z-index: 2; }
@@ -232,17 +235,15 @@
     </head>
     <body>
 
-        <video autoplay muted loop playsinline class="full-website-bg-video">
+        <video autoplay muted loop playsinline id="bgVideoKucingFull">
             <source src="videokucing.mp4" type="video/mp4">
         </video>
 
         <div id="loginOverlay">
             <div class="login-box">
                 <img src="logopolibulat.png" alt="Logo">
-                
                 <div class="login-title-main">Saujana Putra Smart Resident & Security</div>
                 <div class="login-title-sub">Zedndrew Official Website</div>
-
                 <input type="text" id="inputId" class="login-input" placeholder="ACCESS ID">
                 <input type="password" id="inputPass" class="login-input" placeholder="PASSWORD">
                 <button id="loginBtn" class="btn-login" onclick="validateLogin()">Unlock System</button>
@@ -328,15 +329,15 @@
 
             if (id === "zedndrew" && pass === "admin123") {
                 document.getElementById('loginOverlay').style.display = 'none';
+                document.getElementById('bgVideoKucingFull').style.display = 'none';
+                map.invalidateSize();
             } else {
                 attempts++;
                 let remaining = MAX_ATTEMPTS - attempts;
-                
                 if (attempts >= MAX_ATTEMPTS) {
                     let cooldown = 20;
                     btn.disabled = true;
                     msg.className = "msg-error";
-                    
                     let timer = setInterval(() => {
                         msg.innerText = `SYSTEM LOCKED! Please wait ${cooldown}s`;
                         cooldown--;
@@ -355,7 +356,7 @@
             }
         }
 
-        // --- MAP & GIS LOGIC (TIADA PERUBAHAN) ---
+        // --- MAP & GIS LOGIC (KOD ASAL KAU - TIADA PERUBAHAN) ---
         var currentLotData = null;
         function openNav() { document.getElementById("mySidebar").style.width = "320px"; }
         function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
