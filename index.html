@@ -432,6 +432,32 @@
             z-index: 2500;
         }
         .footer-text { color: #d4a373; font-size: 9px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+
+        /* --- CSS BARU UNTUK FUNGSI LABEL & MAP CONTROL --- */
+        .leaflet-control-layers-expanded {
+            background: rgba(13, 17, 23, 0.95) !important;
+            border: 1px solid #d4a373 !important;
+            color: #fff !important;
+            border-radius: 10px !important;
+            font-family: 'Inter', sans-serif;
+            padding: 10px 15px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7) !important;
+        }
+        .leaflet-control-layers-toggle {
+            background-color: #0d1117 !important;
+            border-radius: 5px !important;
+            border: 1px solid #d4a373 !important;
+        }
+        .lot-label-text {
+            color: #fff;
+            font-weight: 800;
+            font-size: 11px;
+            text-align: center;
+            text-shadow: 1px 1px 3px #000, -1px -1px 3px #000;
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
         </style>
         <title>Zedndrew | Smart Resident GIS</title>
     </head>
@@ -595,11 +621,21 @@
         
         map.zoomControl.setPosition('bottomright');
 
+        // --- PETA BASEMAP (SATELIT & PUTIH) ---
         var layer_GoogleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', { 
             maxNativeZoom: 20, 
             maxZoom: 28, 
             crossOrigin: 'Anonymous' 
-        }).addTo(map);
+        });
+
+        var layer_LightMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            maxNativeZoom: 20, 
+            maxZoom: 28,
+            attribution: '&copy; CARTO'
+        });
+
+        // Set peta Satelit sebagai default bila bukak map
+        layer_GoogleSatellite.addTo(map);
 
         function updateDashboard(props) {
             currentLotData = props;
@@ -614,9 +650,25 @@
         var highlightStyle = { opacity: 1, color: '#fff', weight: 3, fill: true, fillOpacity: 0.6, fillColor: '#d4a373' };
         var lastClickedLayer;
 
+        // --- KUMPULAN LAYER UNTUK LABEL NO LOT ---
+        var layerLabels = L.layerGroup();
+
         var layer_lotfinal_1 = new L.geoJson(json_lotfinal_1, {
             style: defaultStyle,
             onEachFeature: function(feature, layer) {
+                // Letak label nombor lot di tengah-tengah lot
+                if (feature.properties && feature.properties.NO_LOT) {
+                    var labelMarker = L.marker(layer.getBounds().getCenter(), {
+                        icon: L.divIcon({
+                            className: 'lot-label-text',
+                            html: feature.properties.NO_LOT,
+                            iconSize: [40, 20]
+                        }),
+                        interactive: false // Supaya dia tak ganggu bila kau klik lot
+                    });
+                    layerLabels.addLayer(labelMarker);
+                }
+
                 layer.on({
                     click: function(e) {
                         if (lastClickedLayer) { 
@@ -631,7 +683,22 @@
             }
         }).addTo(map);
 
-        // --- BAHAGIAN PDF GENERATOR (FIXED OVERLAP TEXT) ---
+        // Buka label lot secara default (kalau tak nak, delete baris kat bawah ni)
+        layerLabels.addTo(map);
+
+        // --- TAMBAH BUTANG LAYER CONTROL DI KANAN ATAS ---
+        var baseMaps = {
+            "Google Satellite (Dark)": layer_GoogleSatellite,
+            "Default Light Map": layer_LightMap
+        };
+
+        var overlayMaps = {
+            "Show Lot Numbers": layerLabels
+        };
+
+        L.control.layers(baseMaps, overlayMaps, { position: 'topright' }).addTo(map);
+
+        // --- BAHAGIAN PDF GENERATOR ---
         async function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
@@ -642,63 +709,51 @@
             const canvas = await html2canvas(mapContainer, { useCORS: true, logging: false });
             const mapImgData = canvas.toDataURL('image/png');
             
-            // Header Hitam
             doc.setFillColor(13, 17, 23); 
             doc.rect(0, 0, 210, 50, 'F');
             
-            // Garis Bawah Header
             doc.setDrawColor(212, 163, 115); 
             doc.setLineWidth(1.5); 
             doc.line(0, 50, 210, 50);
             
-            // Logo Poli
             try { 
                 doc.addImage(logoUrl, 'PNG', 15, 10, 30, 25); 
             } catch (e) {
                 console.log("Logo cannot load", e);
             }
             
-            // Tajuk
             doc.setTextColor(212, 163, 115); 
             doc.setFont("helvetica", "bold"); 
             doc.setFontSize(20); 
             doc.text("PROPERTY INFORMATION REPORT", 50, 25);
             
-            // Gambar Peta
             doc.addImage(mapImgData, 'PNG', 20, 70, 170, 85);
             
-            // --- DATA TEXT (ANTI BERTINDIH) ---
             doc.setTextColor(0, 0, 0);
             doc.setFontSize(12);
-            let yPos = 180; // Mula tulis pada paras ini
+            let yPos = 180; 
 
-            // 1. LOT NUMBER
             doc.setFont("helvetica", "bold");
             doc.text("LOT NUMBER", 35, yPos);
             doc.setFont("helvetica", "normal");
             doc.text(": " + (currentLotData.NO_LOT || "-"), 80, yPos);
-            yPos += 12; // Jarak normal
+            yPos += 12; 
 
-            // 2. LEGAL OWNER (Boleh jadi panjang berjela)
             doc.setFont("helvetica", "bold");
             doc.text("LEGAL OWNER", 35, yPos);
             doc.setFont("helvetica", "normal");
             
             let rawOwnerName = (currentLotData["tsp — pemilik_PEMILIK"] || "N/A");
-            // Pecahkan teks supaya dia turun baris bawah kalau terlalu panjang (max width 100)
             let splitOwner = doc.splitTextToSize(": " + rawOwnerName, 100);
             doc.text(splitOwner, 80, yPos);
             
-            // Tambah yPos ikut berapa banyak baris nama owner tu ambil
             yPos += (splitOwner.length * 7) + 5;
 
-            // 3. TOTAL AREA
             doc.setFont("helvetica", "bold");
             doc.text("TOTAL AREA", 35, yPos);
             doc.setFont("helvetica", "normal");
             doc.text(": " + (currentLotData.AREA || "-") + " m2", 80, yPos);
 
-            // Save fail
             doc.save("Report_Lot_" + (currentLotData.NO_LOT || "Unknown") + ".pdf");
         }
 
@@ -734,7 +789,6 @@
                 pointToLayer: function (feature, latlng) { 
                     var marker = L.circleMarker(latlng, markerBaseStyle); 
 
-                    // Tooltip dengan perkataan LATITUDE & LONGITUDE penuh
                     var content = `
                         <div style="margin-bottom:5px;"><span class="tooltip-label">Latitude:</span> ${latlng.lat.toFixed(7)}</div>
                         <div><span class="tooltip-label">Longitude:</span> ${latlng.lng.toFixed(7)}</div>
@@ -746,7 +800,6 @@
                         offset: [10, -10] 
                     });
 
-                    // Efek Hover
                     marker.on('mouseover', function (e) {
                         this.setStyle(markerActiveStyle);
                         if(this._path) this._path.style.filter = "drop-shadow(0 0 8px rgba(212, 163, 115, 0.8))";
