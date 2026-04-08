@@ -754,6 +754,13 @@
             doc.setFont("helvetica", "normal");
             doc.text(": " + (currentLotData.AREA || "-") + " m2", 80, yPos);
 
+            // BAHAGIAN YANG DITAMBAH UNTUK NAMA 'DISEMAK OLEH'
+            yPos += 12;
+            doc.setFont("helvetica", "bold");
+            doc.text("DISEMAK OLEH", 35, yPos);
+            doc.setFont("helvetica", "normal");
+            doc.text(": " + user, 80, yPos);
+
             doc.save("Report_Lot_" + (currentLotData.NO_LOT || "Unknown") + ".pdf");
         }
 
